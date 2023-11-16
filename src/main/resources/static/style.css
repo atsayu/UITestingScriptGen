@@ -1,0 +1,108 @@
+body {
+    margin: 5px;
+    padding: 5px;
+
+}
+
+.testsuite {
+    border-width: 1px;
+    border-color: black;
+    border-style: solid;
+    margin: 5px;
+    padding: 5px;
+}
+
+.action {
+    text-indent: 12px;
+    width: fit-content;
+}
+
+.testcase {
+    border: 1px solid black;
+    margin: 5px;
+    padding: 5px;
+}
+
+.keyword {
+    font-weight: 700;
+}
+
+.action .response {
+    padding-left: 12px;
+    padding-top: 5px;
+}
+
+#add-action-btn {
+    display: block;
+    margin: 5px
+}
+
+.btn {
+    margin: 5px;
+}
+
+[type=and],
+[type=or] {
+    /* display: inline-block; */
+}
+
+ul {
+    list-style-type: none;
+}
+
+.caret {
+    cursor: pointer;
+    -webkit-user-select: none;
+    /* Safari 3.1+ */
+    -moz-user-select: none;
+    /* Firefox 2+ */
+    -ms-user-select: none;
+    /* IE 10+ */
+    user-select: none;
+}
+
+.caret::before {
+    content: "\2BC8";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.caret-down::before {
+    content: '\2BC6';
+}
+
+.nested {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+
+
+
+[type=and] .action {
+    display: inline-block;
+}
+
+/* [type = and] >:nth-child(2)::before, [type = or] >:nth-child(2)::before {
+    content: "(";
+} */
+
+/* [type = and] >:last-child:after, [type = or] > :last-child::after {
+    content: ")";
+} */
+
+/* [type = and] .action:not(:nth-last-child(2))::after{
+    content: " & ";
+}
+
+[type = or] .action:not(:nth-last-child(2))::after{
+    content: " | ";
+} */
+
+
+/* .and .action:last-of-type{
+    content: "";
+} */
