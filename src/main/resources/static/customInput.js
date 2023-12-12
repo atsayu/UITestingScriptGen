@@ -179,67 +179,27 @@ function parseToAction(arr) {
 // console.log(parseToAction(splitPrefix(infixToPrefix(s))));
 
 function createFillClick(locator) {
-    let clickElement = `<div class="action" type="click">
+    let clickElement = `<li><div class="action" type="click">
     <input type="checkbox" name="select" onclick="selecting(this)">
     Click
     <input type="text" placeholder="locator" value="${locator}">
-</div>`;
+</div></li>`;
+    console.log(clickElement)
     return clickElement;
 }
 
 function createFillInput(locator, text) {
-    let clickElement = `<div class="action" type="input">
+    let clickElement = `<li><div class="action" type="input">
     <input type="checkbox" name="select" onclick="selecting(this)">
     Input
     <input type="text"  placeholder="text" value="${text}">
     to
     <input type="text" placeholder="locator" value="${locator}">
-</div>`;
+</div></li>`;
+    console.log(clickElement)
     return clickElement;
 }
 
-function createFillAnd(firstElement, secondElement) {
-    let andElement = `<div class="action" type="and">
-    <input type="checkbox" name="select" onclick="selecting(this)">
-    ${firstElement}
-    ${secondElement}
-    <div class="btn-group dropend">
-        <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Add action to And
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
-            <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
-            <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-            <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
-            </ul>
-    </div>
-</div>`;
-    return andElement;
-
-}
-
-function createFillOr(firstElement, secondElement) {
-    let orElement = `<div class="action" type="or">
-    <input type="checkbox" name="select" onclick="selecting(this)">
-    ${firstElement}
-    ${secondElement}
-    <div class="btn-group dropend">
-        <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Add action to Or
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
-            <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
-            <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-            <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
-            </ul>
-    </div>
-</div>`;
-    return orElement;
-}
 
 
 function createFromValue(value) {
@@ -253,18 +213,20 @@ function createFromValue(value) {
     }
 }
 
-function jsonToElement(json) {
+function jsonToElement(json, layer) {
     let type = json.exprType;
+    console.log(type);
     if (type === 'variable') {
+        console.log("var")
         return createFromValue(json.value);
     } else if (type === 'or') {
-        let orElement = `<div class="action" type="or">
+        let orElement = `<li><div class = "action" type="or">
     <input type="checkbox" name="select" onclick="selecting(this)">
-  `;
-    let footer = `<div class="btn-group dropend">
+    <span class="caret" onclick="showAndHide(this)"></span>
+    <div class="btn-group dropend">
         <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
             aria-expanded="false">
-            Add action to Or
+            Combined actions
         </button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
@@ -273,34 +235,81 @@ function jsonToElement(json) {
             <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
             </ul>
     </div>
-</div>`;
+    <ol class="actions nested active">
+  `;
+        let footer = `                </ol>
+</div>
+</li>`
+            if (layer === 1) {
+                orElement = `<li><div class = "action" type="or">
+    <input type="checkbox" name="select" onclick="selecting(this)">
+    <div class="btn-group dropend">
+        <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Combined actions
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
+            <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
+            <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
+            <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+            </ul>
+    </div>
+    <ol class="actions nested active">
+  `;
+            }
+        ;
 
         let jsonArr = json.children;
         jsonArr.forEach(function(item) {
-           orElement = orElement.concat(jsonToElement(item)) ;
+            orElement = orElement.concat(jsonToElement(item, layer + 1)) ;
         });
         orElement = orElement.concat(footer);
         return orElement;
     } else if (type === 'and') {
-        let andElement = `<div class="action" type="and">
-    <input type="checkbox" name="select" onclick="selecting(this)">`
-  
-    let footer = `<div class="btn-group dropend">
+        let andElement = `<li><div class = "action" type="and">
+
+    <input type="checkbox" name="select" onclick="selecting(this)">
+    <span class="caret" onclick="showAndHide(this)"></span>
+    <div class="btn-group dropend">
         <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
             aria-expanded="false">
-            Add action to And
+            Combined actions
         </button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
             <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
             <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-            <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+            <li><a class="dropdown-item" onclick    ="createInputText(this)">InputText</a></li>
             </ul>
     </div>
-</div>`;
+    <ol class="actions nested active">`;
+
+        let footer = `                </ol>
+</div>
+</li>
+`;
+        if (layer === 1) {
+            andElement  =`<li><div class = "action" type="and">
+
+    <input type="checkbox" name="select" onclick="selecting(this)">
+    <div class="btn-group dropend">
+        <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Combined actions
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
+            <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
+            <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
+            <li><a class="dropdown-item" onclick    ="createInputText(this)">InputText</a></li>
+            </ul>
+    </div>
+    <ol class="actions nested active">`;
+        }
         let jsonArr = json.children;
         jsonArr.forEach(function(item) {
-            andElement = andElement.concat(jsonToElement(item));
+            andElement = andElement.concat(jsonToElement(item, layer + 1));
         });
         andElement = andElement.concat(footer);
         return andElement;
@@ -320,9 +329,22 @@ function parseInput(element) {
         success: function (res) {
             console.log(res);
             let parsedElement = document.createElement("div");
-            parsedElement.innerHTML = jsonToElement(res);
+            // parsedElement.innerHTML = jsonToElement(res);
+            let orderedList = element.parentNode.parentNode.parentNode;
+
+            // while (previousItem.nodeType !== 1) previousItem = previousItem.previousSibling;
+            // console.log("element" + previousItem);
+            res.forEach(function (action) {
+                // parsedElement.innerHTML = parsedElement.innerHTML.concat(jsonToElement(action));
+                // previousItem.in
+                orderedList.insertAdjacentHTML('beforeend', jsonToElement(action, 1));
+            });
+            element.parentNode.parentNode.remove();
             console.log(parsedElement);
-            element.parentNode.parentNode.replaceWith(parsedElement.firstElementChild);
+
+            element.parentNode.parentNode;
+
+            // previousItem.insertAdjacentElement('afterend', parsedElement.innerHTML);
             console.log('hello');
         },
         error: function (xhr, status, error) {

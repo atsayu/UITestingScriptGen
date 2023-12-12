@@ -42,85 +42,546 @@ function createTestCase(element) {
     element.insertAdjacentHTML('beforebegin', testcaseElement);
 }
 
-function createAction(element) {
+
+function createClick(element) {
+//     let clickElement = `<div class="action" type="click">
+//     <input type="checkbox" name="select" onclick="selecting(this)">
+//     Click
+//     <input type="text" placeholder="locator" value="5">
+// </div>`;
+//     console.log(element.parentNode.parentNode.parentNode);
+//     let lastElement = element.parentNode.parentNode.parentNode;
+//     lastElement.insertAdjacentHTML('beforebegin', clickElement);
+
+//     let clickElement = `<li><div class="action" type="click">
+//     <input type="checkbox" name="select" onclick="selecting(this)">
+//     Click
+//     <input type="text" placeholder="locator" value="">
+// </div>
+// </li>`;
+    let clickElement =  `<li>
+                    <div class="action" type="click">
+                        <div class="label-button">
+                            <input type="checkbox" name="select" onclick="selecting(this)">
+                            <button type="button" class="up">Click ...   </button>
+                        </div>
+                        <span class="info nested">Click ...</span>
+                        <div class="user-input nested">
+                            Click <input type="text" placeholder="locator" value="">
+                            <button type="button">Update</button>
+                        </div>
+                    </div>
+                </li>`;
+    console.log(element.parentNode.parentNode.parentNode.parentNode);
+    let template = document.createElement('template');
+    template.innerHTML = clickElement;
+
+    let label_btn = template.content.querySelector('.user-input button[type = "button"]');
+
+
+
+    //Update from user input function
+    template.content.querySelector('.user-input button[type = "button"]').addEventListener('click', function () {
+        console.log(this);
+        let label_btn = this.parentNode.parentNode.querySelector('.label-button').querySelector('button[type="button"]');
+        console.log(label_btn);
+        let locator = this.parentNode.querySelector('input[type="text"]').value;
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        info.textContent = 'Click ' + locator;
+        if (locator.length > 3) {
+            label_btn.innerHTML = 'Click ' + locator.substring(0, 3) + '...';
+        } else {
+            label_btn.innerHTML = 'Click '+ locator;
+        }
+    });
+
+
+
+
+    //Show and hide user input
+    let showHideBtn = template.content.querySelector('.label-button button[type = "button"]');
+    showHideBtn.addEventListener('click', function () {
+        this.classList.toggle('down');
+        let user_input = this.parentNode.parentNode.querySelector('.user-input');
+        user_input.classList.toggle('nested');
+    });
+
+    showHideBtn.addEventListener('mouseover', function() {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (info.classList.contains('nested')) info.classList.remove('nested');
+    });
+
+    showHideBtn.addEventListener('mouseout', function () {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (!info.classList.contains('nested')) info.classList.add('nested');
+    });
+
+    let actionList = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    console.log(actionList);
+    // lastElement.insertAdjacentHTML('beforebegin', clickElement);
+    // ulist.insertAdjacentHTML('beforeend', clickElement);
+    actionList.insertAdjacentElement('beforeend', template.content.firstElementChild);
 
 }
 
-function createClick(element) {
-    let clickElement = `<div class="action" type="click">
-    <input type="checkbox" name="select" onclick="selecting(this)">
-    Click
-    <input type="text" placeholder="locator" value="">
-</div>`;
-    console.log(element.parentNode.parentNode.parentNode);
-    let lastElement = element.parentNode.parentNode.parentNode;
-    lastElement.insertAdjacentHTML('beforebegin', clickElement);
+function createSelectList(element) {
+    let selectListElement = `<li>
+                    <div class="action" type="select-list">
+                        <div class="label-button">
+                            <input type="checkbox" name="select" onclick="selecting(this)">
+                            <button type="button" class="up">Select ...   </button>
+                        </div>
+                        <span class="info nested">Select ... for ...</span>
+                        <div class="user-input nested">
+                            Select <input type="text" placeholder="item"> for <input type="text" placeholder="list">
+                            <button type="button">Update</button>
+                        </div>
+                    </div>
+                </li>`;
+
+    let template = document.createElement('template');
+    template.innerHTML = selectListElement;
+
+    let label_btn = template.content.querySelector('.user-input button[type = "button"]');
+
+    //Update from user input function
+    template.content.querySelector('.user-input button[type = "button"]').addEventListener('click', function () {
+        console.log(this);
+        let label_btn = this.parentNode.parentNode.querySelector('.label-button').querySelector('button[type="button"]');
+        console.log(label_btn);
+        let list = this.parentNode.querySelector('input[type="text"][placeholder="list"]').value;
+        let item = this.parentNode.querySelector('input[type="text"][placeholder="item"]').value;
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        info.textContent = 'Select ' + item + ' for ' + list;
+        if (item.length > 3) {
+            label_btn.innerHTML = 'Input ' + item.substring(0, 3) + '...';
+        } else {
+            label_btn.innerHTML = 'Input '+ item;
+        }
+    });
+
+    //Show and hide user input
+    let showHideBtn = template.content.querySelector('.label-button button[type = "button"]');
+    showHideBtn.addEventListener('click', function () {
+        this.classList.toggle('down');
+        let user_input = this.parentNode.parentNode.querySelector('.user-input');
+        user_input.classList.toggle('nested');
+    });
+
+
+    showHideBtn.addEventListener('mouseover', function() {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (info.classList.contains('nested')) info.classList.remove('nested');
+    });
+
+    showHideBtn.addEventListener('mouseout', function () {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (!info.classList.contains('nested')) info.classList.add('nested');
+    });
+
+    console.log(element.parentNode.parentNode.parentNode.parentNode);
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentElement('beforeend', template.content.firstElementChild);
+
+}
+
+function createRadioChoice(element) {
+    let inputElement = `<li>
+                    <div class="action" type="radio">
+                        <div class="label-button">
+                            <input type="checkbox" name="select" onclick="selecting(this)">
+                            <button type="button" class="up">Choose ...   </button>
+                        </div>
+                        <span class="info nested">Choose ... for ...</span>
+                        <div class="user-input nested">
+                            Choose <input type="text" placeholder="choice"> for <input type="text" placeholder="question">
+                            <button type="button">Update</button>
+                        </div>
+                    </div>
+                </li>`;
+
+    let template = document.createElement('template');
+    template.innerHTML = inputElement;
+
+    //Update from user input function
+    template.content.querySelector('.user-input button[type = "button"]').addEventListener('click', function () {
+        console.log(this);
+        let label_btn = this.parentNode.parentNode.querySelector('.label-button').querySelector('button[type="button"]');
+        console.log(label_btn);
+        let question = this.parentNode.querySelector('input[type="text"][placeholder="question"]').value;
+        let choice = this.parentNode.querySelector('input[type="text"][placeholder="choice"]').value;
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        info.textContent = 'Choose ' + choice + ' for ' + question;
+        if (choice.length > 3) {
+            label_btn.innerHTML = 'Choose ' + choice.substring(0, 3) + '...';
+        } else {
+            label_btn.innerHTML = 'Choose '+ choice;
+        }
+    });
+
+
+    //Show and hide user input
+    let showHideBtn = template.content.querySelector('.label-button button[type = "button"]');
+    showHideBtn.addEventListener('click', function () {
+        this.classList.toggle('down');
+        let user_input = this.parentNode.parentNode.querySelector('.user-input');
+        user_input.classList.toggle('nested');
+    });
+
+
+    showHideBtn.addEventListener('mouseover', function() {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (info.classList.contains('nested')) info.classList.remove('nested');
+    });
+
+    showHideBtn.addEventListener('mouseout', function () {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (!info.classList.contains('nested')) info.classList.add('nested');
+    });
+
+
+    console.log(element.parentNode.parentNode.parentNode.parentNode);
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentElement('beforeend', template.content.firstElementChild);
+}
+
+function createCheckbox(element) {
+    let checkboxElement = `<li>
+                    <div class="action" type="checkbox">
+                        <div class="label-button">
+                            <input type="checkbox" name="select" onclick="selecting(this)">
+                            <button type="button" class="up">Select ...   </button>
+                        </div>
+                        <span class="info nested">Select ... for ...</span>
+                        <div class="user-input nested">
+                            Select <input type="text" placeholder="label"> for <input type="text" placeholder="question">
+                            <button type="button">Update</button>
+                        </div>
+                    </div>
+                </li>`;
+
+    let template = document.createElement('template');
+    template.innerHTML = checkboxElement;
+
+    //Update from user input function
+    template.content.querySelector('.user-input button[type = "button"]').addEventListener('click', function () {
+        console.log(this);
+        let label_btn = this.parentNode.parentNode.querySelector('.label-button').querySelector('button[type="button"]');
+        console.log(label_btn);
+        let question = this.parentNode.querySelector('input[type="text"][placeholder="question"]').value;
+        let label = this.parentNode.querySelector('input[type="text"][placeholder="label"]').value;
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        info.textContent = 'Select ' + label + ' for ' + question;
+        if (label.length > 3) {
+            label_btn.innerHTML = 'Select ' + label.substring(0, 3) + '...';
+        } else {
+            label_btn.innerHTML = 'Select '+ label;
+        }
+    });
+
+
+    //Show and hide user input
+    let showHideBtn = template.content.querySelector('.label-button button[type = "button"]');
+    showHideBtn.addEventListener('click', function () {
+        this.classList.toggle('down');
+        let user_input = this.parentNode.parentNode.querySelector('.user-input');
+        user_input.classList.toggle('nested');
+    });
+
+
+    showHideBtn.addEventListener('mouseover', function() {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (info.classList.contains('nested')) info.classList.remove('nested');
+    });
+
+    showHideBtn.addEventListener('mouseout', function () {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (!info.classList.contains('nested')) info.classList.add('nested');
+    });
+
+
+    console.log(element.parentNode.parentNode.parentNode.parentNode);
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentElement('beforeend', template.content.firstElementChild);
+}
+
+function createAcceptPopUp(element) {
+    let accept = `<li>
+                    <div class="action" type="accept-popup">
+                    <span class="label-button">
+                            <input type="checkbox" name="select" onclick="selecting(this)">
+                        </span>
+                        Accept alert
+                    </div>
+                </li>`;
+    let template = document.createElement('template');
+    template.innerHTML = accept;
+
+    console.log(element.parentNode.parentNode.parentNode.parentNode);
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentElement('beforeend', template.content.firstElementChild);
+}
+
+function createCancelPopUp(element) {
+    let cancel = `<li>
+                    <div class="action" type="cancel-popup">
+                    <span class="label-button">
+                            <input type="checkbox" name="select" onclick="selecting(this)">
+                        </span>
+                        Cancel alert
+                    </div>
+                </li>`;
+    let template = document.createElement('template');
+    template.innerHTML = cancel;
+
+    console.log(element.parentNode.parentNode.parentNode.parentNode);
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentElement('beforeend', template.content.firstElementChild);
+}
+
+function createInputToPopUp(element) {
+    let inputElement = `<li>
+                    <div class="action" type="input-popup">
+                        <div class="label-button">
+                            <input type="checkbox" name="select" onclick="selecting(this)">
+                            <button type="button" class="up">Input popup ... </button>
+                        </div>
+                        <span class="info nested">Input popup ...</span>
+                        <div class="user-input nested">
+                            Input <input type="text" placeholder="text"> to popup
+                            <button type="button">Update</button>
+                        </div>
+                    </div>
+                </li>`;
+
+    let template = document.createElement('template');
+    template.innerHTML = inputElement;
+
+    //Update from user input function
+    template.content.querySelector('.user-input button[type = "button"]').addEventListener('click', function () {
+        console.log(this);
+        let label_btn = this.parentNode.parentNode.querySelector('.label-button').querySelector('button[type="button"]');
+        console.log(label_btn);
+        let text = this.parentNode.querySelector('input[type="text"][placeholder="text"]').value;
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        info.textContent = 'Input ' + text + 'to popup';
+        if (text.length > 3) {
+            label_btn.innerHTML = 'Input popup...';
+        } else {
+            label_btn.innerHTML = 'Input popup...';
+        }
+    });
+
+
+    //Show and hide user input
+    let showHideBtn = template.content.querySelector('.label-button button[type = "button"]');
+    showHideBtn.addEventListener('click', function () {
+        this.classList.toggle('down');
+        let user_input = this.parentNode.parentNode.querySelector('.user-input');
+        user_input.classList.toggle('nested');
+    });
+
+
+    showHideBtn.addEventListener('mouseover', function() {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (info.classList.contains('nested')) info.classList.remove('nested');
+    });
+
+    showHideBtn.addEventListener('mouseout', function () {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (!info.classList.contains('nested')) info.classList.add('nested');
+    });
+
+
+    console.log(element.parentNode.parentNode.parentNode.parentNode);
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentElement('beforeend', template.content.firstElementChild);
 }
 
 function createInputText(element) {
-    let clickElement = `<div class="action" type="input">
-    
-    <input type="checkbox" name="select" onclick="selecting(this)">
-    Input
-    <input type="text"  placeholder="text">
-    to
-    <input type="text" placeholder="locator">
-</div>`;
-    console.log(element.parentNode.parentNode.parentNode);
-    let lastElement = element.parentNode.parentNode.parentNode;
-    lastElement.insertAdjacentHTML('beforebegin', clickElement);
+    let inputElement = `<li>
+                    <div class="action" type="input-text">
+                        <div class="label-button">
+                            <input type="checkbox" name="select" onclick="selecting(this)">
+                            <button type="button" class="up">Input ...   </button>
+                        </div>
+                        <span class="info nested">Input ... to ...</span>
+                        <div class="user-input nested">
+                            Input <input type="text" placeholder="text"> to <input type="text" placeholder="locator">
+                            <button type="button">Update</button>
+                        </div>
+                    </div>
+                </li>`;
+
+    let template = document.createElement('template');
+    template.innerHTML = inputElement;
+
+    //Update from user input function
+    template.content.querySelector('.user-input button[type = "button"]').addEventListener('click', function () {
+        console.log(this);
+        let label_btn = this.parentNode.parentNode.querySelector('.label-button').querySelector('button[type="button"]');
+        console.log(label_btn);
+        let locator = this.parentNode.querySelector('input[type="text"][placeholder="locator"]').value;
+        let text = this.parentNode.querySelector('input[type="text"][placeholder="text"]').value;
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        info.textContent = 'Input ' + text + ' to ' + locator;
+        if (text.length > 3) {
+            label_btn.innerHTML = 'Input ' + locator.substring(0, 3) + '...';
+        } else {
+            label_btn.innerHTML = 'Input '+ locator;
+        }
+    });
+
+
+    //Show and hide user input
+    let showHideBtn = template.content.querySelector('.label-button button[type = "button"]');
+    showHideBtn.addEventListener('click', function () {
+        this.classList.toggle('down');
+        let user_input = this.parentNode.parentNode.querySelector('.user-input');
+        user_input.classList.toggle('nested');
+    });
+
+
+    showHideBtn.addEventListener('mouseover', function() {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (info.classList.contains('nested')) info.classList.remove('nested');
+    });
+
+    showHideBtn.addEventListener('mouseout', function () {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (!info.classList.contains('nested')) info.classList.add('nested');
+    });
+
+
+    console.log(element.parentNode.parentNode.parentNode.parentNode);
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentElement('beforeend', template.content.firstElementChild);
 }
 
 function createCustom(element) {
-    let custom = `<div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Your custom input" aria-label="Your custom input" aria-describedby="basic-addon2">
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="button" onclick="parseInput(this)">To Action</button>
-    </div>
-  </div>`;
-    let lastElement = element.parentNode.parentNode.parentNode;
-    lastElement.insertAdjacentHTML('beforebegin', custom);
+    let custom = `<li>
+        <div class="custom-contatiner">
+                <input type="text" class="custom-intput-field" placeholder="Your custom action">
+                <button class="" type="button" id="" onclick="parseInput(this)">Create Action</button>
+        </div>
+    </li>`;
+
+
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentHTML('beforeend', custom);
 }
 
-function createAnd(element) {
-    let andElement = `<div class="action" type="and">
+function createOuterAnd(element) {
+    let andElement = `<li><div class = "action" type="and">
+
     <input type="checkbox" name="select" onclick="selecting(this)">
     <div class="btn-group dropend">
         <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
             aria-expanded="false">
-            Add action to And
+            Combined actions
         </button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
             <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
             <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
             <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+            <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
+            <li><a class="dropdown-item" onclick="createSelectList(this)">Select List</a></li>
             </ul>
     </div>
-</div>`;
-    let lastElement = element.parentNode.parentNode.parentNode;
+    <ol class="actions nested active">
+
+                </ol>
+</div>
+</li>
+`;
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
     console.log(element.type);
-    lastElement.insertAdjacentHTML('beforebegin', andElement);
+    list.insertAdjacentHTML('beforeend', andElement);
 }
+function createAnd(element) {
+    let andElement = `<li><div class = "action" type="and">
 
-function createOr(element) {
-    let orElement = `<div class="action" type="or">
     <input type="checkbox" name="select" onclick="selecting(this)">
+    <span class="caret" onclick="showAndHide(this)"></span>
     <div class="btn-group dropend">
         <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
             aria-expanded="false">
-            Add action to Or
+            Combined actions
         </button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
             <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
             <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
             <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+            <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
+            <li><a class="dropdown-item" onclick="createSelectList(this)">Select List</a></li>
             </ul>
     </div>
-</div>`;
-    let lastElement = element.parentNode.parentNode.parentNode;
-    lastElement.insertAdjacentHTML('beforebegin', orElement);
+    <ol class="actions nested">
+
+                </ol>
+</div>
+</li>
+`;
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    console.log(element.type);
+    list.insertAdjacentHTML('beforeend', andElement);
+}
+function createOuterOr(element) {
+    let orElement = `<li><div class = "action" type="or">
+
+    <input type="checkbox" name="select" onclick="selecting(this)">
+    <div class="btn-group dropend">
+        <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Combined actions
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
+            <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
+            <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
+            <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+            <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
+            <li><a class="dropdown-item" onclick="createSelectList(this)">Select List</a></li>
+            </ul>
+    </div>
+    <ol class="actions nested active">
+
+                </ol>
+</div>
+</li>
+`;
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentHTML('beforeend', orElement);
+}
+function createOr(element) {
+    let orElement = `<li><div class = "action" type="or">
+
+    <input type="checkbox" name="select" onclick="selecting(this)">
+    <span class="caret" onclick="showAndHide(this)"></span>
+    <div class="btn-group dropend">
+        <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Combined actions
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
+            <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
+            <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
+            <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+            <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
+            <li><a class="dropdown-item" onclick="createSelectList(this)">Select List</a></li>
+            </ul>
+    </div>
+    <ol class="actions nested">
+
+                </ol>
+</div>
+</li>
+`;
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentHTML('beforeend', orElement);
 }
 
 function parseResponse(element) {
@@ -140,11 +601,38 @@ function parse(element) {
     <type>Click Element</type>
     <locator>${element.querySelector("[placeholder = 'locator']").value}</locator>        
     </LogicOfActions>`;
-    else if (element.getAttribute('type') === 'click') {
+    else if (element.getAttribute('type') === 'input-text') {
         return `<LogicOfActions>
             <type>Input Text</type>
              <locator>${element.querySelector("input[placeholder = 'locator']").value}</locator>       
              <text>${element.querySelector("input[placeholder = 'text']").value}</text> 
+            </LogicOfActions>`;
+    } else if (element.getAttribute('type') === 'input-popup'){
+        return `<LogicOfActions>
+            <type>Input to popup</type>     
+             <text>${element.querySelector("input[placeholder = 'text']").value}</text> 
+            </LogicOfActions>`;
+    } else if (element.getAttribute('type') === 'accept-popup') {
+        return `<LogicOfActions>
+            <type>Accept popup</type>     
+            </LogicOfActions>`;
+    } else if (element.getAttribute('type') === 'cancel-popup') {
+        return `<LogicOfActions>
+            <type>Cancel popup</type>     
+            </LogicOfActions>`;
+    }
+    else if (element.getAttribute('type') === 'select-list') {
+        return `<LogicOfActions>
+            <type>Select List</type>
+             <list>${element.querySelector("input[placeholder = 'item']").value}</list>       
+             <value>${element.querySelector("input[placeholder = 'list']").value}</value> 
+            </LogicOfActions>`;
+    }
+    else if (element.getAttribute('type') === 'radio') {
+        return `<LogicOfActions>
+            <type>Radio Button</type>
+             <choice>${element.querySelector("input[placeholder = 'choice']").value}</choice>       
+             <question>${element.querySelector("input[placeholder = 'question']").value}</question> 
             </LogicOfActions>`;
     }
     else if (element.getAttribute('type') === 'and') {
@@ -189,6 +677,7 @@ function createTestTemplate() {
         xml = xml.concat(`<Scenario>${element.querySelector('.test-case-name').value}</Scenario>`)
         let actions = element.querySelectorAll('.actions .action');
         actions.forEach((action) => {
+            console.log(action);
             xml = xml.concat(parse(action));
         });
         let responses = element.querySelectorAll('.response');
@@ -199,35 +688,27 @@ function createTestTemplate() {
     });
     xml = xml.concat('</TestSuite>');
     xml = formatXml(xml, "\t");
+    // let xhr = new XMLHttpRequest();
+    // xhr.open("POST", "http://localhost:8080/testtemplate");
+    // xhr.setRequestHeader("Accept", "application/json");
+    // xhr.setRequestHeader("Content-Type", "application/json");
+    //
+    // xhr.onload = () => console.log(xhr.responseText);
+    //
+    // let data = {
+    //     "template" : JSON.stringify(xml),
+    // }
+    // xhr.send(data);
     console.log(xml);
 }
 
 function selecting(element) {
-    //checked status === false mean before click, the check box checked status is true.
-    if (element.checked === false) {
-        element.checked = false;
+    if (element.parentNode.classList.contains('selected')) {
         element.parentNode.classList.remove('selected');
-        let children = element.parentNode.querySelectorAll('.action,.response');
-        children.forEach(function (item) {
-            let checkbox = item.querySelector("[type = 'checkbox']");
-            if (checkbox.checked === true) {
-                checkbox.checked = false;
-                item.classList.remove('selected');
-            }
-        });
     } else {
-        element.checked = true;
-        element.parentNode.classList.add('selected');
-        let children = element.parentNode.querySelectorAll('.action,.response');
-        children.forEach(function (item) {
-            let checkbox = item.querySelector("[type = 'checkbox']");
-            if (checkbox.checked === false) {
-                checkbox.checked = true;
-                item.classList.add('selected');
-            }
-        });
+        element.parentNode.classList.add("selected");
     }
-    
+
 }
 
 function formatXml(xml, tab) { // tab = optional indent value, default is tab (\t)
@@ -244,6 +725,10 @@ function formatXml(xml, tab) { // tab = optional indent value, default is tab (\
 function deleteSelected() {
     let selectedActions = document.querySelectorAll('.selected');
     selectedActions.forEach(function (action) {
+        while (action.tagName !== "LI") {
+            console.log(action.tagName);
+            action = action.parentElement;
+        }
         action.remove();
     });
 }
@@ -255,19 +740,27 @@ function createClickToLogic(element) {
     <input type="text" placeholder="locator" value="">
 </div>
 </li>`;
-    console.log(element.parentNode.parentNode.parentNode.parentNode);
-    let ulist = element.parentNode.parentNode.parentNode.parentNode.querySelector('.nested');
-    console.log(ulist);
+    console.log(element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions'));
+    console.log("hello")
+    let actionList = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    console.log(actionList);
     // lastElement.insertAdjacentHTML('beforebegin', clickElement);
     ulist.insertAdjacentHTML('beforeend', clickElement);
 }
 
-let toggler = document.getElementsByClassName("caret");
+
+function showAndHide(element) {
+    element.parentElement.querySelector('.nested').classList.toggle("active");
+    element.classList.toggle("caret-down");
+}
+
+let toggler = document.querySelectorAll('.caret');
 let i = 0;
+
 
 for (i = 0; i < toggler.length; i++) {
     toggler[i].addEventListener("click", function() {
-        this.parentElement.querySelector(".nested").classList.toggle("active");
-        this.classList.toggle("caret-down");
+        console.log(this);
+
     });
 }

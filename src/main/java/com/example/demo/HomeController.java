@@ -1,6 +1,8 @@
 package com.example.demo;
 
+import com.bpodgursky.jbool_expressions.And;
 import com.bpodgursky.jbool_expressions.Expression;
+import com.bpodgursky.jbool_expressions.Or;
 import com.bpodgursky.jbool_expressions.Variable;
 import com.bpodgursky.jbool_expressions.parsers.ExprParser;
 import com.bpodgursky.jbool_expressions.rules.RuleSet;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,20 +76,60 @@ public class HomeController {
         str.append(")");
         return str.toString();
     }
+
+    public static String preprocess(String expr) {
+        StringBuilder str = new StringBuilder(expr);
+        String modified = expr.replaceAll("[)(]", " ").trim();
+        return modified;
+    }
+
+    public static Expression postProcessing(Expression input, String[] arr) {
+        if (input.getExprType().equals("variable")) {
+            int index = Integer.parseInt(input.toString());
+            Expression newExpr = Variable.of(arr[index]);
+            return newExpr;
+        } else {
+            List<Expression<String>> children = input.getChildren();
+            List<Expression<String>> newChildren = new ArrayList<>();
+            for (Expression expression: children) {
+                newChildren.add(postProcessing(expression, arr));
+            }
+            System.out.println(newChildren);
+            if (input.getExprType().equals("and")) return And.of(newChildren);
+            else if (input.getExprType().equals("or")) return Or.of(newChildren);
+            return null;
+        }
+    }
     @PostMapping("/parse")
     @ResponseBody
-    public ResponseEntity<Expression>  parse(@RequestBody Map<String, String> data) {
+    public ResponseEntity<List<Expression>>  parse(@RequestBody Map<String, String> data) {
         try {
-            String expr = data.get("expr").toString();
-            System.out.println(expr);
-            Expression e = ExprParser.parse(expr);
-            System.out.println(RuleSet.toDNF(e));
-            System.out.println(e.getExprType());
-            System.out.println(expressionToJSON(e));
-            return new ResponseEntity<>(e, HttpStatus.OK);
+            String input = data.get("expr");
+            String[] exprList = input.split(",");
+            List<Expression> list = new ArrayList<>();
+            for (String action : exprList) {
+                StringBuilder expr = new StringBuilder(action.trim());
+                Map<String, Integer> map = new HashMap<>();
+                String[] arr = expr.toString().split("[&|]");
+
+                for (int i = 0; i < arr.length; i++) {
+                    arr[i] = preprocess(arr[i]);
+                    if (!map.containsKey(arr[i])) map.put(arr[i], i);
+                    int start= expr.indexOf(arr[i]);
+                    int end = start + arr[i].length();
+                    expr.replace(start, end, map.get(arr[i]).toString());
+                }
+                Expression e = ExprParser.parse(expr.toString());
+                Expression newExpression = postProcessing(e, arr);
+                System.out.println(newExpression);
+                list.add(newExpression);
+            }
+
+
+            return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return handleParseException(e);
+            return null;
         }
     }
 

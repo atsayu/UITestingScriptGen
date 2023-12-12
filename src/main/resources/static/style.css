@@ -1,8 +1,10 @@
-body {
-    margin: 5px;
-    padding: 5px;
+/*body {*/
+/*    margin: 5px;*/
+/*    padding: 5px;*/
 
-}
+/*}*/
+
+
 
 .testsuite {
     border-width: 1px;
@@ -32,15 +34,17 @@ body {
     padding-top: 5px;
 }
 
-#add-action-btn {
+.root-btn {
     display: block;
-    margin: 5px
 }
 
 .btn {
     margin: 5px;
 }
 
+button.up {
+    margin: 5px;
+}
 [type=and],
 [type=or] {
     /* display: inline-block; */
@@ -80,10 +84,46 @@ ul {
     display: block;
 }
 
+/*.action {*/
+/*    display: inline-block;*/
+/*}*/
 
+/*[type=and],[type = or] .action {*/
+/*    display: block;*/
+/*}*/
 
-[type=and] .action {
+ol.actions.outter > li > div.action > ol.nested.active.actions > li{
     display: inline-block;
+    vertical-align: top;
+
+}
+
+ol.actions.outter > li > div.action > ol.nested.active.actions > li > div:first-child{
+    display: inline-block;
+
+}
+
+/*ol.actions.outter > li > div.action > ol.nested.active.actions .action {*/
+/*    display: inline-block;*/
+/*}*/
+
+ol.actions.outter > li > div.action[type = and] > ol.nested.active.actions > li:not(:first-child)::before {
+    content: "&";
+    vertical-align: top;
+    transform: translateY(20%);
+    display: inline-block;
+}
+
+
+ol.actions.outter > li > div.action[type = or] > ol.nested.active.actions > li:not(:first-child)::before {
+    content: "|";
+    vertical-align: top;
+    transform: translateY(20%);
+    display: inline-block;
+}
+
+ol > li {
+    margin-left: 10px;
 }
 
 /* [type = and] >:nth-child(2)::before, [type = or] >:nth-child(2)::before {
@@ -94,15 +134,119 @@ ul {
     content: ")";
 } */
 
-/* [type = and] .action:not(:nth-last-child(2))::after{
-    content: " & ";
+
+
+ol {
+    counter-reset: item;
 }
 
-[type = or] .action:not(:nth-last-child(2))::after{
-    content: " | ";
-} */
+/*ol > li > div > div > button{*/
+/*    */
+/*}*/
 
+ol > li > div.action > div.dropend > button.dropdown-toggle::after{
 
-/* .and .action:last-of-type{
+    content: counters(item, ".") " ";
+    counter-increment: item;
+    border: none;
+}
+
+[type = and] > ol > li {
+    margin-left: 40px;
+}
+
+[type = and] > ol > li:first-child::marker{
     content: "";
-} */
+}
+
+[type = or] > ol > li:first-child::marker{
+    content: "";
+}
+
+[type = and] > ol > li:not(:first-child)::marker{
+    /*content: "&   " counters(item, ".") " ";*/
+    content: "&   ";
+}
+
+[type = or] > ol > li:not(:first-child)::marker{
+    /*content: "|   " counters(item, ".") " ";*/
+    content: "|   ";
+}
+
+.up::after {
+    content: "\25B7";
+}
+
+.down::after {
+    content: "\25BD";
+}
+
+button {
+    border: 1px solid grey;
+}
+
+li::marker {
+    vertical-align: top;
+}
+
+.action {
+    position: relative;
+}
+
+.action .info {
+    position: absolute;
+    border-radius: 5px;
+    background-color: khaki;
+    text-align: center;
+    text-indent: 0px;
+    padding: 5px;
+    width: 150%;
+    transform: translate(60%, -100%);
+}
+.btn-group.dropend{
+    margin: 0px;
+}
+
+.dropdown {
+    position: relative;
+}
+.dropdown-content{
+    border-radius: 5px;
+    float: right;
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-btn {
+    background-color: #6c757d;
+    color: white;
+    border-radius: 5px;
+    display: inline-block;
+    width: fit-content;
+
+}
+
+.dropdown-content a{
+    color: black;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content{
+    display: inline-block;
+}
+
+
+
+/*.action .info {*/
+/*    display: none;*/
+/*}*/
+
+/*.action:hover .info {*/
+/*   display: inline;*/
+/*}*/

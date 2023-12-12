@@ -1,47 +1,103 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="customAction.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
-    <div class="testsuite">
-        <div id="url-container">
-            <span class="keyword">On: </span>
-            <input type="text" id="url">
-        </div>
-        <div class="valids">
-            <div class="keyword">Valid:</div>
-            <button class="btn btn-secondary btn-sm" onclick="createTestCase(this)">New Test Case</button>
-        </div>
-        
-        <div class="invalids">
-            <div class="keyword">Invalid:</div>
-            <div>
-                <button class="btn btn-secondary btn-sm">New Test Case</button>
+<div class="testsuite">
+    <div id="url-container">
+        <span class="keyword">On: </span>
+        <input type="text" id="url">
+    </div>
+    <div class="valids">
+        <div class="keyword">Valid:</div>
+        <div class="testcase">
+            <input type="checkbox" name="select" onclick="selecting(this)">
+            <span class="keyword">Scenario</span>
+            <input type="text" placeholder="Test case name" class="test-case-name">
+            <div class="btn-group dropend root-btn" id="add-action-btn">
+                <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Add Action
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" onclick="createOuterAnd(this)">And</a></li>
+                    <li><a class="dropdown-item" onclick="createOuterOr(this)">Or</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li>
+                    <li><a class="dropdown-item" onclick="createCustom(this)">Custom</a></li>
+
+
+                </ul>
             </div>
-        </div>
+            <div class="keyword">
+                Do:
+            </div>
+
+            <!--            <ol class="actions outter">-->
+
+            <!--            </ol>-->
+
+            <ol class="actions outter">
+
+            </ol>
+
+            <div class="keyword">
+                Response:
+            </div>
+            <div class="btn-group dropend" id="add-response-btn">
+                <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Add Expected Response
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" onclick="createURLResponse(this)">URL Response</a></li>
+                </ul>
+            </div>
+            <div class="response-container">
+            </div>
+        </div>`
+        <button class="btn btn-secondary btn-sm" onclick="createTestCase(this)">New Test Case</button>
     </div>
 
 
+
+</div>
+
+<div class="invalids">
+    <div class="keyword">Invalid:</div>
     <div>
-        <button class="btn btn-secondary btn-sm" onclick="createTestTemplate()">Create XML</button>
+        <button class="btn btn-secondary btn-sm">New Test Case</button>
     </div>
-    <div>
-        <button class="btn btn-secondary btn-sm" onclick="deleteSelected()">Delete Selected action</button>
-    </div>
-    <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+</div>
+</div>
+
+
+<div>
+    <button class="btn btn-secondary btn-sm" onclick="createTestTemplate()">Create XML</button>
+</div>
+<div>
+    <button class="btn btn-secondary btn-sm" onclick="deleteSelected()">Delete Selected action</button>
+</div>
+<script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
-    <script src="customInput.js"></script>
+<script src="customInput.js"></script>
 
 </body>
 

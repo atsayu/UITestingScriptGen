@@ -4,9 +4,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @SpringBootApplication
 @RestController
@@ -17,5 +17,12 @@ public class DemoApplication {
     @GetMapping("/hello")
     public ResponseEntity<String> hello(@RequestParam(value = "name", defaultValue = "World") String name) {
         return new ResponseEntity<>("Ok", HttpStatus.OK);
+    }
+
+    @PostMapping("/testtemplate")
+    public ResponseEntity<String> testtemplate(@RequestBody Map<String, String> data) {
+        String xml = data.get("template");
+
+        return new ResponseEntity<String>("OK", HttpStatus.OK);
     }
 }
