@@ -610,59 +610,59 @@ function parseResponse(element) {
 
 function parse(element) {
     // console.log(element.querySelector("input").value);
-    if (element.getAttribute('type') === 'click') return `<LogicOfActions>
+    if (element.getAttribute('type') === 'click') return `<LogicExpressionOfActions>
     <type>Click Element</type>
     <locator>${element.querySelector("[placeholder = 'locator']").value}</locator>        
-    </LogicOfActions>`;
+    </LogicExpressionOfActions>`;
     else if (element.getAttribute('type') === 'input-text') {
-        return `<LogicOfActions>
+        return `<LogicExpressionOfActions>
             <type>Input Text</type>
              <locator>${element.querySelector("input[placeholder = 'locator']").value}</locator>       
              <text>${element.querySelector("input[placeholder = 'text']").value}</text> 
-            </LogicOfActions>`;
+            </LogicExpressionOfActions>`;
     } else if (element.getAttribute('type') === 'input-popup'){
-        return `<LogicOfActions>
+        return `<LogicExpressionOfActions>
             <type>Input to popup</type>     
              <text>${element.querySelector("input[placeholder = 'text']").value}</text> 
-            </LogicOfActions>`;
+            </LogicExpressionOfActions>`;
     } else if (element.getAttribute('type') === 'accept-popup') {
-        return `<LogicOfActions>
+        return `<LogicExpressionOfActions>
             <type>Accept popup</type>     
-            </LogicOfActions>`;
+            </LogicExpressionOfActions>`;
     } else if (element.getAttribute('type') === 'cancel-popup') {
-        return `<LogicOfActions>
+            return `<LogicExpressionOfActions>
             <type>Cancel popup</type>     
-            </LogicOfActions>`;
+            </LogicExpressionOfActions>`;
     }
     else if (element.getAttribute('type') === 'select-list') {
-        return `<LogicOfActions>
+        return `<LogicExpressionOfActions>
             <type>Select List</type>
              <list>${element.querySelector("input[placeholder = 'item']").value}</list>       
              <value>${element.querySelector("input[placeholder = 'list']").value}</value> 
-            </LogicOfActions>`;
+            </LogicExpressionOfActions>`;
     }
     else if (element.getAttribute('type') === 'radio') {
-        return `<LogicOfActions>
+        return `<LogicExpressionOfActions>
             <type>Radio Button</type>
              <choice>${element.querySelector("input[placeholder = 'choice']").value}</choice>       
              <question>${element.querySelector("input[placeholder = 'question']").value}</question> 
-            </LogicOfActions>`;
+            </LogicExpressionOfActions>`;
     }
     else if (element.getAttribute('type') === 'and') {
-        let xml = `<LogicofActions><type>and</type>`;
+        let xml = `<LogicExpressionOfActions><type>and</type>`;
         let actions = element.querySelectorAll('.action');
         for (let i = 0; i < actions.length; i++) {
             xml = xml.concat(parse(actions[i]));
         }
-        xml = xml.concat(`</LogicofActions>`);
+        xml = xml.concat(`</LogicExpressionOfActions>`);
         return xml;
     } else if (element.getAttribute('type') === 'or') {
-        let xml = `<LogicofActions><type>or</type>`;
+        let xml = `<LogicExpressionOfActions><type>or</type>`;
         let actions = element.querySelectorAll('.action');
         for (let i = 0; i < actions.length; i++) {
             xml = xml.concat(parse(actions[i]));
         }
-        xml = xml.concat(`</LogicofActions>`);
+        xml = xml.concat(`</LogicExpressionOfActions>`);
         return xml;
     }
 
@@ -686,14 +686,20 @@ function createTestTemplate() {
     let url = document.querySelector('#url');
     xml = xml.concat(`<url>${url.value}</url>`);
     let validTestCase = document.querySelectorAll('.valids .testcase');
+    console.log(validTestCase.length);
     validTestCase.forEach((element) => {
         xml = xml.concat('<TestCase>');
         xml = xml.concat(`<Scenario>${element.querySelector('.test-case-name').value}</Scenario>`)
-        let actions = element.querySelectorAll('.actions .action');
-        actions.forEach((action) => {
-            console.log(action);
-            xml = xml.concat(parse(action));
+        let children = element.querySelector('.actions').children;
+        Array.from(children).forEach(function (child) {
+            console.log(child);
+           xml = xml.concat(parse(child.firstElementChild));
         });
+        // let actions = element.querySelectorAll('.actions .action');
+        // actions.forEach((action) => {
+        //     console.log(action);
+        //     xml = xml.concat(parse(action));
+        // });
         let responses = element.querySelectorAll('.response');
         responses.forEach(function (response) {
             xml = xml.concat(parseResponse(response));
@@ -703,21 +709,21 @@ function createTestTemplate() {
     xml = xml.concat('</TestSuite>');
     xml = formatXml(xml, "\t");
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", "/testtemplate");
+    xhr.open("POST", "/testtemplate");
     // xhr.setRequestHeader("Accept", "application/json");
-    // xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
     let data = {
-        "template" : JSON.stringify(xml),
+        "template" : xml,
     }
     xhr.onload = () => {
-        if (xhr.readyState === 4 && xhr.status === 201) {
-            console.log(JSON.parse(xhr.responseText));
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            window.location.href = '/test.html';
         } else {
             console.log(`Error: ${xhr.status}`);
         }
     };
 
-    xhr.send(data);
+    xhr.send(JSON.stringify(data));
     console.log(xml);
 }
 

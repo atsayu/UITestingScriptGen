@@ -19,10 +19,10 @@ public class DemoApplication {
         return new ResponseEntity<>("Ok", HttpStatus.OK);
     }
 
-    @PostMapping("/testtemplate")
-    public ResponseEntity<String> testtemplate(@RequestBody Map<String, String> data) {
-        String xml = data.get("template");
-
-        return new ResponseEntity<String>("OK", HttpStatus.OK);
-    }
+    //    @GetMapping("/testtemplate")
+//    public ResponseEntity<String> testtemplate(@RequestBody Map<String, String> data) {
+////        String xml = data.get("template");
+////        System.out.println(xml) ;
+//        return new ResponseEntity<String>("OK", HttpStatus.OK);
+//    }
 }

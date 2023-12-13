@@ -5,16 +5,24 @@ import com.bpodgursky.jbool_expressions.Expression;
 import com.bpodgursky.jbool_expressions.Or;
 import com.bpodgursky.jbool_expressions.Variable;
 import com.bpodgursky.jbool_expressions.parsers.ExprParser;
-import com.bpodgursky.jbool_expressions.rules.RuleSet;
+import mockpage.newSolve;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import valid.ScriptGen;
 
-import javax.swing.text.html.HTML;
-import javax.swing.text.html.HTMLDocument;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -132,6 +140,94 @@ public class HomeController {
             return null;
         }
     }
+
+
+    @PostMapping("/testtemplate")
+    public ResponseEntity<String> template(@RequestBody Map<String, String> data) throws IOException, ParserConfigurationException, SAXException {
+        String xml = data.get("template");
+        System.out.println(xml);
+
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        InputStream inputStream = new ByteArrayInputStream(xml.getBytes());
+        Document document = builder.parse(inputStream);
+        Map<String, String> map = new HashMap<>();
+        String url = document.getElementsByTagName("url").item(0).getTextContent();
+        List<String> locators = new ArrayList<>();
+        locators.add(url);
+        NodeList actions = document.getElementsByTagName("LogicExpressionOfActions");
+        for (int i = 0; i < actions.getLength(); i++) {
+            if (actions.item(i).getNodeType() != Node.ELEMENT_NODE) continue;
+            Element action = (Element) actions.item(i);
+            String type = action.getElementsByTagName("type").item(0).getTextContent();
+            String locator = action.getElementsByTagName("locator").item(0).getTextContent();
+            if (!locators.contains(locator)) locators.add(locator);
+            if (type.equals("Input Text")) {
+                String text = action.getElementsByTagName("text").item(0).getTextContent();
+                if (!map.containsKey(locator)) map.put(locator, text);
+            }
+
+        }
+        String[] urlAndLocators = new String[locators.size()];
+        urlAndLocators   = locators.toArray(urlAndLocators);
+        System.out.println(urlAndLocators);
+        System.out.println(map);
+        newSolve.changDomAndCreateMockPage(urlAndLocators, map);
+
+
+        File template = new File ("src/main/resources/template/outline.xml");
+        if (template.createNewFile()) {
+            System.out.println("Created template file");
+        } else {
+            System.out.println("File existed");
+        }
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(template));
+        bufferedWriter.append(xml);
+        bufferedWriter.close();
+
+
+        return new ResponseEntity<>("Mocked the page", HttpStatus.OK);
+    }
+
+    @PostMapping("/createtest")
+    public ResponseEntity<String> createScript(@RequestBody Map<String, String> body) throws IOException {
+
+        ScriptGen.createDataSheetV2("src/main/resources/template/outline.xml", "src/main/resources/data/datasheet.csv");
+
+        String csvData = body.get("values");
+        File data = new File ("src/main/resources/data/data.csv");
+        if (data.createNewFile()) {
+            System.out.println("Created template file");
+        } else {
+            System.out.println("File existed");
+        }
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(data));
+        bufferedWriter.append(csvData);
+        bufferedWriter.close();
+
+        newSolve.fillInCSV("src/main/resources/data/datasheet.csv","src/main/resources/data/data.csv", newSolve.getDataFromCSV("src/main/resources/data/data.csv"));
+
+        ScriptGen.createScriptV2("src/main/resources/template/outline.xml", "src/main/resources/data/data.csv", "src/main/resources/templates/script.html");
+
+
+
+        return new ResponseEntity<>("Create Script", HttpStatus.OK);
+    }
+
+
+
+    @GetMapping("/test.html")
+    public String test() {
+        return "test";
+    }
+
+    @GetMapping("/script")
+    public String sendScript() {
+        return "script.html";
+    }
+
+
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

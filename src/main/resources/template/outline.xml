@@ -1,0 +1,10 @@
+<TestSuite>
+	<url>https://www.saucedemo.com/</url>
+	<TestCase>
+		<Scenario>login</Scenario>
+		<LogicExpressionOfActions>
+			<type>Click Element</type>
+			<locator>login_button</locator>
+		</LogicExpressionOfActions>
+	</TestCase>
+</TestSuite>
