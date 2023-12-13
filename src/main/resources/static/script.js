@@ -1,43 +1,56 @@
 function createTestCase(element) {
     let testcaseElement = `            <div class="testcase">
-    <input type="checkbox" name="select" onclick="selecting(this)">
-    <span class="keyword">Scenario</span>
-<input type="text" placeholder="Test case name" class="test-case-name">
-    <div class="keyword">
-        Do:
-    </div>
-    
-    <div class="actions">
-        <div class="btn-group dropend" id="add-action-btn">
-            <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                Add Action
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
-                <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
-                <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-                <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
-                <li><a class="dropdown-item" onclick="createCustom(this)">Custom</a></li>
-            </ul>
-        </div>
-    </div>
+            <input type="checkbox" name="select" onclick="selecting(this)">
+            <span class="keyword">Scenario</span>
+            <input type="text" placeholder="Test case name" class="test-case-name">
+            <div class="btn-group dropend root-btn" id="add-action-btn">
+                <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Add Action
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" onclick="createCustom(this)">Describe your actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOuterAnd(this)">And of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOuterOr(this)">Or of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li>
 
-    <div class="keyword">
-        Response:
-    </div>
-    <div class="btn-group dropend" id="add-response-btn">
-        <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Add Expected Response
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" onclick="createURLResponse(this)">URL Response</a></li>
-        </ul>
-    </div>
-    <div class="response-container">
-    </div>
-</div>`;
+
+                </ul>
+            </div>
+            <div class="keyword">
+                Do:
+            </div>
+
+
+            <ol class="actions outter">
+
+            </ol>
+
+            <div class="keyword">
+                Response:
+            </div>
+            <ol class="responses">
+
+            </ol>
+            <div class="btn-group dropend" id="add-response-btn">
+                <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Add Expected Response
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" onclick="createURLResponse(this)">URL Response</a></li>
+                </ul>
+            </div>
+<!--            <div class="response-container">-->
+<!--            </div>-->
+        </div>`;
     // element.parentNode.insertAdjacentHTML('beforeend',testcaseElement);
     element.insertAdjacentHTML('beforebegin', testcaseElement);
 }
@@ -656,14 +669,15 @@ function parse(element) {
 }
 
 function createURLResponse(element) {
-    let responseElement = `<div class="response" type="url">
+    let responseElement = `<li><div class="response" type="url">
     <input type="checkbox" name="select" onclick="selecting(this)">
     <span>Go to</span>
     <input type="text" placeholder="expected url">
-</div>`;
-    let addbtn = element.parentNode.parentNode.parentNode;
-    console.log(addbtn);
-    addbtn.insertAdjacentHTML('beforebegin', responseElement);
+</div>
+</li>`;
+    let responseList = element.parentNode.parentNode.parentNode.parentNode.querySelector('.responses');
+
+    responseList.insertAdjacentHTML('beforeend', responseElement);
 
 }
 
@@ -688,17 +702,22 @@ function createTestTemplate() {
     });
     xml = xml.concat('</TestSuite>');
     xml = formatXml(xml, "\t");
-    // let xhr = new XMLHttpRequest();
-    // xhr.open("POST", "http://localhost:8080/testtemplate");
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", "/testtemplate");
     // xhr.setRequestHeader("Accept", "application/json");
     // xhr.setRequestHeader("Content-Type", "application/json");
-    //
-    // xhr.onload = () => console.log(xhr.responseText);
-    //
-    // let data = {
-    //     "template" : JSON.stringify(xml),
-    // }
-    // xhr.send(data);
+    let data = {
+        "template" : JSON.stringify(xml),
+    }
+    xhr.onload = () => {
+        if (xhr.readyState === 4 && xhr.status === 201) {
+            console.log(JSON.parse(xhr.responseText));
+        } else {
+            console.log(`Error: ${xhr.status}`);
+        }
+    };
+
+    xhr.send(data);
     console.log(xml);
 }
 

@@ -229,10 +229,17 @@ function jsonToElement(json, layer) {
             Combined actions
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
-            <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
-            <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-            <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+            <li><a class="dropdown-item" onclick="createCustom(this)">Describe your actions</a></li>
+                    <li><a class="dropdown-item" onclick="createAnd(this)">And of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOr(this)">Or of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li>
             </ul>
     </div>
     <ol class="actions nested active">
@@ -249,10 +256,17 @@ function jsonToElement(json, layer) {
             Combined actions
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
-            <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
-            <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-            <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+            <li><a class="dropdown-item" onclick="createCustom(this)">Describe your actions</a></li>
+                    <li><a class="dropdown-item" onclick="createAnd(this)">And of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOr(this)">Or of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li>
             </ul>
     </div>
     <ol class="actions nested active">
@@ -277,10 +291,17 @@ function jsonToElement(json, layer) {
             Combined actions
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
-            <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
-            <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-            <li><a class="dropdown-item" onclick    ="createInputText(this)">InputText</a></li>
+            <li><a class="dropdown-item" onclick="createCustom(this)">Describe your actions</a></li>
+                    <li><a class="dropdown-item" onclick="createAnd(this)">And of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOr(this)">Or of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li>
             </ul>
     </div>
     <ol class="actions nested active">`;
@@ -299,10 +320,17 @@ function jsonToElement(json, layer) {
             Combined actions
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
-            <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
-            <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-            <li><a class="dropdown-item" onclick    ="createInputText(this)">InputText</a></li>
+            <li><a class="dropdown-item" onclick="createCustom(this)">Describe your actions</a></li>
+                    <li><a class="dropdown-item" onclick="createAnd(this)">And of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOr(this)">Or of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li> 
             </ul>
     </div>
     <ol class="actions nested active">`;
