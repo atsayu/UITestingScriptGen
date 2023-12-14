@@ -1,9 +1,9 @@
 package invalid;
 
-import com.invalid.strategies.Context;
-import com.objects.ClickElement;
-import com.objects.InputText;
 import com.opencsv.CSVReader;
+import invalid.strategies.Context;
+import objects.ClickElement;
+import objects.InputText;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -18,9 +18,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-import static com.invalid.FileWriteModule.writeStringsToFile;
-import static com.invalid.InvalidTestGen.invalidTestCaseGen;
-import static com.invalid.PythonTruthTableServer.logicParse;
+import static invalid.FileWriteModule.writeStringsToFile;
+import static invalid.InvalidTestGen.invalidTestCaseGen;
+import static invalid.PythonTruthTableServer.logicParse;
+
 
 public class DataPreprocessing {
     public static Dictionary<String, Vector<Vector<String>>> lineDict = new Hashtable<>();
@@ -32,7 +33,7 @@ public class DataPreprocessing {
     static Map<String, List<String>> dataMap = new HashMap<>();
 
     public static void main(String[] args) {
-        initInvalidDataParse("src/main/resources/data_thinktester.csv", "src/main/resources/outline_demoqa1.xml", "src/main/resources/final_test.robot");
+        initInvalidDataParse("src/main/resources/data/data_thinktester.csv", "src/main/resources/template/outline_demoqa1.xml", "src/main/resources/robot_test_file/final_test.robot");
     }
 
     public static void initInvalidDataParse(String csvPath, String xmlPath, String robotPath) {

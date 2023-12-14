@@ -1,9 +1,9 @@
 package invalid.strategies;
 
 
-import com.objects.ClickElement;
+import objects.ClickElement;
 
-import static com.invalid.DataPreprocessing.clickElementMap;
+import static invalid.DataPreprocessing.clickElementMap;
 
 public class ClickElementStrategy implements Strategy{
     @Override

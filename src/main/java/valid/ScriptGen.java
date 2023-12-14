@@ -9,9 +9,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import com.invalid.DataPreprocessing;
-import com.invalid.PythonTruthTableServer;
-import org.example.newSolve;
+import invalid.DataPreprocessing;
+import invalid.PythonTruthTableServer;
+import mockpage.newSolve;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

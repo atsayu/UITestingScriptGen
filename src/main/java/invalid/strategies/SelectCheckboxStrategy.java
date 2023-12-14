@@ -1,9 +1,9 @@
 package invalid.strategies;
 
 
-import com.objects.InputText;
+import objects.InputText;
 
-import static com.invalid.DataPreprocessing.inputTextMap;
+import static invalid.DataPreprocessing.inputTextMap;
 
 public class SelectCheckboxStrategy implements Strategy{
     @Override

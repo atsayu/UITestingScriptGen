@@ -1,12 +1,15 @@
 package invalid;
-import com.invalid.strategies.Context;
-import com.objects.ClickElement;
-import com.objects.InputText;
+
+
+import invalid.strategies.Context;
+import objects.ClickElement;
+import objects.InputText;
 
 import java.util.Collections;
 import java.util.Vector;
 
-import static com.invalid.DataPreprocessing.*;
+import static invalid.DataPreprocessing.*;
+
 
 public class InvalidTestGen {
     public static Vector<String> invalidTestCaseGen() {
