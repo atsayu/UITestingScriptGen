@@ -1,22 +1,21 @@
 package valid;
 
 import au.com.bytecode.opencsv.CSVReader;
-import invalid.DataPreprocessing;
-import invalid.PythonTruthTableServer;
-import mockpage.newSolve;
+
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import com.invalid.DataPreprocessing;
+import com.invalid.PythonTruthTableServer;
+import org.example.newSolve;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class ScriptGen {
@@ -92,31 +91,6 @@ public class ScriptGen {
                             }
                             if (content.indexOf(satisfy.toString()) == -1)
                                 content.append(new StringBuilder(satisfy)).append("\n");
-                        }
-
-                        //This block of code is for invalid test gen
-                        String action = LogicParser.createTextExpression(expressionActionElement).toString();
-                        if (action.charAt(0) == '(') {
-                            action = action.substring(1, action.length() - 1);
-                        }
-                        action = action.replaceAll("\\(", "%28");
-                        action = action.replaceAll("\\)", "%29");
-                        action = action.replaceAll("[\\&]", "%26");
-                        action = action.replaceAll("\\s", "");
-                        System.out.println(action);
-                        Vector<Vector<String>> tb = DataPreprocessing.truthTableParse(PythonTruthTableServer.logicParse(action), action);
-                        System.out.println(tb);
-                        Vector<String> invalids = tb.get(2);
-                        boolean[] variables = new boolean[tb.get(0).size()];
-                        for (String truthLine: invalids) {
-                            String[] values = truthLine.split(" ");
-                            System.out.println(values.length);
-                            for (int i = 0; i < variables.length; i++) {
-                                if (values[i].equals("1")) variables[i] = true;
-                            }
-                        }
-                        for (int i = 0; i < variables.length; i++) {
-                            if (variables[i]) content.append(tb.get(0).get(i)).append("\n");
                         }
                     }
 
@@ -354,15 +328,14 @@ public class ScriptGen {
             content.insert(0, header.append("\n"));
             bufferedWriter.append(content);
             bufferedWriter.close();
-            DataPreprocessing.initInvalidDataParse(dataPath, outlinePath, outputScriptPath);
 //            ReadXmlDomParserLoop.initInvalidDataParse(dataPath,outlinePath, outputScriptPath );
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     public static void main(String[] args) {
-//        createDataSheetV2("src/main/resources/outline_saucedemo.xml", "src/main/resources/data_saucedemo.csv");
-        createScriptV2("src/main/resources/outline_saucedemo.xml", "src/main/resources/data_saucedemo.csv", "src/main/resources/test_saucedemo.robot");
+//        createDataSheetV2("outline_saucedemo.xml", "data_saucedemo.csv");
+//        createScriptV2("outline_saucedemo.xml", "data_saucedemo.csv", "test_saucedemo.robot");
 //
 //        createDataSheetV2("outline_demoqa.xml", "data_demoqa.csv");
 //        createScriptV2("outline_demoqa.xml", "data_demoqa.csv", "test_demoqa.robot");
@@ -373,22 +346,12 @@ public class ScriptGen {
 
 //        createDataSheetV2("heroky.xml", "heroky.csv");
 
-//
-//        String expr = "%28A%26B%29";
-//        Vector<Vector<String>> tb = DataPreprocessing.truthTableParse(PythonTruthTableServer.logicParse(expr), expr);
-//        System.out.println(tb);
-//        Vector<String> invalids = tb.get(2);
-//        boolean[] variables = new boolean[tb.get(0).size()];
-//        for (String truthLine: invalids) {
-//            String[] values = truthLine.split(" ");
-//            System.out.println(values.length);
-//            for (int i = 0; i < variables.length; i++) {
-//                if (values[i].equals("1")) variables[i] = true;
-//            }
-//        }
-//        System.out.println(variables[0]);
-//        System.out.println(variables[1]);
-//        DataPreprocessing.initInvalidDataParse("data_saucedemo.csv", "outline_saucedemo.xml", "test_saucedemo.robot");
-//        DataPreprocessing.initInvalidDataParse("src/main/resources/data_saucedemo.csv", "src/main/resources/outline_saucedemo.xml", "src/main/resources/test_saucedemo.robot");
+
+        String expr = "A%26B";
+        Vector tb = DataPreprocessing.truthTableParse(PythonTruthTableServer.logicParse(expr), expr);
+        System.out.println(tb);
+        System.out.println(tb);
+        System.out.println("hello");
+        DataPreprocessing.initInvalidDataParse("data_saucedemo.csv", "outline_saucedemo.xml", "test_saucedemo.robot");
     }
 }

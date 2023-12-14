@@ -5,7 +5,7 @@ import com.objects.InputText;
 
 import static com.invalid.DataPreprocessing.inputTextMap;
 
-public class InputTextStrategy implements Strategy{
+public class SelectCheckboxStrategy implements Strategy{
     @Override
     public String exprEncode(String expr) {
         for (String key : inputTextMap.keySet()) {
@@ -19,7 +19,7 @@ public class InputTextStrategy implements Strategy{
         String[] component = expr.split(" {3}");
         InputText it = new InputText(component[1], component[2]);
         if (!inputTextMap.containsValue(it)) {
-            inputTextMap.put("it" + (inputTextMap.keySet().size() + 1), it);
+            inputTextMap.put("sc" + (inputTextMap.keySet().size() + 1), it);
         }
     }
 

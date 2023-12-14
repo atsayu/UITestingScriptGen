@@ -1,8 +1,8 @@
 package invalid;
 
-import invalid.strategies.Context;
-import objects.ClickElement;
-import objects.InputText;
+import com.invalid.strategies.Context;
+import com.objects.ClickElement;
+import com.objects.InputText;
 import com.opencsv.CSVReader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -18,9 +18,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-import static invalid.FileWriteModule.writeStringsToFile;
-import static invalid.InvalidTestGen.invalidTestCaseGen;
-import static invalid.PythonTruthTableServer.logicParse;
+import static com.invalid.FileWriteModule.writeStringsToFile;
+import static com.invalid.InvalidTestGen.invalidTestCaseGen;
+import static com.invalid.PythonTruthTableServer.logicParse;
 
 public class DataPreprocessing {
     public static Dictionary<String, Vector<Vector<String>>> lineDict = new Hashtable<>();

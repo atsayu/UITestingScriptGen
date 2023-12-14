@@ -1,0 +1,22 @@
+<TestSuite>
+    <url>https://demoqa.com/login</url>
+    <TestCase>
+        <Scenario>login</Scenario>
+        <LogicExpressionOfActions>
+            <type>and</type>
+            <LogicExpressionOfActions>
+                <type>Input Text</type>
+                <locator>loc_a</locator>
+                <text>a</text>
+            </LogicExpressionOfActions>
+            <LogicExpressionOfActions>
+                <type>Click Element</type>
+                <locator>loc_b</locator>
+            </LogicExpressionOfActions>
+        </LogicExpressionOfActions>
+        <Validation>
+            <type>URLValidation</type>
+            <url>https://demoqa.com/profile</url>
+        </Validation>
+    </TestCase>
+</TestSuite>
