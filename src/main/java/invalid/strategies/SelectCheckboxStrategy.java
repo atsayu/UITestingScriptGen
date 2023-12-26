@@ -1,15 +1,15 @@
 package invalid.strategies;
 
 
-import objects.InputText;
+import objects.SelectCheckbox;
 
-import static invalid.DataPreprocessing.inputTextMap;
+import static invalid.DataPreprocessing.selectCheckboxMap;
 
 public class SelectCheckboxStrategy implements Strategy{
     @Override
     public String exprEncode(String expr) {
-        for (String key : inputTextMap.keySet()) {
-            expr = expr.replaceAll(inputTextMap.get(key).toString(), key);
+        for (String key : selectCheckboxMap.keySet()) {
+            expr = expr.replaceAll(selectCheckboxMap.get(key).toString(), key);
         }
         return expr;
     }
@@ -17,14 +17,14 @@ public class SelectCheckboxStrategy implements Strategy{
     @Override
     public void exprToMap(String expr) {
         String[] component = expr.split(" {3}");
-        InputText it = new InputText(component[1], component[2]);
-        if (!inputTextMap.containsValue(it)) {
-            inputTextMap.put("sc" + (inputTextMap.keySet().size() + 1), it);
+        SelectCheckbox sc = new SelectCheckbox(component[1]);
+        if (!selectCheckboxMap.containsValue(sc)) {
+            selectCheckboxMap.put("sc" + (selectCheckboxMap.keySet().size() + 1), sc);
         }
     }
 
     @Override
     public String searchValidValue(String expr) {
-        return inputTextMap.get(expr).getValue();
+        return selectCheckboxMap.get(expr).getLocator();
     }
 }

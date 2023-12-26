@@ -4,6 +4,8 @@ import com.opencsv.CSVReader;
 import invalid.strategies.Context;
 import objects.ClickElement;
 import objects.InputText;
+import objects.SelectCheckbox;
+import objects.SelectRadioButton;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -30,6 +32,8 @@ public class DataPreprocessing {
 
     public static HashMap<String, InputText> inputTextMap = new HashMap<>();
     public static HashMap<String, ClickElement> clickElementMap = new HashMap<>();
+    public static HashMap<String, SelectCheckbox> selectCheckboxMap = new HashMap<>();
+    public static HashMap<String, SelectRadioButton> selectRadioButtonMap = new HashMap<>();
     static Map<String, List<String>> dataMap = new HashMap<>();
 
     public static void main(String[] args) {

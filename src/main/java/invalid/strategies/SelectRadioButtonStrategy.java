@@ -1,15 +1,15 @@
 package invalid.strategies;
 
+import objects.SelectRadioButton;
 
-import objects.InputText;
+import static invalid.DataPreprocessing.selectRadioButtonMap;
 
-import static invalid.DataPreprocessing.inputTextMap;
 
 public class SelectRadioButtonStrategy implements Strategy{
     @Override
     public String exprEncode(String expr) {
-        for (String key : inputTextMap.keySet()) {
-            expr = expr.replaceAll(inputTextMap.get(key).toString(), key);
+        for (String key : selectRadioButtonMap.keySet()) {
+            expr = expr.replaceAll(selectRadioButtonMap.get(key).toString(), key);
         }
         return expr;
     }
@@ -17,14 +17,14 @@ public class SelectRadioButtonStrategy implements Strategy{
     @Override
     public void exprToMap(String expr) {
         String[] component = expr.split(" {3}");
-        InputText it = new InputText(component[1], component[2]);
-        if (!inputTextMap.containsValue(it)) {
-            inputTextMap.put("srb" + (inputTextMap.keySet().size() + 1), it);
+        SelectRadioButton srb = new SelectRadioButton(component[1], component[2], component[3]);
+        if (!selectRadioButtonMap.containsValue(srb)) {
+            selectRadioButtonMap.put("srb" + (selectRadioButtonMap.keySet().size() + 1), srb);
         }
     }
 
     @Override
     public String searchValidValue(String expr) {
-        return inputTextMap.get(expr).getValue();
+        return selectRadioButtonMap.get(expr).getValue();
     }
 }
