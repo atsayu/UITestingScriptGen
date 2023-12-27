@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import org.springframework.ui.Model;
 import com.bpodgursky.jbool_expressions.And;
 import com.bpodgursky.jbool_expressions.Expression;
 import com.bpodgursky.jbool_expressions.Or;
@@ -186,14 +187,12 @@ public class HomeController {
         bufferedWriter.append(xml);
         bufferedWriter.close();
 
-
+        ScriptGen.createDataSheetV2("src/main/resources/template/outline.xml", "src/main/resources/data/datasheet.csv");
         return new ResponseEntity<>("Mocked the page", HttpStatus.OK);
     }
 
     @PostMapping("/createtest")
     public ResponseEntity<String> createScript(@RequestBody Map<String, String> body) throws IOException {
-
-        ScriptGen.createDataSheetV2("src/main/resources/template/outline.xml", "src/main/resources/data/datasheet.csv");
 
         String csvData = body.get("values");
         File data = new File ("src/main/resources/data/data.csv");
@@ -208,14 +207,28 @@ public class HomeController {
 
         newSolve.fillInCSV("src/main/resources/data/datasheet.csv","src/main/resources/data/data.csv", newSolve.getDataFromCSV("src/main/resources/data/data.csv"));
 
-        ScriptGen.createScriptV2("src/main/resources/template/outline.xml", "src/main/resources/data/data.csv", "src/main/resources/templates/script.html");
-
+        ScriptGen.createScriptV2("src/main/resources/template/outline.xml", "src/main/resources/data/data.csv", "src/main/resources/testscript/script.robot");
 
 
         return new ResponseEntity<>("Create Script", HttpStatus.OK);
     }
 
+    public void createScriptHtml() throws IOException {
+        File robotFile = new File("src/main/resources/testscript/script.robot");
+        File htmlFile = new File ("src/main/resources/templates/script.html");
 
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(robotFile));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(htmlFile));
+
+        String line = bufferedReader.readLine();
+        while (line != null) {
+            bufferedWriter.append(line).append("\n");
+            line = bufferedReader.readLine();
+        }
+
+        bufferedWriter.close();
+        bufferedReader.close();
+    }
 
     @GetMapping("/test.html")
     public String test() {
@@ -223,8 +236,22 @@ public class HomeController {
     }
 
     @GetMapping("/script")
-    public String sendScript() {
-        return "script.html";
+    public String sendScript( Model model) throws IOException {
+        StringBuilder testScript = new StringBuilder();
+        File robotFile = new File("src/main/resources/testscript/script.robot");
+
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(robotFile));
+
+        String line = bufferedReader.readLine();
+        while (line != null) {
+            testScript.append(line).append("\n");
+            line = bufferedReader.readLine();
+        }
+
+
+        bufferedReader.close();
+        model.addAttribute("testScript", testScript.toString());
+        return "script";
     }
 
 

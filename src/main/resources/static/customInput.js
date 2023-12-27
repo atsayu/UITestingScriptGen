@@ -179,25 +179,158 @@ function parseToAction(arr) {
 // console.log(parseToAction(splitPrefix(infixToPrefix(s))));
 
 function createFillClick(locator) {
-    let clickElement = `<li><div class="action" type="click">
-    <input type="checkbox" name="select" onclick="selecting(this)">
-    Click
-    <input type="text" placeholder="locator" value="${locator}">
-</div></li>`;
-    console.log(clickElement)
-    return clickElement;
+//     let clickElement = `<li><div class="action" type="click">
+//     <input type="checkbox" name="select" onclick="selecting(this)">
+//     Click
+//     <input type="text" placeholder="locator" value="${locator}">
+// </div></li>`;
+//
+//     console.log(clickElement)
+//     return clickElement;
+    let clickElement =  `<li>
+                    <div class="action" type="click">
+                        <div class="label-button">
+                            <input type="checkbox" name="select" onclick="selecting(this)">
+                            <button type="button" class="up">Click ...   </button>
+                        </div>
+                        <span class="info nested">Click ...</span>
+                        <div class="user-input nested">
+                            Click <input type="text" placeholder="locator" value="">
+                            <button type="button">Update</button>
+                        </div>
+                    </div>
+                </li>`;
+    // console.log(element.parentNode.parentNode.parentNode.parentNode);
+    let template = document.createElement('template');
+    template.innerHTML = clickElement;
+
+
+
+
+
+    //Update from user input function
+    template.content.querySelector('.user-input button[type = "button"]').addEventListener('click', function () {
+        console.log(this);
+        let label_btn = this.parentNode.parentNode.querySelector('.label-button').querySelector('button[type="button"]');
+        console.log(label_btn);
+        let locator = this.parentNode.querySelector('input[type="text"]').value;
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        info.textContent = 'Click ' + locator;
+        if (locator.length > 3) {
+            label_btn.innerHTML = 'Click ' + locator.substring(0, 3) + '...';
+        } else {
+            label_btn.innerHTML = 'Click '+ locator;
+        }
+    });
+
+    template.content.firstElementChild.querySelector('input[type="text"]').value = locator;
+    let info = template.content.firstElementChild.querySelector('span.info');
+    info.textContent = 'Click ' + locator;
+    let label_btn = template.content.firstElementChild.querySelector('.label-button').querySelector('button[type="button"]');
+    if (locator.length > 3) {
+        label_btn.innerHTML = 'Click ' + locator.substring(0, 3) + '...';
+    } else {
+        label_btn.innerHTML = 'Click '+ locator;
+    }
+
+
+
+
+    //Show and hide user input
+    let showHideBtn = template.content.querySelector('.label-button button[type = "button"]');
+    showHideBtn.addEventListener('click', function () {
+        this.classList.toggle('down');
+        let user_input = this.parentNode.parentNode.querySelector('.user-input');
+        user_input.classList.toggle('nested');
+    });
+
+    showHideBtn.addEventListener('mouseover', function() {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (info.classList.contains('nested')) info.classList.remove('nested');
+    });
+
+    showHideBtn.addEventListener('mouseout', function () {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (!info.classList.contains('nested')) info.classList.add('nested');
+    });
+    return template.content.firstElementChild;
 }
 
 function createFillInput(locator, text) {
-    let clickElement = `<li><div class="action" type="input">
-    <input type="checkbox" name="select" onclick="selecting(this)">
-    Input
-    <input type="text"  placeholder="text" value="${text}">
-    to
-    <input type="text" placeholder="locator" value="${locator}">
-</div></li>`;
-    console.log(clickElement)
-    return clickElement;
+//     let clickElement = `<li><div class="action" type="input">
+//     <input type="checkbox" name="select" onclick="selecting(this)">
+//     Input
+//     <input type="text"  placeholder="text" value="${text}">
+//     to
+//     <input type="text" placeholder="locator" value="${locator}">
+// </div></li>`;
+//     console.log(clickElement)
+//     return clickElement;
+
+    let inputElement = `<li>
+                    <div class="action" type="input-text">
+                        <div class="label-button">
+                            <input type="checkbox" name="select" onclick="selecting(this)">
+                            <button type="button" class="up">Input ...   </button>
+                        </div>
+                        <span class="info nested">Input ... to ...</span>
+                        <div class="user-input nested">
+                            Input <input type="text" placeholder="text"> to <input type="text" placeholder="locator">
+                            <button type="button">Update</button>
+                        </div>
+                    </div>
+                </li>`;
+
+    let template = document.createElement('template');
+    template.innerHTML = inputElement;
+
+    //Update from user input function
+    template.content.querySelector('.user-input button[type = "button"]').addEventListener('click', function () {
+        console.log(this);
+        let label_btn = this.parentNode.parentNode.querySelector('.label-button').querySelector('button[type="button"]');
+        console.log(label_btn);
+        let locator = this.parentNode.querySelector('input[type="text"][placeholder="locator"]').value;
+        let text = this.parentNode.querySelector('input[type="text"][placeholder="text"]').value;
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        info.textContent = 'Input ' + text + ' to ' + locator;
+        if (text.length > 3) {
+            label_btn.innerHTML = 'Input ' + locator.substring(0, 3) + '...';
+        } else {
+            label_btn.innerHTML = 'Input '+ locator;
+        }
+    });
+
+    let label_btn = template.content.firstElementChild.querySelector('.label-button').querySelector('button[type="button"]');
+    template.content.firstElementChild.querySelector('input[type="text"][placeholder="locator"]').value = locator;
+    template.content.firstElementChild.querySelector('input[type="text"][placeholder="text"]').value = text;
+    let info = template.content.firstElementChild.querySelector('span.info');
+    info.textContent = 'Input ' + text + ' to ' + locator;
+    if (text.length > 3) {
+        label_btn.innerHTML = 'Input ' + locator.substring(0, 3) + '...';
+    } else {
+        label_btn.innerHTML = 'Input '+ locator;
+    }
+
+
+    //Show and hide user input
+    let showHideBtn = template.content.querySelector('.label-button button[type = "button"]');
+    showHideBtn.addEventListener('click', function () {
+        this.classList.toggle('down');
+        let user_input = this.parentNode.parentNode.querySelector('.user-input');
+        user_input.classList.toggle('nested');
+    });
+
+
+    showHideBtn.addEventListener('mouseover', function() {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (info.classList.contains('nested')) info.classList.remove('nested');
+    });
+
+    showHideBtn.addEventListener('mouseout', function () {
+        let info = this.parentNode.parentNode.querySelector('span.info');
+        if (!info.classList.contains('nested')) info.classList.add('nested');
+    });
+    return template.content.firstElementChild;
 }
 
 
@@ -273,13 +406,17 @@ function jsonToElement(json, layer) {
   `;
             }
         ;
-
+        let template = document.createElement('template');
+        template.innerHTML = orElement + footer;
         let jsonArr = json.children;
+        let list = template.content.firstElementChild.querySelector('.actions');
         jsonArr.forEach(function(item) {
-            orElement = orElement.concat(jsonToElement(item, layer + 1)) ;
+            // orElement = orElement.concat(jsonToElement(item, layer + 1));
+            list.appendChild(jsonToElement(item, layer + 1));
         });
-        orElement = orElement.concat(footer);
-        return orElement;
+        // orElement = orElement.concat(footer);
+        // return orElement;
+        return template.content.firstElementChild;
     } else if (type === 'and') {
         let andElement = `<li><div class = "action" type="and">
 
@@ -335,12 +472,17 @@ function jsonToElement(json, layer) {
     </div>
     <ol class="actions nested active">`;
         }
+        let template = document.createElement('template');
+        template.innerHTML = andElement + footer;
         let jsonArr = json.children;
+        let list = template.content.firstElementChild.querySelector('.actions');
         jsonArr.forEach(function(item) {
-            andElement = andElement.concat(jsonToElement(item, layer + 1));
+            // andElement = andElement.concat(jsonToElement(item, layer + 1));
+            list.appendChild(jsonToElement(item, layer + 1));
         });
-        andElement = andElement.concat(footer);
-        return andElement;
+        // andElement = andElement.concat(footer);
+        // return andElement;
+        return template.content.firstElementChild;
     }
 }
 
@@ -365,7 +507,8 @@ function parseInput(element) {
             res.forEach(function (action) {
                 // parsedElement.innerHTML = parsedElement.innerHTML.concat(jsonToElement(action));
                 // previousItem.in
-                orderedList.insertAdjacentHTML('beforeend', jsonToElement(action, 1));
+                // orderedList.insertAdjacentHTML('beforeend', jsonToElement(action, 1));
+                orderedList.appendChild(jsonToElement(action, 1));
             });
             element.parentNode.parentNode.remove();
             console.log(parsedElement);

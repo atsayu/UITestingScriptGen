@@ -15,6 +15,55 @@ import java.util.Collections;
 import java.util.List;
 
 public class LogicParser {
+    public static Expression<String> createTextExpression(Element element) {
+        String type = element.getElementsByTagName("type").item(0).getTextContent();
+        if (!type.equals("and") && !type.equals("or")) {
+            String text;
+            if (type.equals("Input Text")) text = element.getElementsByTagName("text").item(0).getTextContent();
+            else text = null;
+            return Variable.of(text);
+        }
+        if (type.equals("and")) {
+            NodeList childNodes = element.getChildNodes();
+            List<Element> childElements = new ArrayList<>();
+            List<String> childString = new ArrayList<>();
+            for (int i = 0; i < childNodes.getLength(); i++) {
+                Node child = childNodes.item(i);
+                if (child.getNodeType() == Node.ELEMENT_NODE && ((Element) child).getTagName().equals("LogicExpressionOfActions"))
+                    childElements.add((Element) child);
+            }
+            for (int i = 0; i < childElements.size(); i++) {
+                childString.add(childElements.get(i).getElementsByTagName("text").item(0).getTextContent());
+            }
+            Expression[] expressionList = new Expression[childElements.size()];
+            for (int i = 0; i < childElements.size(); i++) {
+                expressionList[i] = createTextExpression(childElements.get(i));
+            }
+
+            Expression expression = And.of(expressionList, Expression.LEXICOGRAPHIC_COMPARATOR);
+            return expression;
+
+        } else if (type.equals("or")) {
+            NodeList childNodes = element.getChildNodes();
+            List<Element> childElements = new ArrayList<>();
+
+
+            for (int i = 0; i < childNodes.getLength(); i++) {
+                Node child = childNodes.item(i);
+                if (child.getNodeType() == Node.ELEMENT_NODE && ((Element) child).getTagName().equals("LogicExpressionOfActions"))
+                    childElements.add((Element) child);
+            }
+
+            Expression[] expressionList = new Expression[childElements.size()];
+            for (int i = 0; i < childElements.size(); i++) {
+                expressionList[i] = createTextExpression(childElements.get(i));
+            }
+            Expression expression = Or.of(expressionList, Expression.LEXICOGRAPHIC_COMPARATOR);
+            return expression;
+        }
+        System.out.println("Wrong type of logic expression!");
+        return null;
+    }
     public static Expression<Action> createAction(Element element) {
         String type = element.getElementsByTagName("type").item(0).getTextContent();
         if (!type.equals("and") && !type.equals("or")) {
