@@ -41,11 +41,11 @@ public class newSolve {
         String linkHtml = input[i];
         int j;
         for (j = i + 1; j < length; j++) {
-           if (!input[j].contains(":")) {
-             variable_list.add(input[j]);
-           } else {
-             break;
-           }
+          if (!input[j].contains(":")) {
+            variable_list.add(input[j]);
+          } else {
+            break;
+          }
         }
         processGetLocator(linkHtml);
         setUp();
@@ -177,7 +177,7 @@ public class newSolve {
     String x_lower = x.toLowerCase();
     for (int i = 0; i < x_lower.length(); i++) {
       if ((x_lower.charAt(i) >= 'a' && x_lower.charAt(i) <= 'z') || (x_lower.charAt(i) >= '0'
-          && x_lower.charAt(i) <= '9')) {
+              && x_lower.charAt(i) <= '9')) {
         temp += x_lower.charAt(i);
       }
     }
@@ -191,8 +191,8 @@ public class newSolve {
       String x_value = "";
       for (int i = 0; i < x.length(); i++) {
         if ((x.charAt(i) >= 'a' && x.charAt(i) <= 'z') || (x.charAt(i) >= '0'
-            && x.charAt(i) <= '9') || (x.charAt(i) >= 'A'
-            && x.charAt(i) <= 'Z')) {
+                && x.charAt(i) <= '9') || (x.charAt(i) >= 'A'
+                && x.charAt(i) <= 'Z')) {
           x_value += x.charAt(i);
         }
       }
@@ -342,7 +342,7 @@ public class newSolve {
     }
     setStoreVarEleAndWeight();
     List<Entry<Pair<String, Element>, Double>> list = new ArrayList<>(
-        storeVarEleAndWeight.entrySet());
+            storeVarEleAndWeight.entrySet());
     Collections.sort(list, new Comparator<Entry<Pair<String, Element>, Double>>() {
       @Override
       public int compare(Entry<Pair<String, Element>, Double> o1,
@@ -379,14 +379,14 @@ public class newSolve {
   }
 
   public static void traversalDom(Document domTree, Element e, Map<String, String> mapLocatorVariableAndValueVariable) {
-      if (mapElementAndLocatorVariable.containsKey(e)) {
-        String locatorVariable = mapElementAndLocatorVariable.get(e);
-        String valueVariable = mapLocatorVariableAndValueVariable.get(locatorVariable);
-        e.attr("cong", valueVariable);
-      }
-      for (Element child : e.children()) {
-        traversalDom(domTree, child, mapLocatorVariableAndValueVariable);
-      }
+    if (mapElementAndLocatorVariable.containsKey(e)) {
+      String locatorVariable = mapElementAndLocatorVariable.get(e);
+      String valueVariable = mapLocatorVariableAndValueVariable.get(locatorVariable);
+      e.attr("cong", valueVariable);
+    }
+    for (Element child : e.children()) {
+      traversalDom(domTree, child, mapLocatorVariableAndValueVariable);
+    }
   }
 
   public static String contentOfMockWeb(Document domTree) {
@@ -603,33 +603,33 @@ public class newSolve {
     saveBtn = saveBtn.text("Save");
     Element script = domTree.body().appendElement("script");
     script.text("let inputValues = [];\n"
-        + "        let allElement = document.getElementsByTagName(\"*\");\n"
-        + "        let inputElement = [];\n"
-        + "        for (let i = 0; i < allElement.length; i++) {\n"
-        + "            if (allElement[i].hasAttribute(\"cong\") && allElement[i].getAttribute(\"cong\").length != 0) {\n"
-        + "                if (allElement[i].tagName.localeCompare(\"TEXTAREA\")) {\n"
-        + "                    inputElement.push(allElement[i]);\n"
-        + "                } else if (allElement[i].tagName.localeCompare(\"INPUT\")) {\n"
-        + "                    if (allElement[i].hasAttribute(\"type\")) {\n"
-        + "                        let typeAttributeValue = allElement[i].getAttribute(\"type\");\n"
-        + "                        if (typeAttributeValue.localeCompare(\"submit\") != 0 && typeAttributeValue.localeCompare(\"button\") != 0\n"
-        + "                            && typeAttributeValue.localeCompare(\"reset\") != 0 && typeAttributeValue.localeCompare(\"image\") != 0 && typeAttributeValue.localeCompare(\"hidden\") != 0) {\n"
-        + "                            inputElement.push(allElement[i]);\n"
-        + "                        }\n"
-        + "                    } else {\n"
-        + "                        inputValues.push(allElement[i]);\n"
-        + "                    }\n"
-        + "                }\n"
-        + "            }\n"
-        + "        }\n"
-        + "        let numberInputElements = inputElement.length;\n"
-        + "        function attributeElement(e) {\n"
-        + "            return e.getAttribute(\"cong\");\n"
-        + "        }\n"
-        + "        for (let i = 0; i < numberInputElements; i++) {\n"
-        + "            inputValues.push(attributeElement(inputElement[i]));\n"
-        + "        }\n" + "        const saveButton = document.getElementById('save');\n"
-        + "        saveButton.addEventListener('click', function () {\n" +
+            + "        let allElement = document.getElementsByTagName(\"*\");\n"
+            + "        let inputElement = [];\n"
+            + "        for (let i = 0; i < allElement.length; i++) {\n"
+            + "            if (allElement[i].hasAttribute(\"cong\") && allElement[i].getAttribute(\"cong\").length != 0) {\n"
+            + "                if (allElement[i].tagName.localeCompare(\"TEXTAREA\")) {\n"
+            + "                    inputElement.push(allElement[i]);\n"
+            + "                } else if (allElement[i].tagName.localeCompare(\"INPUT\")) {\n"
+            + "                    if (allElement[i].hasAttribute(\"type\")) {\n"
+            + "                        let typeAttributeValue = allElement[i].getAttribute(\"type\");\n"
+            + "                        if (typeAttributeValue.localeCompare(\"submit\") != 0 && typeAttributeValue.localeCompare(\"button\") != 0\n"
+            + "                            && typeAttributeValue.localeCompare(\"reset\") != 0 && typeAttributeValue.localeCompare(\"image\") != 0 && typeAttributeValue.localeCompare(\"hidden\") != 0) {\n"
+            + "                            inputElement.push(allElement[i]);\n"
+            + "                        }\n"
+            + "                    } else {\n"
+            + "                        inputValues.push(allElement[i]);\n"
+            + "                    }\n"
+            + "                }\n"
+            + "            }\n"
+            + "        }\n"
+            + "        let numberInputElements = inputElement.length;\n"
+            + "        function attributeElement(e) {\n"
+            + "            return e.getAttribute(\"cong\");\n"
+            + "        }\n"
+            + "        for (let i = 0; i < numberInputElements; i++) {\n"
+            + "            inputValues.push(attributeElement(inputElement[i]));\n"
+            + "        }\n" + "        const saveButton = document.getElementById('save');\n"
+            + "        saveButton.addEventListener('click', function () {\n" +
             "            let fileContent = \"\";\n" +
             "            for (let i = 0; i < numberInputElements; i++) {\n" +
             "                for (let k = i; k < inputValues.length; k += numberInputElements) {\n" +
@@ -657,31 +657,31 @@ public class newSolve {
             "\n" +
             "         xhr.send(JSON.stringify(data));\n" +
             "        });"
-        + "        const newTestcaseButton = document.getElementById('new-testcase');\n"
-        + "        newTestcaseButton.addEventListener('click', function () {\n"
-        + "            for (let i = 0; i < numberInputElements; i++) {\n"
-        + "                if (inputElement[i].value.length == 0) {\n"
-        + "                    inputValues.push(\"null\");\n"
-        + "                } else {\n"
-        + "                    inputValues.push(inputElement[i].value);\n"
-        + "                }\n"
-        + "\n"
-        + "            }\n"
-        + "            const para = document.createElement(\"p\");\n"
-        + "            let tmp = \"\";\n"
-        + "            for (let i = 0; i < numberInputElements; i++) {\n"
-        + "                tmp += inputElement[i].value + \" \";\n"
-        + "            }\n"
-        + "            para.innerText = \"You entered \" + tmp;\n"
-        + "            document.body.appendChild(para);\n"
-        + "            for (let i = 0; i < numberInputElements; i++) {\n"
-        + "                inputElement[i].value = '';\n"
-        + "            }\n"
-        + "        });");
+            + "        const newTestcaseButton = document.getElementById('new-testcase');\n"
+            + "        newTestcaseButton.addEventListener('click', function () {\n"
+            + "            for (let i = 0; i < numberInputElements; i++) {\n"
+            + "                if (inputElement[i].value.length == 0) {\n"
+            + "                    inputValues.push(\"null\");\n"
+            + "                } else {\n"
+            + "                    inputValues.push(inputElement[i].value);\n"
+            + "                }\n"
+            + "\n"
+            + "            }\n"
+            + "            const para = document.createElement(\"p\");\n"
+            + "            let tmp = \"\";\n"
+            + "            for (let i = 0; i < numberInputElements; i++) {\n"
+            + "                tmp += inputElement[i].value + \" \";\n"
+            + "            }\n"
+            + "            para.innerText = \"You entered \" + tmp;\n"
+            + "            document.body.appendChild(para);\n"
+            + "            for (let i = 0; i < numberInputElements; i++) {\n"
+            + "                inputElement[i].value = '';\n"
+            + "            }\n"
+            + "        });");
   }
 
   public static void writeDomToHtmlFile(Document domTree, String pathToHtmlFile)
-      throws IOException {
+          throws IOException {
     File myFile = new File(pathToHtmlFile);
     if (myFile.createNewFile()) {
       System.out.println("File created!");
