@@ -58,11 +58,13 @@
         margin-top: 20px;
         overflow-x: auto; /* Enable horizontal scrolling */
         border-radius: 10px;
+        font-size: 12;
       }
 
       #myTable tr:first-child {
         font-weight: bold;
         background-color: var(--color-grey);
+        font-size: 15;
       }
 
       #myTable th,
@@ -94,6 +96,18 @@
         width: 20px;
         height: 20px;
         background-position: center;
+      }
+
+      .collapse-button,
+      .expand-button {
+        display: inline-block;
+        margin: auto;
+        background-position: right;
+        border: 0px;
+        background-color: var(--color-blue);
+        color: var(--color-white);
+        text-align: center;
+        border-radius: 40px;
       }
 
       #myTable td:nth-child(3) button.delete_row {
@@ -449,19 +463,19 @@
       function expandText(button, fullText) {
         var cell = button.parentNode;
         cell.innerHTML =
-          fullText + "<button onclick='collapseText(this)'>Collapse</button>";
+          fullText +
+          "<button class='collapse-button' onclick='collapseText(this)'>Collapse</button>";
       }
 
       // Function to collapse the text
       function collapseText(span) {
         var cell = span.parentNode;
         var val = cell.innerText;
+        var string = val.substring(0,val.length - 8);
         cell.innerHTML =
           val.substring(0, 20) +
           "<span class='ellipsis'> ...</span>" +
-          "<button class='expand-button' onclick='expandText(this, \"" +
-          val.substring(0, val.length - 8) +
-          "\")'>Expand</button>";
+          "<button class='expand-button' onclick='expandText(this, &#39" + string.replace(/\n/g, ' ') + "&#39)'>Expand</button>";
       }
 
       function deleteRow(row) {
