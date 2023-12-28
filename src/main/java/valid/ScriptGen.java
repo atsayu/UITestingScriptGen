@@ -8,10 +8,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
+import mockpage.newSolve;
 import invalid.DataPreprocessing;
 import invalid.PythonTruthTableServer;
-import mockpage.newSolve;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -92,7 +91,35 @@ public class ScriptGen {
                             if (content.indexOf(satisfy.toString()) == -1)
                                 content.append(new StringBuilder(satisfy)).append("\n");
                         }
+
+                        //This block of code is for invalid test gen
+                        String action = LogicParser.createTextExpression(expressionActionElement).toString();
+                        if (action.charAt(0) == '(') {
+                            action = action.substring(1, action.length() - 1);
+                        }
+                        action = action.replaceAll("\\(", "%28");
+                        action = action.replaceAll("\\)", "%29");
+                        action = action.replaceAll("[\\&]", "%26");
+                        action = action.replaceAll("\\s", "");
+                        System.out.println(action);
+                        Vector<Vector<String>> tb = DataPreprocessing.truthTableParse(PythonTruthTableServer.logicParse(action), action);
+                        System.out.println(tb);
+                        Vector<String> invalids = tb.get(2);
+                        boolean[] variables = new boolean[tb.get(0).size()];
+                        for (String truthLine: invalids) {
+                            String[] values = truthLine.split(" ");
+                            System.out.println(values.length);
+                            for (int i = 0; i < variables.length; i++) {
+                                if (values[i].equals("1")) variables[i] = true;
+                            }
+                        }
+                        for (int i = 0; i < variables.length; i++) {
+                            if (variables[i]) content.append(tb.get(0).get(i)).append("\n");
+                        }
+
                     }
+
+
 
                 }
 
@@ -328,7 +355,7 @@ public class ScriptGen {
             content.insert(0, header.append("\n"));
             bufferedWriter.append(content);
             bufferedWriter.close();
-//            ReadXmlDomParserLoop.initInvalidDataParse(dataPath,outlinePath, outputScriptPath );
+            DataPreprocessing.initInvalidDataParse(dataPath,outlinePath, outputScriptPath );
         } catch (Exception e) {
             e.printStackTrace();
         }

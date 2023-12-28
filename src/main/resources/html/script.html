@@ -1,10 +1,33 @@
-*** Variables ***
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Test Script</title>
+</head>
+<body>
+   <h1>Test Script created</h1>
+   <input type="button" id="run-btn" value="Run Script">
+   <input type="button" id="copy-btn" value="Copy Script">
+   <input type="button" id="download-btn" value="Download Script">
+   <pre th:text="${testScript}"></pre>
+   <script>
+       document.querySelector('#download-btn').addEventListener('click', function() {
+           let script = document.querySelector('pre').innerHTML;
+           let blob = new Blob([script], {type: 'text/plain'});
+           let url =URL.createObjectURL(blob);
+           let download = document.createElement('a');
+           download.href = url;
+           download.download = 'script.robot';
+           download.click();
+       });
 
-*** Setting ***
-Library	SeleniumLibrary
-
-*** Test Cases ***
-Test 
-		 1
-	Open Browser	https://www.saucedemo.com/	Chrome
-	Maximize Browser Window
+       document.querySelector('#copy-btn').addEventListener('click', function (){
+           let script = document.querySelector('pre').innerHTML;
+           navigator.clipboard.writeText(script);
+       })
+   </script>
+</body>
+</html>

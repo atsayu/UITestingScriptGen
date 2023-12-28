@@ -56,7 +56,7 @@ function createTestCase(element) {
 }
 
 
-function createClick(element) {
+function  createClick(element) {
 //     let clickElement = `<div class="action" type="click">
 //     <input type="checkbox" name="select" onclick="selecting(this)">
 //     Click
@@ -128,6 +128,9 @@ function createClick(element) {
         let info = this.parentNode.parentNode.querySelector('span.info');
         if (!info.classList.contains('nested')) info.classList.add('nested');
     });
+
+
+
 
     let actionList = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
     console.log(actionList);
@@ -485,21 +488,28 @@ function createCustom(element) {
 }
 
 function createOuterAnd(element) {
-    let andElement = `<li><div class = "action" type="and">
+    let andElement = `<li>
+<div class = "action" type="and">
 
     <input type="checkbox" name="select" onclick="selecting(this)">
+    <span class="info nested">          </span>
     <div class="btn-group dropend">
         <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
-            aria-expanded="false">
+            aria-expanded="false" onclick="updateExpression(this)">
             Combined actions
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
-            <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
-            <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-            <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
-            <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
-            <li><a class="dropdown-item" onclick="createSelectList(this)">Select List</a></li>
+                    <li><a class="dropdown-item" onclick="createCustom(this)">Describe your actions</a></li>
+                    <li><a class="dropdown-item" onclick="createAnd(this)">And of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOr(this)">Or of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li>
             </ul>
     </div>
     <ol class="actions nested active">
@@ -514,7 +524,7 @@ function createOuterAnd(element) {
 }
 function createAnd(element) {
     let andElement = `<li><div class = "action" type="and">
-
+    
     <input type="checkbox" name="select" onclick="selecting(this)">
     <span class="caret" onclick="showAndHide(this)"></span>
     <div class="btn-group dropend">
@@ -523,12 +533,17 @@ function createAnd(element) {
             Combined actions
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
-            <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
-            <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-            <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
-            <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
-            <li><a class="dropdown-item" onclick="createSelectList(this)">Select List</a></li>
+                    <li><a class="dropdown-item" onclick="createCustom(this)">Describe your actions</a></li>
+                    <li><a class="dropdown-item" onclick="createAnd(this)">And of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOr(this)">Or of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li>
             </ul>
     </div>
     <ol class="actions nested">
@@ -551,12 +566,17 @@ function createOuterOr(element) {
             Combined actions
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
-            <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
-            <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-            <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
-            <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
-            <li><a class="dropdown-item" onclick="createSelectList(this)">Select List</a></li>
+                    <li><a class="dropdown-item" onclick="createCustom(this)">Describe your actions</a></li>
+                    <li><a class="dropdown-item" onclick="createAnd(this)">And of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOr(this)">Or of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li>
             </ul>
     </div>
     <ol class="actions nested active">
@@ -579,12 +599,17 @@ function createOr(element) {
             Combined actions
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" onclick="createAnd(this)">And</a></li>
-            <li><a class="dropdown-item" onclick="createOr(this)">Or</a></li>
-            <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-            <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
-            <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
-            <li><a class="dropdown-item" onclick="createSelectList(this)">Select List</a></li>
+                    <li><a class="dropdown-item" onclick="createCustom(this)">Describe your actions</a></li>
+                    <li><a class="dropdown-item" onclick="createAnd(this)">And of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOr(this)">Or of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li>
             </ul>
     </div>
     <ol class="actions nested">
@@ -779,6 +804,24 @@ function showAndHide(element) {
     element.classList.toggle("caret-down");
 }
 
+function getExpressionInfo(element) {
+    let type = element.getAttribute('type');
+    if (type === 'click' || type === 'input-text') {
+        return  element.querySelector('.info').textContent;
+    } else if (type === 'and' || type === 'or') {
+        let children = element.querySelector('.actions').children;
+
+
+        let childrenString = [];
+
+            Array.from(children).forEach(function(child){
+            childrenString.push(getExpressionInfo(child.firstElementChild));
+        });
+        if (type === 'and') return '(' + childrenString.join(' & ') + ')';
+        else return '(' + childrenString.join(' | ') + ')';
+    }
+}
+
 let toggler = document.querySelectorAll('.caret');
 let i = 0;
 
@@ -787,5 +830,22 @@ for (i = 0; i < toggler.length; i++) {
     toggler[i].addEventListener("click", function() {
         console.log(this);
 
+    });
+}
+
+
+function updateExpression(element) {
+    let action = element.parentNode.parentNode;
+    let inforString = getExpressionInfo(action);
+    let info = action.querySelector('span.info');
+    info.innerText = inforString;
+}
+
+
+window.onmousemove = function(e) {
+    let tooltips = document.querySelectorAll('.info');
+            tooltips.forEach(function (tooltip) {
+        tooltip.style.top = (e.clientY - 30) + 'px';
+        tooltip.style.left = (e.clientX - 20) + 'px';
     });
 }
