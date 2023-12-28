@@ -375,7 +375,7 @@ public class newSolve {
       traversalDom(domTree, e, mapLocatorVariableAndValueVariable);
     }
 //    addNewElementToDom(domTree);
-    writeDomToHtmlFile(domTree, "src/main/resources/templates/test.html");
+    writeDomToHtmlFile(domTree, "src/main/resources/html/test.html");
   }
 
   public static void traversalDom(Document domTree, Element e, Map<String, String> mapLocatorVariableAndValueVariable) {
@@ -541,14 +541,15 @@ public class newSolve {
             "        var table = document.getElementById(\"myTable\");\n" +
             "        for (var i = 1; i < table.rows.length; i++) {\n" +
             "          var row = table.rows[i];\n" +
-            "          for (var j = 1; j < row.cells.length - 1; j++) {\n" +
-            "            if (row.cells[j].innerHTML.trim() == \"\") {\n" +
-            "              inputValues.push(\"null\");\n" +
-            "            } else {\n" +
-            "              inputValues.push(row.cells[j].innerHTML);\n" +
+"            let values = row.cells[1].innerHTML.split(',');\n" +
+            "            for (var j = 0; j < values.length; j++) {\n" +
+            "              if (values[j].trim() == \"\") {\n" +
+            "                inputValues.push(\"null\");\n" +
+            "              } else {\n" +
+            "                inputValues.push(values[j].trim());\n" +
+            "              }\n" +
             "            }\n" +
-            "          }\n" +
-            "        }\n" +
+            "          }"+
             "        console.log(inputValues);\n" +
             "        let fileContent = \"\";\n" +
             "        for (let i = 0; i < numberInputElements; i++) {\n" +
