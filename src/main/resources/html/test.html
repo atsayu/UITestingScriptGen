@@ -327,7 +327,6 @@
     </div>
     <script>
       let inputValArr = [];
-      let inputValues = [];
       let allElement = document.getElementsByTagName("*");
       let inputElement = [];
       var isEditing = 0;
@@ -360,21 +359,18 @@
       function attributeElement(e) {
         return e.getAttribute("cong");
       }
-      for (let i = 0; i < numberInputElements; i++) {
-        inputValues.push(attributeElement(inputElement[i]));
-      }
+
 
       const saveButton = document.getElementById("save");
       saveButton.addEventListener("click", function () {
-        var table = document.getElementById("myTable");
-        for (var i = 1; i < table.rows.length; i++) {
-          var row = table.rows[i];
-          for (var j = 0; j < row.cells.length - 1; j++) {
-            if (row.cells[j].innerHTML.trim() == "") {
-              inputValues.push("null");
-            } else {
-              inputValues.push(row.cells[j].innerHTML);
-            }
+        console.log(inputValArr);
+        let inputValues = [];
+        for (let i = 0; i < numberInputElements; i++) {
+          inputValues.push(attributeElement(inputElement[i]));
+        }
+        for (let i = 0; i < inputValArr.length; i++) {
+          for (let k = 0; k < numberInputElements; k++) {
+            inputValues.push(inputValArr[i][k]);
           }
         }
         console.log(inputValues);
