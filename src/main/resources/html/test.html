@@ -1,10 +1,17 @@
 <html>
+  <link
+    href="https://fonts.googleapis.com/css?family=Montserrat"
+    rel="stylesheet"
+  />
   <head>
     <style>
       :root {
-        grey: #bdbdbd;
-        white: #fefffe;
-        black: #282627;
+        --color-darker-grey: #dbdbdb;
+        --color-grey: #f4f9fa;
+        --color-white: #fefeff;
+        --color-black: #08162a;
+        --color-red: #f24b4b;
+        --color-blue: #215faf;
       }
 
       .item1 {
@@ -13,75 +20,117 @@
 
       .item2 {
         grid-area: custom;
+        background-color: var(--color-black);
+        cursor: ew-resize;
       }
+
       .item3 {
+        font-family: "Montserrat";
         grid-area: gap;
-        background-color: grey;
+        background-color: var(--color-white);
+        padding: 20px; /* Add padding for better spacing */
       }
 
       .grid-container {
         display: grid;
-        grid-template-areas: "main gap custom";
-        grid-template-columns: 63% 0.5% 35%;
-        column-gap: 0px;
+        grid-template-areas: "main custom gap";
+        grid-template-columns: 3fr 0.5% 1fr;
         width: 100%;
-        height: 100%;
+        height: 100vh;
       }
 
-      .save {
-        background-color: white;
-        color: grey;
-        border: 2px solid grey;
-        width: 100px;
-        position: relative;
-        left: 40%;
-        border-radius: 5px;
-        margin-bottom: 10px;
-      }
-
+      .save,
       .new-testcase {
-        background-color: white;
-        color: grey;
-        border: 2px solid grey;
-        width: 100px;
-        position: relative;
-        left: 40%;
-        border-radius: 5px;
+        display: inline-block;
+        background-color: var(--color-blue);
+        color: var(--color-white);
+        width: 150px; /* Adjust the percentage based on your design */
+        border-radius: 40px;
+        border: 0px;
         margin-bottom: 10px;
+        height: 40px;
+        font-weight: bold;
       }
-
-      /* Add the following styles to your existing CSS */
 
       #myTable {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
+        overflow-x: auto; /* Enable horizontal scrolling */
+        border-radius: 10px;
+        font-size: 12;
+      }
+
+      #myTable tr:first-child {
+        font-weight: bold;
+        background-color: var(--color-grey);
+        font-size: 15;
       }
 
       #myTable th,
       #myTable td {
-        border: 1px solid grey;
+        border: 2px solid var(--color-darker-grey);
         padding: 8px;
         text-align: left;
       }
 
-      #myTable th {
-        background-color: #282627;
-        color: white;
+      /* Style the first column */
+      #myTable td:nth-child(1) {
+        width: 40px;
+        text-align: center;
+        font-weight: bold;
       }
 
-      #myTable td {
-        background-color: #fefffe;
-        color: #282627;
+      #myTable td:nth-child(3) {
+        width: 50px;
       }
 
-      #myTable tr:hover {
-        background-color: #bdbdbd;
-      }
-
-      #myTable button {
-        padding: 5px;
+      #myTable td:nth-child(3) button {
+        background-color: transparent; /* Set background color to transparent */
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        border: none;
         cursor: pointer;
+        padding: 5px;
+        width: 20px;
+        height: 20px;
+        background-position: center;
+      }
+
+      .collapse-button,
+      .expand-button {
+        display: inline-block;
+        margin: auto;
+        background-position: right;
+        border: 0px;
+        background-color: var(--color-blue);
+        color: var(--color-white);
+        text-align: center;
+        border-radius: 40px;
+      }
+
+      #myTable td:nth-child(3) button.delete_row {
+        background-image: url("/src/main/resources/png/delete.png");
+        /* Add additional styles as needed */
+      }
+
+      /* Style for the edit button */
+      #myTable td:nth-child(3) button.edit_row {
+        background-image: url("/src/main/resources/png/pen.png");
+        /* Add additional styles as needed */
+      }
+
+      #myTable td:nth-child(3) button.save_row {
+        background-image: url("/src/main/resources/png/save.png");
+        /* Add additional styles as needed */
+      }
+
+      @media screen and (max-width: 600px) {
+        .save,
+        .new-testcase {
+          width: 100%; /* Take up the full width on smaller screens */
+        }
       }
     </style>
   </head>
@@ -267,22 +316,21 @@
         <script src="/static/js/2.9b02e67e.chunk.js"></script>
         <script src="/static/js/main.9735b7ab.chunk.js"></script>
       </div>
-      <div class="item3"></div>
-      <div class="item2">
+      <div class="item3">
         <button id="new-testcase" class="new-testcase" type="button">
           New Testcase
         </button>
-        <br />
         <button id="save" class="save" type="button">Save</button>
-        <br />
         <table id="myTable"></table>
       </div>
+      <div class="item2" id="resizeBar"></div>
     </div>
     <script>
       let inputValArr = [];
       let inputValues = [];
       let allElement = document.getElementsByTagName("*");
       let inputElement = [];
+      var isEditing = 0;
       for (let i = 0; i < allElement.length; i++) {
         if (
           allElement[i].hasAttribute("cong") &&
@@ -368,13 +416,14 @@
         var valArr = [];
         if (table.rows.length == 1) {
           var headerRow = table.insertRow(0);
+          headerRow.classList.add("table-header");
           var thead = table.createTHead();
           var index_cell = headerRow.insertCell();
-          index_cell.innerHTML = "Index";
+          index_cell.innerHTML = "INDEX";
           var index_cell = headerRow.insertCell();
-          index_cell.innerHTML = "Value";
+          index_cell.innerHTML = "VALUE";
           var index_cell = headerRow.insertCell();
-          index_cell.innerHTML = "Action";
+          index_cell.innerHTML = "ACTION";
         }
         for (let i = 0; i < numberInputElements; i++) {
           valArr.push(inputElement[i].value);
@@ -402,7 +451,7 @@
 
         var cell_action = row.insertCell(2);
         cell_action.innerHTML =
-          "<button onclick='deleteRow(this)'>Delete</button> <button onclick='editRow(this)'>Change</button>";
+          "<button onclick='deleteRow(this)' class='delete_row'></button> <button onclick='editRow(this)' class='edit_row'></button>";
 
         // Function to expand and show the full value
 
@@ -414,62 +463,97 @@
       function expandText(button, fullText) {
         var cell = button.parentNode;
         cell.innerHTML =
-          fullText + "<button onclick='collapseText(this)'>Collapse</button>";
+          fullText +
+          "<button class='collapse-button' onclick='collapseText(this)'>Collapse</button>";
       }
 
       // Function to collapse the text
       function collapseText(span) {
         var cell = span.parentNode;
         var val = cell.innerText;
+        var string = val.substring(0,val.length - 8);
         cell.innerHTML =
           val.substring(0, 20) +
           "<span class='ellipsis'> ...</span>" +
-          "<button class='expand-button' onclick='expandText(this, \"" +
-          val.substring(0, val.length - 8) +
-          "\")'>Expand</button>";
+          "<button class='expand-button' onclick='expandText(this, &#39" + string.replace(/\n/g, ' ') + "&#39)'>Expand</button>";
       }
 
       function deleteRow(row) {
         var i = row.parentNode.parentNode.rowIndex;
         document.getElementById("myTable").deleteRow(i);
+        inputValArr.splice(i - 1, 1);
+        console.log(inputValArr);
       }
 
       function editRow(button) {
-        var i = button.parentNode.parentNode.rowIndex;
-        var table = document.getElementById("myTable");
-        for (var index in inputElement) {
-          inputElement[index].value = inputValArr[i-1][index];
+        if (isEditing == 0) {
+          var resizeBar = document.getElementById("resizeBar");
+          resizeBar.style.backgroundColor = "var(--color-blue)";
+          isEditing = 1;
+          var i = button.parentNode.parentNode.rowIndex;
+          var table = document.getElementById("myTable");
+          for (var index in inputElement) {
+            inputElement[index].value = inputValArr[i - 1][index];
+          }
+          button.setAttribute("onclick", "saveRow(this)");
+          button.setAttribute("class", "save_row");
         }
-        
-        button.innerHTML = 'Save';  
-        button.setAttribute("onclick", "saveRow(this);")
       }
 
       function saveRow(button) {
-        var i = button.parentNode.parentNode.rowIndex;
-        var table = document.getElementById("myTable");
-        var val = '';
-        for (var index in inputElement) {
-          if (index == 0) {
-            val += inputElement[index].value;
-          } else {
-            val += ', ' + inputElement[index].value;
+        if (isEditing == 1) {
+          isEditing = 0;
+          var resizeBar = document.getElementById("resizeBar");
+          resizeBar.style.backgroundColor = "var(--color-black)";
+          var i = button.parentNode.parentNode.rowIndex;
+          var table = document.getElementById("myTable");
+          var val = "";
+          for (var index in inputElement) {
+            if (index == 0) {
+              val += inputElement[index].value;
+            } else {
+              val += ", " + inputElement[index].value;
+            }
+            inputValArr[i - 1][index] = inputElement[index].value;
           }
-          inputValArr[i-1][index] = inputElement[index].value;
-        }
-        var editableRow = table.rows.item(i);
+          var editableRow = table.rows.item(i);
 
-        if (val.length > 20) {
-          // Display only a part of the text if it's too long
-          editableRow.cells[1].innerHTML =
-            val.substring(0, 20) + "<span class='ellipsis'> ...</span>";
-          // Add a button to expand and show the full value
-          editableRow.cells[1].innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;
-        } else {
-          editableRow.cells[1].innerHTML = val;
+          if (val.length > 20) {
+            // Display only a part of the text if it's too long
+            editableRow.cells[1].innerHTML =
+              val.substring(0, 20) + "<span class='ellipsis'> ...</span>";
+            // Add a button to expand and show the full value
+            editableRow.cells[1].innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;
+          } else {
+            editableRow.cells[1].innerHTML = val;
+          }
+          button.setAttribute("onclick", "editRow(this)");
+          button.setAttribute("class", "edit_row");
+
+          for (let i = 0; i < numberInputElements; i++) {
+            inputElement[i].value = null;
+          }
         }
-        button.innerHTML = 'Edit';  
-        button.setAttribute("onclick", "editRow(this);")
+      }
+
+      const resizeBar = document.getElementById("resizeBar");
+      let isResizing = false;
+
+      resizeBar.addEventListener("mousedown", (event) => {
+        isResizing = true;
+        document.addEventListener("mousemove", handleMouseMove);
+        document.addEventListener("mouseup", () => {
+          isResizing = false;
+          document.removeEventListener("mousemove", handleMouseMove);
+        });
+      });
+
+      function handleMouseMove(event) {
+        if (isResizing) {
+          const container = document.querySelector(".grid-container");
+          const newWidth = event.clientX;
+          container.style.gridTemplateColumns = `${newWidth}px 0.5% 1fr`;
+        }
       }
     </script>
   </body>

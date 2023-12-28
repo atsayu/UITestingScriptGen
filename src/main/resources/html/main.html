@@ -1,0 +1,33 @@
+<!-- main.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head></head>
+  <body>
+    <iframe
+      id="myIframe"
+      src="https://form.jotform.com/233591762291461"
+      width="80%"
+      height="100%"
+      frameborder="0"
+    ></iframe>
+    <script>
+      var iframe = document.getElementById("myIframe");
+
+      window.addEventListener("message", function (event) {
+        // Check if the message is from the iframe
+        if (event.source === iframe.contentWindow) {
+          // Access the iframe document after it has confirmed it's loaded
+          var iframeDocument =
+            iframe.contentDocument || iframe.contentWindow.document;
+          console.log(iframeDocument);
+        }
+      });
+
+      // Iframe onload event
+      iframe.onload = function () {
+        // Inform the iframe that it's safe to communicate
+        iframe.contentWindow.postMessage("iframeLoaded", "*");
+      };
+    </script>
+  </body>
+</html>
