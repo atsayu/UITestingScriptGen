@@ -500,7 +500,7 @@ public class newSolve {
             "    </div>\n" +
             "    <script>\n" +
             "      let inputValArr = [];\n" +
-            "      let inputValues = [];\n" +
+
             "      let allElement = document.getElementsByTagName(\"*\");\n" +
             "      let inputElement = [];\n" +
             "      for (let i = 0; i < allElement.length; i++) {\n" +
@@ -532,24 +532,19 @@ public class newSolve {
             "      function attributeElement(e) {\n" +
             "        return e.getAttribute(\"cong\");\n" +
             "      }\n" +
-            "      for (let i = 0; i < numberInputElements; i++) {\n" +
-            "        inputValues.push(attributeElement(inputElement[i]));\n" +
-            "      }\n" +
             "\n" +
      "const saveButton = document.getElementById(\"save\");\n" +
-            "      saveButton.addEventListener(\"click\", function () {\n" +
-            "        var table = document.getElementById(\"myTable\");\n" +
-            "        for (var i = 1; i < table.rows.length; i++) {\n" +
-            "          var row = table.rows[i];\n" +
-            "          for (var j = 1; j < row.cells.length - 1; j++) {\n" +
-            "            if (row.cells[j].innerHTML.trim() == \"\") {\n" +
-            "              inputValues.push(\"null\");\n" +
-            "            } else {\n" +
-            "              inputValues.push(row.cells[j].innerHTML);\n" +
-            "            }\n" +
-            "          }\n" +
-            "        }\n" +
-            "        console.log(inputValues);\n" +
+            "      saveButton.addEventListener(\"click\", function () {\n" +" console.log(inputValArr);\n"
+          + "      let inputValues = [];\n"
+          + "      for (let i = 0; i < numberInputElements; i++) {\n"
+          + "        inputValues.push(attributeElement(inputElement[i]));\n"
+          + "      }\n"
+          + "      for (let i = 0; i < inputValArr.length; i++) {\n"
+          + "        for (let k = 0; k < numberInputElements; k++) {\n"
+          + "          inputValues.push(inputValArr[i][k]);\n"
+          + "        }\n"
+          + "      }\n"
+          + "      console.log(inputValues);"+
             "        let fileContent = \"\";\n" +
             "        for (let i = 0; i < numberInputElements; i++) {\n" +
             "          for (let k = i; k < inputValues.length; k += numberInputElements) {\n" +

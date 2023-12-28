@@ -1,20 +1,20 @@
-Test-login-1
-   Open Browser   https://demoqa.com/login   Edge
-   Input Text   xpath=//input[@id='firstName' and @placeholder='First Name']   NOTa1
-   Click Element   NOTxpath=//input[@id='lastName' and @placeholder='Last Name']
-   Should Go To   https://demoqa.com/profile
-Test-login-2
-   Open Browser   https://demoqa.com/login   Edge
-   Input Text   xpath=//input[@id='firstName' and @placeholder='First Name']   NOTa1
-   Click Element   xpath=//input[@id='lastName' and @placeholder='Last Name']
-   Should Go To   https://demoqa.com/profile
-Test-login-3
-   Open Browser   https://demoqa.com/login   Edge
-   Input Text   xpath=//input[@id='firstName' and @placeholder='First Name']   a1
-   Click Element   NOTxpath=//input[@id='lastName' and @placeholder='Last Name']
-   Should Go To   https://demoqa.com/profile
-Test-login-4
-   Open Browser   https://demoqa.com/login   Edge
-   Input Text   xpath=//input[@id='firstName' and @placeholder='First Name']   a2
-   Click Element   NOTxpath=//input[@id='lastName' and @placeholder='Last Name']
-   Should Go To   https://demoqa.com/profile
+*** Variables ***
+${password}	xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']
+${username}	xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']
+${login}	xpath=//input[@data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
+
+*** Setting ***
+Library	SeleniumLibrary
+
+*** Test Cases ***
+Test Login 1
+	Open Browser	https://www.saucedemo.com/	Chrome
+	Maximize Browser Window
+	Input Text	${password}	cong
+	Input Text	${username}	standard_user
+	Click Element	${login}
+Test-Login-1
+   Open Browser   https://www.saucedemo.com/   Edge
+   Input Text   xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']   NOTcong
+   Input Text   xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']   NOTstandard_user
+   Click Element   NOTxpath=//input[@data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
