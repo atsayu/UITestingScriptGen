@@ -207,7 +207,7 @@ public class HomeController {
 
         newSolve.fillInCSV("src/main/resources/data/datasheet.csv","src/main/resources/data/data.csv", newSolve.getDataFromCSV("src/main/resources/data/data.csv"));
 
-        ScriptGen.createScriptV2("src/main/resources/template/outline.xml", "src/main/resources/data/data.csv", "src/main/resources/testscript/script.robot");
+        ScriptGen.createScriptV2("src/main/resources/template/outline.xml", "src/main/resources/data/data.csv", "src/main/resources/robot_test_file/final_test.robot");
 
 
         return new ResponseEntity<>("Create Script", HttpStatus.OK);

@@ -389,73 +389,97 @@ public class newSolve {
     }
   }
 
-  public static String contentOfMockWeb(Document domTree) {
-    String htmlContent = "<html>\n"
-        + "<head>\n"
-        + "  <style>\n"
-        + "    .item1 {\n"
-        + "      grid-area: main;\n"
-        + "      \n"
-        + "    }\n"
-        + "\n"
-        + "    .item2 {\n"
-        + "      grid-area: custom;\n"
-        + "     \n"
-        + "    \n"
-        + "\n"
-        + "      \n"
-        + "    }\n"
-        + "    .item3 {\n"
-        + "      grid-area: gap;\n"
-        + "      background-color: aqua;\n"
-        + "    }\n"
-        + "    \n"
-        + "\n"
-        + "\n"
-        + "    .grid-container {\n"
-        + "      display: grid;\n"
-        + "      grid-template-areas:\n"
-        + "        'main gap custom';\n"
-        + "      grid-template-columns: 63% 2% 35%;\n"
-        + "      column-gap: 0px;\n"
-        + "      width: 100%;\n"
-        + "      height: 100%;\n"
-        + "      \n"
-        + "    }\n"
-        + "\n"
-        + "    .save {\n"
-        + "      background-color: aqua;\n"
-        + "      width: 100px;\n"
-        + "      position: relative;\n"
-        + "      left: 40%;\n"
-        + "      border-radius: 5px;\n"
-        + "      margin-bottom: 10px;\n"
-        + "    }\n"
-        + "\n"
-        + "    .new-testcase {\n"
-        + "      background-color: aqua;\n"
-        + "      width: 100px;\n"
-        + "      position: relative;\n"
-        + "      left: 40%;\n"
-        + "      border-radius: 5px;\n"
-        + "      margin-bottom: 10px;\n"
-        + "      \n"
-        + "    }\n"
-        + "\n"
-        + "    .start {\n"
-        + "      background-color: aqua;\n"
-        + "      width: 100px;\n"
-        + "      position: relative;\n"
-        + "      left: 40%;\n"
-        + "      border-radius: 5px;\n"
-        + "      margin-bottom: 10px;\n"
-        + "    }\n"
-        + "  </style>\n"
-        + "\n"
-        + "</head>\n"
-        + "<body>\n"
-        + "  <div class=\"grid-container\">\n"
-        + "    <div class=\"item1\">";
+  public static String  contentOfMockWeb(Document domTree) {
+    String htmlContent = "<html>\n" +
+            "  <head>\n" +
+            "    <style>\n" +
+            "      :root {\n" +
+            "        grey: #bdbdbd;\n" +
+            "        white: #fefffe;\n" +
+            "        black: #282627;\n" +
+            "      }\n" +
+            "\n" +
+            "      .item1 {\n" +
+            "        grid-area: main;\n" +
+            "      }\n" +
+            "\n" +
+            "      .item2 {\n" +
+            "        grid-area: custom;\n" +
+            "      }\n" +
+            "      .item3 {\n" +
+            "        grid-area: gap;\n" +
+            "        background-color: grey;\n" +
+            "      }\n" +
+            "\n" +
+            "      .grid-container {\n" +
+            "        display: grid;\n" +
+            "        grid-template-areas: \"main gap custom\";\n" +
+            "        grid-template-columns: 63% 0.5% 35%;\n" +
+            "        column-gap: 0px;\n" +
+            "        width: 100%;\n" +
+            "        height: 100%;\n" +
+            "      }\n" +
+            "\n" +
+            "      .save {\n" +
+            "        background-color: white;\n" +
+            "        color: grey;\n" +
+            "        border: 2px solid grey;\n" +
+            "        width: 100px;\n" +
+            "        position: relative;\n" +
+            "        left: 40%;\n" +
+            "        border-radius: 5px;\n" +
+            "        margin-bottom: 10px;\n" +
+            "      }\n" +
+            "\n" +
+            "      .new-testcase {\n" +
+            "        background-color: white;\n" +
+            "        color: grey;\n" +
+            "        border: 2px solid grey;\n" +
+            "        width: 100px;\n" +
+            "        position: relative;\n" +
+            "        left: 40%;\n" +
+            "        border-radius: 5px;\n" +
+            "        margin-bottom: 10px;\n" +
+            "      }\n" +
+            "\n" +
+            "      /* Add the following styles to your existing CSS */\n" +
+            "\n" +
+            "      #myTable {\n" +
+            "        width: 100%;\n" +
+            "        border-collapse: collapse;\n" +
+            "        margin-top: 20px;\n" +
+            "      }\n" +
+            "\n" +
+            "      #myTable th,\n" +
+            "      #myTable td {\n" +
+            "        border: 1px solid grey;\n" +
+            "        padding: 8px;\n" +
+            "        text-align: left;\n" +
+            "      }\n" +
+            "\n" +
+            "      #myTable th {\n" +
+            "        background-color: #282627;\n" +
+            "        color: white;\n" +
+            "      }\n" +
+            "\n" +
+            "      #myTable td {\n" +
+            "        background-color: #fefffe;\n" +
+            "        color: #282627;\n" +
+            "      }\n" +
+            "\n" +
+            "      #myTable tr:hover {\n" +
+            "        background-color: #bdbdbd;\n" +
+            "      }\n" +
+            "\n" +
+            "      #myTable button {\n" +
+            "        padding: 5px;\n" +
+            "        cursor: pointer;\n" +
+            "      }\n" +
+            "    </style>\n" +
+            "  </head>\n" +
+            "  <body>\n" +
+            "    <div class=\"grid-container\">\n" +
+            "      <div class=\"item1\">";
     Element body = domTree.body();
     for (Element child : body.children()) {
       htmlContent += "\n";
@@ -463,132 +487,223 @@ public class newSolve {
       htmlContent += String.valueOf(child);
     }
     htmlContent += "\n";
-    htmlContent += "    </div>\n"
-        + "<div class=\"item3\"></div>\n"
-        + "    <div class=\"item2\">\n"
-        + "      <button id=\"new-testcase\" class=\"new-testcase\" type=\"button\">New Testcase</button>\n"
-        + "      <br>\n"
-        + "      <button id=\"save\" class=\"save\" type=\"button\">Save</button>\n"
-        + "      <br>\n"
-        + "      <button id=\"start\" class=\"start\" type=\"button\" onclick=\"createHeaderTable()\">Start</button>\n"
-        + "      <table id=\"myTable\">\n"
-        + "      </table>\n"
-        + "    </div>\n"
-        + "  </div>\n"
-        + "  <script>let inputValues = [];\n"
-        + "    let allElement = document.getElementsByTagName(\"*\");\n"
-        + "    let inputElement = [];\n"
-        + "    for (let i = 0; i < allElement.length; i++) {\n"
-        + "      if (allElement[i].hasAttribute(\"cong\") && allElement[i].getAttribute(\"cong\").length != 0) {\n"
-        + "        if (allElement[i].tagName.localeCompare(\"TEXTAREA\")) {\n"
-        + "          inputElement.push(allElement[i]);\n"
-        + "        } else if (allElement[i].tagName.localeCompare(\"INPUT\")) {\n"
-        + "          if (allElement[i].hasAttribute(\"type\")) {\n"
-        + "            let typeAttributeValue = allElement[i].getAttribute(\"type\");\n"
-        + "            if (typeAttributeValue.localeCompare(\"submit\") != 0 && typeAttributeValue.localeCompare(\"button\") != 0\n"
-        + "              && typeAttributeValue.localeCompare(\"reset\") != 0 && typeAttributeValue.localeCompare(\"image\") != 0 && typeAttributeValue.localeCompare(\"hidden\") != 0) {\n"
-        + "              inputElement.push(allElement[i]);\n"
-        + "            }\n"
-        + "          } else {\n"
-        + "            inputElement.push(allElement[i]);\n"
-        + "          }\n"
-        + "        }\n"
-        + "      }\n"
-        + "    }\n"
-        + "    let numberInputElements = inputElement.length;\n"
-        + "    function attributeElement(e) {\n"
-        + "      return e.getAttribute(\"cong\");\n"
-        + "    }\n"
-        + "    for (let i = 0; i < numberInputElements; i++) {\n"
-        + "      inputValues.push(attributeElement(inputElement[i]));\n"
-        + "    }\n"
-        + "\n"
-        + "    const saveButton = document.getElementById('save');\n"
-        + "    saveButton.addEventListener('click', function () {\n"
-        + "      var table = document.getElementById(\"myTable\");\n"
-        + "\t\t\tfor (var i = 1; i < table.rows.length; i++) {\n"
-        + "\t\t\t\tvar row = table.rows[i];\n"
-        + "\t\t\t\tfor (var j = 0; j < row.cells.length - 1; j++) {\n"
-        + "\t\t\t\t\tif (row.cells[j].innerHTML.trim() == \"\") {\n"
-        + "            inputValues.push(\"null\");\n"
-        + "          } else {\n"
-        + "            inputValues.push(row.cells[j].innerHTML);\n"
-        + "          }\n"
-        + "\t\t\t\t}\n"
-        + "\t\t\t}\n"
-        + "\t\t\tconsole.log(inputValues);\n"
-        + "      let fileContent = \"\";\n"
-        + "      for (let i = 0; i < numberInputElements; i++) {\n"
-        + "        for (let k = i; k < inputValues.length; k += numberInputElements) {\n"
-        + "          if (k < i + (inputValues.length / numberInputElements - 1) * numberInputElements) {\n"
-        + "            fileContent += inputValues[k] + ',';\n"
-        + "          } else {\n"
-        + "            fileContent += inputValues[k] + '\\n';\n"
-        + "          }\n"
-        + "        }\n"
-        + "      }\n"
-        + "      let blob = new Blob([fileContent], { type: 'text/csv' });\n"
-        + "      let url = URL.createObjectURL(blob);\n"
-        + "      let downloadLink = document.createElement('a');\n"
-        + "      downloadLink.href = url;\n"
-        + "      downloadLink.download = 'data.csv';\n"
-        + "      downloadLink.click();\n"
-        + "    });\n"
-        + "    const newTestcaseButton = document.getElementById('new-testcase');\n"
-        + "    newTestcaseButton.addEventListener('click', function () {\n"
-        + "      // for (let i = 0; i < numberInputElements; i++) {\n"
-        + "      //   if (inputElement[i].value.length == 0) {\n"
-        + "      //     inputValues.push(\"null\");\n"
-        + "      //   } else {\n"
-        + "      //     inputValues.push(inputElement[i].value);\n"
-        + "      //   }\n"
-        + "\n"
-        + "      // }\n"
-        + "\t\t\tvar table = document.getElementById(\"myTable\");\n"
-        + "\t\t\tvar row = table.insertRow();\n"
-        + "      for (let i = 0; i < numberInputElements; i++) {\n"
-        + "        var cell = row.insertCell(i);\n"
-        + "        cell.innerHTML = inputElement[i].value;\n"
-        + "      }\n"
-        + "\t\t\tvar cell_action = row.insertCell(numberInputElements);\n"
-        + "\t\t\tcell_action.innerHTML = \"<button onclick='deleteRow(this)'>Delete</button> <button onclick='editRow(this)'>Change</button>\";\n"
-        + "\t\t\n"
-        + "      for (let i = 0; i < numberInputElements; i++) {\n"
-        + "        inputElement[i].value = '';\n"
-        + "      }\n"
-        + "    });\n"
-        + "\n"
-        + "    function deleteRow(row) {\n"
-        + "\t\t\tvar i = row.parentNode.parentNode.rowIndex;\n"
-        + "\t\t\tdocument.getElementById(\"myTable\").deleteRow(i);\n"
-        + "\t\t}\n"
-        + "\n"
-        + "\t\tfunction editRow(row) {\n"
-        + "\t\t\tvar i = row.parentNode.parentNode.rowIndex;\n"
-        + "\t\t\tvar table = document.getElementById(\"myTable\");\n"
-        + "      for (let j = 0; j < numberInputElements; j++) {\n"
-        + "          table.rows[i].cells[j].setAttribute(\"contenteditable\", true);\n"
-        + "      }\n"
-        + "\t\t\ttable.rows[i].cells[0].focus();\n"
-        + "\t\t}\n"
-        + "\n"
-        + "    function createHeaderTable() { \n"
-        + "      var table = document.getElementById(\"myTable\");\n"
-        + "      var thead = table.createTHead();\n"
-        + "\t\t  var row = thead.insertRow();\n"
-        + "      for (let i = 0; i < numberInputElements; i++) {\n"
-        + "        var cell = row.insertCell();\n"
-        + "        cell.innerHTML = inputElement[i].getAttribute(\"cong\");\n"
-        + "      }\n"
-        + "      var cell = row.insertCell();\n"
-        + "      cell.innerHTML = \"Action\";\n"
-        + "      \n"
-        + "    }\n"
-        + "    \n"
-        + "    </script>\n"
-        + "    \n"
-        + "</body>\n"
-        + "</html>";
+    htmlContent += "</div>\n  <div class=\"item3\"></div>\n" +
+            "      <div class=\"item2\">\n" +
+            "        <button id=\"new-testcase\" class=\"new-testcase\" type=\"button\">\n" +
+            "          New Testcase\n" +
+            "        </button>\n" +
+            "        <br />\n" +
+            "        <button id=\"save\" class=\"save\" type=\"button\">Save</button>\n" +
+            "        <br />\n" +
+            "        <table id=\"myTable\"></table>\n" +
+            "      </div>\n" +
+            "    </div>\n" +
+            "    <script>\n" +
+            "      let inputValArr = [];\n" +
+            "      let inputValues = [];\n" +
+            "      let allElement = document.getElementsByTagName(\"*\");\n" +
+            "      let inputElement = [];\n" +
+            "      for (let i = 0; i < allElement.length; i++) {\n" +
+            "        if (\n" +
+            "          allElement[i].hasAttribute(\"cong\") &&\n" +
+            "          allElement[i].getAttribute(\"cong\").length != 0\n" +
+            "        ) {\n" +
+            "          if (allElement[i].tagName.localeCompare(\"TEXTAREA\")) {\n" +
+            "            inputElement.push(allElement[i]);\n" +
+            "          } else if (allElement[i].tagName.localeCompare(\"INPUT\")) {\n" +
+            "            if (allElement[i].hasAttribute(\"type\")) {\n" +
+            "              let typeAttributeValue = allElement[i].getAttribute(\"type\");\n" +
+            "              if (\n" +
+            "                typeAttributeValue.localeCompare(\"submit\") != 0 &&\n" +
+            "                typeAttributeValue.localeCompare(\"button\") != 0 &&\n" +
+            "                typeAttributeValue.localeCompare(\"reset\") != 0 &&\n" +
+            "                typeAttributeValue.localeCompare(\"image\") != 0 &&\n" +
+            "                typeAttributeValue.localeCompare(\"hidden\") != 0\n" +
+            "              ) {\n" +
+            "                inputElement.push(allElement[i]);\n" +
+            "              }\n" +
+            "            } else {\n" +
+            "              inputElement.push(allElement[i]);\n" +
+            "            }\n" +
+            "          }\n" +
+            "        }\n" +
+            "      }\n" +
+            "      let numberInputElements = inputElement.length;\n" +
+            "      function attributeElement(e) {\n" +
+            "        return e.getAttribute(\"cong\");\n" +
+            "      }\n" +
+            "      for (let i = 0; i < numberInputElements; i++) {\n" +
+            "        inputValues.push(attributeElement(inputElement[i]));\n" +
+            "      }\n" +
+            "\n" +
+     "const saveButton = document.getElementById(\"save\");\n" +
+            "      saveButton.addEventListener(\"click\", function () {\n" +
+            "        var table = document.getElementById(\"myTable\");\n" +
+            "        for (var i = 1; i < table.rows.length; i++) {\n" +
+            "          var row = table.rows[i];\n" +
+            "          for (var j = 1; j < row.cells.length - 1; j++) {\n" +
+            "            if (row.cells[j].innerHTML.trim() == \"\") {\n" +
+            "              inputValues.push(\"null\");\n" +
+            "            } else {\n" +
+            "              inputValues.push(row.cells[j].innerHTML);\n" +
+            "            }\n" +
+            "          }\n" +
+            "        }\n" +
+            "        console.log(inputValues);\n" +
+            "        let fileContent = \"\";\n" +
+            "        for (let i = 0; i < numberInputElements; i++) {\n" +
+            "          for (let k = i; k < inputValues.length; k += numberInputElements) {\n" +
+            "            if (\n" +
+            "              k <\n" +
+            "              i +\n" +
+            "                (inputValues.length / numberInputElements - 1) *\n" +
+            "                  numberInputElements\n" +
+            "            ) {\n" +
+            "              fileContent += inputValues[k] + \",\";\n" +
+            "            } else {\n" +
+            "              fileContent += inputValues[k] + \"\\n\";\n" +
+            "            }\n" +
+            "          }\n" +
+            "        }"+
+            "         let xhr = new XMLHttpRequest();\n" +
+            "         xhr.open(\"POST\", \"/createtest\");\n" +
+            "         // xhr.setRequestHeader(\"Accept\", \"application/json\");\n" +
+            "         xhr.setRequestHeader(\"Content-Type\", \"application/json\");\n" +
+            "         let data = {\n" +
+            "          \"values\" : fileContent,\n" +
+            "         }\n" +
+            "         xhr.onload = () => {\n" +
+            "          if (xhr.readyState === 4 && xhr.status === 200) {\n" +
+            "           window.location.href = '/script';\n" +
+            "          } else {\n" +
+            "           console.log(`Error: ${xhr.status}`);\n" +
+            "          }\n" +
+            "         };\n" +
+            "\n" +
+            "         xhr.send(JSON.stringify(data));\n" +
+            "        });\n"+
+            "      const newTestcaseButton = document.getElementById(\"new-testcase\");\n" +
+            "      newTestcaseButton.addEventListener(\"click\", function () {\n" +
+            "        // for (let i = 0; i < numberInputElements; i++) {\n" +
+            "        //   if (inputElement[i].value.length == 0) {\n" +
+            "        //     inputValues.push(\"null\");\n" +
+            "        //   } else {\n" +
+            "        //     inputValues.push(inputElement[i].value);\n" +
+            "        //   }\n" +
+            "\n" +
+            "        // }\n" +
+            "        var table = document.getElementById(\"myTable\");\n" +
+            "        var row = table.insertRow();\n" +
+            "        var val = \"\";\n" +
+            "        var valArr = [];\n" +
+            "        if (table.rows.length == 1) {\n" +
+            "          var headerRow = table.insertRow(0);\n" +
+            "          var thead = table.createTHead();\n" +
+            "          var index_cell = headerRow.insertCell();\n" +
+            "          index_cell.innerHTML = \"Index\";\n" +
+            "          var index_cell = headerRow.insertCell();\n" +
+            "          index_cell.innerHTML = \"Value\";\n" +
+            "          var index_cell = headerRow.insertCell();\n" +
+            "          index_cell.innerHTML = \"Action\";\n" +
+            "        }\n" +
+            "        for (let i = 0; i < numberInputElements; i++) {\n" +
+            "          valArr.push(inputElement[i].value);\n" +
+            "          if (i != 0) {\n" +
+            "            val += \", \" + inputElement[i].value;\n" +
+            "          } else {\n" +
+            "            val += inputElement[i].value;\n" +
+            "          }\n" +
+            "        }\n" +
+            "        inputValArr.push(valArr);\n" +
+            "        var index_cell = row.insertCell(0);\n" +
+            "        index_cell.innerHTML = table.rows.length - 1;\n" +
+            "\n" +
+            "        var val_cell = row.insertCell(1);\n" +
+            "\n" +
+            "        if (val.length > 20) {\n" +
+            "          // Display only a part of the text if it's too long\n" +
+            "          val_cell.innerHTML =\n" +
+            "            val.substring(0, 20) + \"<span class='ellipsis'> ...</span>\";\n" +
+            "          // Add a button to expand and show the full value\n" +
+            "          val_cell.innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;\n" +
+            "        } else {\n" +
+            "          val_cell.innerHTML = val;\n" +
+            "        }\n" +
+            "\n" +
+            "        var cell_action = row.insertCell(2);\n" +
+            "        cell_action.innerHTML =\n" +
+            "          \"<button onclick='deleteRow(this)'>Delete</button> <button onclick='editRow(this)'>Change</button>\";\n" +
+            "\n" +
+            "        // Function to expand and show the full value\n" +
+            "\n" +
+            "        for (let i = 0; i < numberInputElements; i++) {\n" +
+            "          inputElement[i].value = null;\n" +
+            "        }\n" +
+            "      });\n" +
+            "\n" +
+            "      function expandText(button, fullText) {\n" +
+            "        var cell = button.parentNode;\n" +
+            "        cell.innerHTML =\n" +
+            "          fullText + \"<button onclick='collapseText(this)'>Collapse</button>\";\n" +
+            "      }\n" +
+            "\n" +
+            "      // Function to collapse the text\n" +
+            "      function collapseText(span) {\n" +
+            "        var cell = span.parentNode;\n" +
+            "        var val = cell.innerText;\n" +
+            "        cell.innerHTML =\n" +
+            "          val.substring(0, 20) +\n" +
+            "          \"<span class='ellipsis'> ...</span>\" +\n" +
+            "          \"<button class='expand-button' onclick='expandText(this, \\\"\" +\n" +
+            "          val.substring(0, val.length - 8) +\n" +
+            "          \"\\\")'>Expand</button>\";\n" +
+            "      }\n" +
+            "\n" +
+            "      function deleteRow(row) {\n" +
+            "        var i = row.parentNode.parentNode.rowIndex;\n" +
+            "        document.getElementById(\"myTable\").deleteRow(i);\n" +
+            "      }\n" +
+            "\n" +
+            "      function editRow(button) {\n" +
+            "        var i = button.parentNode.parentNode.rowIndex;\n" +
+            "        var table = document.getElementById(\"myTable\");\n" +
+            "        for (var index in inputElement) {\n" +
+            "          inputElement[index].value = inputValArr[i-1][index];\n" +
+            "        }\n" +
+            "        \n" +
+            "        button.innerHTML = 'Save';  \n" +
+            "        button.setAttribute(\"onclick\", \"saveRow(this);\")\n" +
+            "      }\n" +
+            "\n" +
+            "      function saveRow(button) {\n" +
+            "        var i = button.parentNode.parentNode.rowIndex;\n" +
+            "        var table = document.getElementById(\"myTable\");\n" +
+            "        var val = '';\n" +
+            "        for (var index in inputElement) {\n" +
+            "          if (index == 0) {\n" +
+            "            val += inputElement[index].value;\n" +
+            "          } else {\n" +
+            "            val += ', ' + inputElement[index].value;\n" +
+            "          }\n" +
+            "          inputValArr[i-1][index] = inputElement[index].value;\n" +
+            "        }\n" +
+            "        var editableRow = table.rows.item(i);\n" +
+            "\n" +
+            "        if (val.length > 20) {\n" +
+            "          // Display only a part of the text if it's too long\n" +
+            "          editableRow.cells[1].innerHTML =\n" +
+            "            val.substring(0, 20) + \"<span class='ellipsis'> ...</span>\";\n" +
+            "          // Add a button to expand and show the full value\n" +
+            "          editableRow.cells[1].innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;\n" +
+            "        } else {\n" +
+            "          editableRow.cells[1].innerHTML = val;\n" +
+            "        }\n" +
+            "        button.innerHTML = 'Edit';  \n" +
+            "        button.setAttribute(\"onclick\", \"editRow(this);\")\n" +
+            "      }\n" +
+            "    </script>\n" +
+            "  </body>\n" +
+            "</html>";
     return htmlContent;
   }
 
