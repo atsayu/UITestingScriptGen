@@ -375,7 +375,7 @@ public class newSolve {
       traversalDom(domTree, e, mapLocatorVariableAndValueVariable);
     }
 //    addNewElementToDom(domTree);
-    writeDomToHtmlFile(domTree, "src/main/resources/templates/test.html");
+    writeDomToHtmlFile(domTree, "src/main/resources/html/test.html");
   }
 
   public static void traversalDom(Document domTree, Element e, Map<String, String> mapLocatorVariableAndValueVariable) {
@@ -534,17 +534,20 @@ public class newSolve {
             "      }\n" +
             "\n" +
      "const saveButton = document.getElementById(\"save\");\n" +
-            "      saveButton.addEventListener(\"click\", function () {\n" +" console.log(inputValArr);\n"
-          + "      let inputValues = [];\n"
-          + "      for (let i = 0; i < numberInputElements; i++) {\n"
-          + "        inputValues.push(attributeElement(inputElement[i]));\n"
-          + "      }\n"
-          + "      for (let i = 0; i < inputValArr.length; i++) {\n"
-          + "        for (let k = 0; k < numberInputElements; k++) {\n"
-          + "          inputValues.push(inputValArr[i][k]);\n"
-          + "        }\n"
-          + "      }\n"
-          + "      console.log(inputValues);"+
+            "      saveButton.addEventListener(\"click\", function () {\n" +
+            "        var table = document.getElementById(\"myTable\");\n" +
+            "        for (var i = 1; i < table.rows.length; i++) {\n" +
+            "          var row = table.rows[i];\n" +
+"            let values = row.cells[1].innerHTML.split(',');\n" +
+            "            for (var j = 0; j < values.length; j++) {\n" +
+            "              if (values[j].trim() == \"\") {\n" +
+            "                inputValues.push(\"null\");\n" +
+            "              } else {\n" +
+            "                inputValues.push(values[j].trim());\n" +
+            "              }\n" +
+            "            }\n" +
+            "          }"+
+            "        console.log(inputValues);\n" +
             "        let fileContent = \"\";\n" +
             "        for (let i = 0; i < numberInputElements; i++) {\n" +
             "          for (let k = i; k < inputValues.length; k += numberInputElements) {\n" +

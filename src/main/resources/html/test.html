@@ -63,6 +63,7 @@
       #myTable tr:first-child {
         font-weight: bold;
         background-color: var(--color-grey);
+
       }
 
       #myTable th,
@@ -449,19 +450,23 @@
       function expandText(button, fullText) {
         var cell = button.parentNode;
         cell.innerHTML =
+
           fullText + "<button onclick='collapseText(this)'>Collapse</button>";
+
       }
 
       // Function to collapse the text
       function collapseText(span) {
         var cell = span.parentNode;
         var val = cell.innerText;
+
         cell.innerHTML =
           val.substring(0, 20) +
           "<span class='ellipsis'> ...</span>" +
           "<button class='expand-button' onclick='expandText(this, \"" +
           val.substring(0, val.length - 8) +
           "\")'>Expand</button>";
+
       }
 
       function deleteRow(row) {

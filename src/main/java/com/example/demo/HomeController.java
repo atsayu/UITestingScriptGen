@@ -238,7 +238,7 @@ public class HomeController {
     @GetMapping("/script")
     public String sendScript( Model model) throws IOException {
         StringBuilder testScript = new StringBuilder();
-        File robotFile = new File("src/main/resources/testscript/script.robot");
+        File robotFile = new File("src/main/resources/robot_test_file/final_test.robot");
 
         BufferedReader bufferedReader = new BufferedReader(new FileReader(robotFile));
 
