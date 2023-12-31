@@ -500,7 +500,7 @@ public class newSolve {
             "    </div>\n" +
             "    <script>\n" +
             "      let inputValArr = [];\n" +
-            "      let inputValues = [];\n" +
+
             "      let allElement = document.getElementsByTagName(\"*\");\n" +
             "      let inputElement = [];\n" +
             "      for (let i = 0; i < allElement.length; i++) {\n" +
@@ -531,9 +531,6 @@ public class newSolve {
             "      let numberInputElements = inputElement.length;\n" +
             "      function attributeElement(e) {\n" +
             "        return e.getAttribute(\"cong\");\n" +
-            "      }\n" +
-            "      for (let i = 0; i < numberInputElements; i++) {\n" +
-            "        inputValues.push(attributeElement(inputElement[i]));\n" +
             "      }\n" +
             "\n" +
      "const saveButton = document.getElementById(\"save\");\n" +
