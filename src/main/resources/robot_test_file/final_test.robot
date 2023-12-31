@@ -2,16 +2,24 @@
 ${password}	xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']
 ${username}	xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']
 <<<<<<< HEAD
+<<<<<<< HEAD
 ${login}	xpath=//input[@data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
 =======
 ${login_button}	xpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
 >>>>>>> master
+=======
+${login}	xpath=//input[@data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
+
+>>>>>>> c3962b74ea6b654dd2354353d670b9848d723317
 
 *** Setting ***
 Library	SeleniumLibrary
 
 *** Test Cases ***
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c3962b74ea6b654dd2354353d670b9848d723317
 Test Login 1
 	Open Browser	https://www.saucedemo.com/	Chrome
 	Maximize Browser Window
@@ -23,6 +31,7 @@ Test-Login-1
    Input Text   xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']   NOTcong
    Input Text   xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']   NOTstandard_user
    Click Element   NOTxpath=//input[@data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
+<<<<<<< HEAD
 =======
 Test login 1
 	Open Browser	https://www.saucedemo.com/	Chrome
@@ -66,3 +75,6 @@ Test-login-7
    Input Text   xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']   123123
    Click Element   NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
 >>>>>>> master
+=======
+
+>>>>>>> c3962b74ea6b654dd2354353d670b9848d723317
