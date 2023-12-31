@@ -499,46 +499,49 @@ public class newSolve {
             "      </div>\n" +
             "    </div>\n" +
             "    <script>\n" +
-            "      let inputValArr = [];\n" +
-
-            "      let allElement = document.getElementsByTagName(\"*\");\n" +
-            "      let inputElement = [];\n" +
-            "      for (let i = 0; i < allElement.length; i++) {\n" +
-            "        if (\n" +
-            "          allElement[i].hasAttribute(\"cong\") &&\n" +
-            "          allElement[i].getAttribute(\"cong\").length != 0\n" +
-            "        ) {\n" +
-            "          if (allElement[i].tagName.localeCompare(\"TEXTAREA\")) {\n" +
-            "            inputElement.push(allElement[i]);\n" +
-            "          } else if (allElement[i].tagName.localeCompare(\"INPUT\")) {\n" +
-            "            if (allElement[i].hasAttribute(\"type\")) {\n" +
-            "              let typeAttributeValue = allElement[i].getAttribute(\"type\");\n" +
-            "              if (\n" +
-            "                typeAttributeValue.localeCompare(\"submit\") != 0 &&\n" +
-            "                typeAttributeValue.localeCompare(\"button\") != 0 &&\n" +
-            "                typeAttributeValue.localeCompare(\"reset\") != 0 &&\n" +
-            "                typeAttributeValue.localeCompare(\"image\") != 0 &&\n" +
-            "                typeAttributeValue.localeCompare(\"hidden\") != 0\n" +
-            "              ) {\n" +
+            "       let inputValArr = [];\n" +
+            "        let inputValues = [];\n" +
+            "        let allElement = document.getElementsByTagName(\"*\");\n" +
+            "        let inputElement = [];\n" +
+            "        for (let i = 0; i < allElement.length; i++) {\n" +
+            "          if (\n" +
+            "            allElement[i].hasAttribute(\"cong\") &&\n" +
+            "            allElement[i].getAttribute(\"cong\").length != 0\n" +
+            "          ) {\n" +
+            "            if (allElement[i].tagName.localeCompare(\"TEXTAREA\")) {\n" +
+            "              inputElement.push(allElement[i]);\n" +
+            "            } else if (allElement[i].tagName.localeCompare(\"INPUT\")) {\n" +
+            "              if (allElement[i].hasAttribute(\"type\")) {\n" +
+            "                let typeAttributeValue = allElement[i].getAttribute(\"type\");\n" +
+            "                if (\n" +
+            "                  typeAttributeValue.localeCompare(\"submit\") != 0 &&\n" +
+            "                  typeAttributeValue.localeCompare(\"button\") != 0 &&\n" +
+            "                  typeAttributeValue.localeCompare(\"reset\") != 0 &&\n" +
+            "                  typeAttributeValue.localeCompare(\"image\") != 0 &&\n" +
+            "                  typeAttributeValue.localeCompare(\"hidden\") != 0\n" +
+            "                ) {\n" +
+            "                  inputElement.push(allElement[i]);\n" +
+            "                }\n" +
+            "              } else {\n" +
             "                inputElement.push(allElement[i]);\n" +
             "              }\n" +
-            "            } else {\n" +
-            "              inputElement.push(allElement[i]);\n" +
             "            }\n" +
             "          }\n" +
             "        }\n" +
-            "      }\n" +
-            "      let numberInputElements = inputElement.length;\n" +
-            "      function attributeElement(e) {\n" +
-            "        return e.getAttribute(\"cong\");\n" +
-            "      }\n" +
+            "        let numberInputElements = inputElement.length;\n" +
+            "        function attributeElement(e) {\n" +
+            "          return e.getAttribute(\"cong\");\n" +
+            "        }\n" +
+            "        for (let i = 0; i < numberInputElements; i++) {\n" +
+            "          inputValues.push(attributeElement(inputElement[i]));\n" +
+            "        }\n" +
             "\n" +
-     "const saveButton = document.getElementById(\"save\");\n" +
-            "      saveButton.addEventListener(\"click\", function () {\n" +
-            "        var table = document.getElementById(\"myTable\");\n" +
-            "        for (var i = 1; i < table.rows.length; i++) {\n" +
-            "          var row = table.rows[i];\n" +
-"            let values = row.cells[1].innerHTML.split(',');\n" +
+            "        const saveButton = document.getElementById(\"save\");\n" +
+            "        saveButton.addEventListener(\"click\", function () {\n" +
+            "          var table = document.getElementById(\"myTable\");\n" +
+            "          for (var i = 1; i < table.rows.length; i++) {\n" +
+            "            var row = table.rows[i];\n" +
+            "            let values = row.cells[1].innerHTML.split(',');\n" +
             "            for (var j = 0; j < values.length; j++) {\n" +
             "              if (values[j].trim() == \"\") {\n" +
             "                inputValues.push(\"null\");\n" +
@@ -546,23 +549,24 @@ public class newSolve {
             "                inputValues.push(values[j].trim());\n" +
             "              }\n" +
             "            }\n" +
-            "          }"+
-            "        console.log(inputValues);\n" +
-            "        let fileContent = \"\";\n" +
-            "        for (let i = 0; i < numberInputElements; i++) {\n" +
-            "          for (let k = i; k < inputValues.length; k += numberInputElements) {\n" +
-            "            if (\n" +
-            "              k <\n" +
-            "              i +\n" +
-            "                (inputValues.length / numberInputElements - 1) *\n" +
-            "                  numberInputElements\n" +
-            "            ) {\n" +
-            "              fileContent += inputValues[k] + \",\";\n" +
-            "            } else {\n" +
-            "              fileContent += inputValues[k] + \"\\n\";\n" +
+            "          }\n" +
+            "          console.log(inputValues);\n" +
+            "          let fileContent = \"\";\n" +
+            "          for (let i = 0; i < numberInputElements; i++) {\n" +
+            "            for (let k = i; k < inputValues.length; k += numberInputElements) {\n" +
+            "              if (\n" +
+            "                k <\n" +
+            "                i +\n" +
+            "                  (inputValues.length / numberInputElements - 1) *\n" +
+            "                    numberInputElements\n" +
+            "              ) {\n" +
+            "                fileContent += inputValues[k] + \",\";\n" +
+            "              } else {\n" +
+            "                fileContent += inputValues[k] + \"\\n\";\n" +
+            "              }\n" +
             "            }\n" +
             "          }\n" +
-            "        }"+
+            "          console.log(fileContent);"+
             "         let xhr = new XMLHttpRequest();\n" +
             "         xhr.open(\"POST\", \"/createtest\");\n" +
             "         // xhr.setRequestHeader(\"Accept\", \"application/json\");\n" +
@@ -715,61 +719,91 @@ public class newSolve {
     saveBtn.attr("type", "button");
     saveBtn = saveBtn.text("Save");
     Element script = domTree.body().appendElement("script");
-    script.text("let inputValues = [];\n"
-            + "        let allElement = document.getElementsByTagName(\"*\");\n"
-            + "        let inputElement = [];\n"
-            + "        for (let i = 0; i < allElement.length; i++) {\n"
-            + "            if (allElement[i].hasAttribute(\"cong\") && allElement[i].getAttribute(\"cong\").length != 0) {\n"
-            + "                if (allElement[i].tagName.localeCompare(\"TEXTAREA\")) {\n"
-            + "                    inputElement.push(allElement[i]);\n"
-            + "                } else if (allElement[i].tagName.localeCompare(\"INPUT\")) {\n"
-            + "                    if (allElement[i].hasAttribute(\"type\")) {\n"
-            + "                        let typeAttributeValue = allElement[i].getAttribute(\"type\");\n"
-            + "                        if (typeAttributeValue.localeCompare(\"submit\") != 0 && typeAttributeValue.localeCompare(\"button\") != 0\n"
-            + "                            && typeAttributeValue.localeCompare(\"reset\") != 0 && typeAttributeValue.localeCompare(\"image\") != 0 && typeAttributeValue.localeCompare(\"hidden\") != 0) {\n"
-            + "                            inputElement.push(allElement[i]);\n"
-            + "                        }\n"
-            + "                    } else {\n"
-            + "                        inputValues.push(allElement[i]);\n"
-            + "                    }\n"
-            + "                }\n"
-            + "            }\n"
-            + "        }\n"
-            + "        let numberInputElements = inputElement.length;\n"
-            + "        function attributeElement(e) {\n"
-            + "            return e.getAttribute(\"cong\");\n"
-            + "        }\n"
-            + "        for (let i = 0; i < numberInputElements; i++) {\n"
-            + "            inputValues.push(attributeElement(inputElement[i]));\n"
-            + "        }\n" + "        const saveButton = document.getElementById('save');\n"
-            + "        saveButton.addEventListener('click', function () {\n" +
-            "            let fileContent = \"\";\n" +
-            "            for (let i = 0; i < numberInputElements; i++) {\n" +
-            "                for (let k = i; k < inputValues.length; k += numberInputElements) {\n" +
-            "                    if (k < i + (inputValues.length / numberInputElements - 1) * numberInputElements) {\n" +
-            "                        fileContent += inputValues[k] + ',';\n" +
-            "                    } else {\n" +
-            "                        fileContent += inputValues[k] + '\\n';\n" +
-            "                    }\n" +
+    script.text("       let inputValArr = [];\n" +
+            "        let inputValues = [];\n" +
+            "        let allElement = document.getElementsByTagName(\"*\");\n" +
+            "        let inputElement = [];\n" +
+            "        for (let i = 0; i < allElement.length; i++) {\n" +
+            "          if (\n" +
+            "            allElement[i].hasAttribute(\"cong\") &&\n" +
+            "            allElement[i].getAttribute(\"cong\").length != 0\n" +
+            "          ) {\n" +
+            "            if (allElement[i].tagName.localeCompare(\"TEXTAREA\")) {\n" +
+            "              inputElement.push(allElement[i]);\n" +
+            "            } else if (allElement[i].tagName.localeCompare(\"INPUT\")) {\n" +
+            "              if (allElement[i].hasAttribute(\"type\")) {\n" +
+            "                let typeAttributeValue = allElement[i].getAttribute(\"type\");\n" +
+            "                if (\n" +
+            "                  typeAttributeValue.localeCompare(\"submit\") != 0 &&\n" +
+            "                  typeAttributeValue.localeCompare(\"button\") != 0 &&\n" +
+            "                  typeAttributeValue.localeCompare(\"reset\") != 0 &&\n" +
+            "                  typeAttributeValue.localeCompare(\"image\") != 0 &&\n" +
+            "                  typeAttributeValue.localeCompare(\"hidden\") != 0\n" +
+            "                ) {\n" +
+            "                  inputElement.push(allElement[i]);\n" +
             "                }\n" +
+            "              } else {\n" +
+            "                inputElement.push(allElement[i]);\n" +
+            "              }\n" +
             "            }\n" +
-            "         let xhr = new XMLHttpRequest();\n" +
-            "         xhr.open(\"POST\", \"/createtest\");\n" +
-            "         // xhr.setRequestHeader(\"Accept\", \"application/json\");\n" +
-            "         xhr.setRequestHeader(\"Content-Type\", \"application/json\");\n" +
-            "         let data = {\n" +
-            "          \"values\" : fileContent,\n" +
-            "         }\n" +
-            "         xhr.onload = () => {\n" +
-            "          if (xhr.readyState === 4 && xhr.status === 200) {\n" +
-            "           window.location.href = '/script';\n" +
-            "          } else {\n" +
-            "           console.log(`Error: ${xhr.status}`);\n" +
             "          }\n" +
-            "         };\n" +
+            "        }\n" +
+            "        let numberInputElements = inputElement.length;\n" +
+            "        function attributeElement(e) {\n" +
+            "          return e.getAttribute(\"cong\");\n" +
+            "        }\n" +
+            "        for (let i = 0; i < numberInputElements; i++) {\n" +
+            "          inputValues.push(attributeElement(inputElement[i]));\n" +
+            "        }\n" +
             "\n" +
-            "         xhr.send(JSON.stringify(data));\n" +
-            "        });"
+            "        const saveButton = document.getElementById(\"save\");\n" +
+            "        saveButton.addEventListener(\"click\", function () {\n" +
+            "          var table = document.getElementById(\"myTable\");\n" +
+            "          for (var i = 1; i < table.rows.length; i++) {\n" +
+            "            var row = table.rows[i];\n" +
+            "            let values = row.cells[1].innerHTML.split(',');\n" +
+            "            for (var j = 0; j < values.length; j++) {\n" +
+            "              if (values[j].trim() == \"\") {\n" +
+            "                inputValues.push(\"null\");\n" +
+            "              } else {\n" +
+            "                inputValues.push(values[j].trim());\n" +
+            "              }\n" +
+            "            }\n" +
+            "          }\n" +
+            "          console.log(inputValues);\n" +
+            "          let fileContent = \"\";\n" +
+            "          for (let i = 0; i < numberInputElements; i++) {\n" +
+            "            for (let k = i; k < inputValues.length; k += numberInputElements) {\n" +
+            "              if (\n" +
+            "                k <\n" +
+            "                i +\n" +
+            "                  (inputValues.length / numberInputElements - 1) *\n" +
+            "                    numberInputElements\n" +
+            "              ) {\n" +
+            "                fileContent += inputValues[k] + \",\";\n" +
+            "              } else {\n" +
+            "                fileContent += inputValues[k] + \"\\n\";\n" +
+            "              }\n" +
+            "            }\n" +
+            "          }\n" +
+            "          console.log(fileContent);"+
+            "            \"         let xhr = new XMLHttpRequest();\\n\" +\n" +
+            "            \"         xhr.open(\\\"POST\\\", \\\"/createtest\\\");\\n\" +\n" +
+            "            \"         // xhr.setRequestHeader(\\\"Accept\\\", \\\"application/json\\\");\\n\" +\n" +
+            "            \"         xhr.setRequestHeader(\\\"Content-Type\\\", \\\"application/json\\\");\\n\" +\n" +
+            "            \"         let data = {\\n\" +\n" +
+            "            \"          \\\"values\\\" : fileContent,\\n\" +\n" +
+            "            \"         }\\n\" +\n" +
+            "            \"         xhr.onload = () => {\\n\" +\n" +
+            "            \"          if (xhr.readyState === 4 && xhr.status === 200) {\\n\" +\n" +
+            "            \"           window.location.href = '/script';\\n\" +\n" +
+            "            \"          } else {\\n\" +\n" +
+            "            \"           console.log(`Error: ${xhr.status}`);\\n\" +\n" +
+            "            \"          }\\n\" +\n" +
+            "            \"         };\\n\" +\n" +
+            "            \"\\n\" +\n" +
+            "            \"         xhr.send(JSON.stringify(data));\\n\" +\n" +
+            "            \"        });\\n\"+"
             + "        const newTestcaseButton = document.getElementById('new-testcase');\n"
             + "        newTestcaseButton.addEventListener('click', function () {\n"
             + "            for (let i = 0; i < numberInputElements; i++) {\n"
