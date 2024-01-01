@@ -1,551 +1,442 @@
 <html>
-  <link
+<link
     href="https://fonts.googleapis.com/css?family=Montserrat"
     rel="stylesheet"
-  />
-  <head>
-    <style>
-      :root {
-        --color-darker-grey: #dbdbdb;
-        --color-grey: #f4f9fa;
-        --color-white: #fefeff;
-        --color-black: #08162a;
-        --color-red: #f24b4b;
-        --color-blue: #215faf;
-      }
+/>
+<head>
+  <style>
+    :root {
+      --color-darker-grey: #dbdbdb;
+      --color-grey: #f4f9fa;
+      --color-white: #fefeff;
+      --color-black: #08162a;
+      --color-red: #f24b4b;
+      --color-blue: #215faf;
+    }
 
-      .item1 {
-        grid-area: main;
-      }
+    .item1 {
+      grid-area: main;
+    }
 
-      .item2 {
-        grid-area: custom;
-        background-color: var(--color-black);
-        cursor: ew-resize;
-      }
+    .item2 {
+      grid-area: custom;
+      background-color: var(--color-black);
+      cursor: ew-resize;
+    }
 
-      .item3 {
-        font-family: "Montserrat";
-        grid-area: gap;
-        background-color: var(--color-white);
-        padding: 20px; /* Add padding for better spacing */
-      }
+    .item3 {
+      font-family: "Montserrat";
+      grid-area: gap;
+      background-color: var(--color-white);
+      padding: 20px; /* Add padding for better spacing */
+    }
 
-      .grid-container {
-        display: grid;
-        grid-template-areas: "main custom gap";
-        grid-template-columns: 3fr 0.5% 1fr;
-        width: 100%;
-        height: 100vh;
-      }
+    .grid-container {
+      display: grid;
+      grid-template-areas: "main custom gap";
+      grid-template-columns: 3fr 0.5% 1fr;
+      width: 100%;
+      height: 100vh;
+    }
 
+    .save,
+    .new-testcase {
+      display: inline-block;
+      background-color: var(--color-blue);
+      color: var(--color-white);
+      width: 150px; /* Adjust the percentage based on your design */
+      border-radius: 40px;
+      border: 0px;
+      margin-bottom: 10px;
+      height: 40px;
+      font-weight: bold;
+    }
+
+    #myTable {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      overflow-x: auto; /* Enable horizontal scrolling */
+      border-radius: 10px;
+      font-size: 12;
+    }
+
+    #myTable tr:first-child {
+      font-weight: bold;
+      background-color: var(--color-grey);
+      font-size: 15;
+    }
+
+    #myTable th,
+    #myTable td {
+      border: 2px solid var(--color-darker-grey);
+      padding: 8px;
+      text-align: left;
+    }
+
+    /* Style the first column */
+    #myTable td:nth-child(1) {
+      width: 40px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    #myTable td:nth-child(3) {
+      width: 50px;
+    }
+
+    #myTable td:nth-child(3) button {
+      background-color: transparent; /* Set background color to transparent */
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      width: 20px;
+      height: 20px;
+      background-position: center;
+    }
+
+    .collapse-button,
+    .expand-button {
+      display: inline-block;
+      margin: auto;
+      background-position: right;
+      border: 0px;
+      background-color: var(--color-blue);
+      color: var(--color-white);
+      text-align: center;
+      border-radius: 40px;
+    }
+
+    #myTable td:nth-child(3) button.delete_row {
+      background-image: url("/src/main/resources/static/png/delete.png");
+      /* Add additional styles as needed */
+    }
+
+    /* Style for the edit button */
+    #myTable td:nth-child(3) button.edit_row {
+      background-image: url("/src/main/resources/static/png/pen.png");
+      /* Add additional styles as needed */
+    }
+
+    #myTable td:nth-child(3) button.save_row {
+      background-image: url("/src/main/resources/static/png/save.png");
+      /* Add additional styles as needed */
+    }
+
+    @media screen and (max-width: 600px) {
       .save,
       .new-testcase {
-        display: inline-block;
-        background-color: var(--color-blue);
-        color: var(--color-white);
-        width: 150px; /* Adjust the percentage based on your design */
-        border-radius: 40px;
-        border: 0px;
-        margin-bottom: 10px;
-        height: 40px;
-        font-weight: bold;
+        width: 100%; /* Take up the full width on smaller screens */
       }
-
-      #myTable {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        overflow-x: auto; /* Enable horizontal scrolling */
-        border-radius: 10px;
-      }
-
-      #myTable tr:first-child {
-        font-weight: bold;
-        background-color: var(--color-grey);
-
-      }
-
-      #myTable th,
-      #myTable td {
-        border: 2px solid var(--color-darker-grey);
-        padding: 8px;
-        text-align: left;
-      }
-
-      /* Style the first column */
-      #myTable td:nth-child(1) {
-        width: 40px;
-        text-align: center;
-        font-weight: bold;
-      }
-
-      #myTable td:nth-child(3) {
-        width: 50px;
-      }
-
-      #myTable td:nth-child(3) button {
-        background-color: transparent; /* Set background color to transparent */
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        border: none;
-        cursor: pointer;
-        padding: 5px;
-        width: 20px;
-        height: 20px;
-        background-position: center;
-      }
-
-      #myTable td:nth-child(3) button.delete_row {
-        background-image: url("/src/main/resources/png/delete.png");
-        /* Add additional styles as needed */
-      }
-
-      /* Style for the edit button */
-      #myTable td:nth-child(3) button.edit_row {
-        background-image: url("/src/main/resources/png/pen.png");
-        /* Add additional styles as needed */
-      }
-
-      #myTable td:nth-child(3) button.save_row {
-        background-image: url("/src/main/resources/png/save.png");
-        /* Add additional styles as needed */
-      }
-
-      @media screen and (max-width: 600px) {
-        .save,
-        .new-testcase {
-          width: 100%; /* Take up the full width on smaller screens */
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="grid-container">
-      <div class="item1">
-        <noscript> You need to enable JavaScript to run this app. </noscript>
-        <div id="root">
-          <div class="login_container">
-            <div class="login_logo">Swag Labs</div>
-            <div class="login_wrapper">
-              <div class="login_wrapper-inner">
-                <div id="login_button_container" class="form_column">
-                  <div class="login-box">
-                    <form>
-                      <div class="form_group">
-                        <input
-                          class="input_error form_input"
-                          placeholder="Username"
-                          type="text"
-                          data-test="username"
-                          id="user-name"
-                          name="user-name"
-                          autocorrect="off"
-                          autocapitalize="none"
-                          value=""
-                          cong="valid_username"
-                        />
-                      </div>
-                      <div class="form_group">
-                        <input
-                          class="input_error form_input"
-                          placeholder="Password"
-                          type="password"
-                          data-test="password"
-                          id="password"
-                          name="password"
-                          autocorrect="off"
-                          autocapitalize="none"
-                          value=""
-                          cong="valid_password"
-                        />
-                      </div>
-                      <div class="error-message-container"></div>
-                      <input
-                        type="submit"
-                        class="submit-button btn_action"
-                        data-test="login-button"
-                        id="login-button"
-                        name="login-button"
-                        value="Login"
-                        cong
-                      />
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <div class="login_credentials_wrap">
-                <div class="login_credentials_wrap-inner">
-                  <div id="login_credentials" class="login_credentials">
-                    <h4>Accepted usernames are:</h4>
-                    standard_user
-                    <br />
-                    locked_out_user
-                    <br />
-                    problem_user
-                    <br />
-                    performance_glitch_user
-                    <br />
-                    error_user
-                    <br />
-                    visual_user
-                    <br />
-                  </div>
-                  <div class="login_password">
-                    <h4>Password for all users:</h4>
-                    secret_sauce
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <script>
-          !(function (e) {
-            function r(r) {
-              for (
-                var n, p, l = r[0], a = r[1], f = r[2], c = 0, s = [];
-                c < l.length;
-                c++
-              )
-                (p = l[c]),
-                  Object.prototype.hasOwnProperty.call(o, p) &&
-                    o[p] &&
-                    s.push(o[p][0]),
-                  (o[p] = 0);
-              for (n in a)
-                Object.prototype.hasOwnProperty.call(a, n) && (e[n] = a[n]);
-              for (i && i(r); s.length; ) s.shift()();
-              return u.push.apply(u, f || []), t();
-            }
-            function t() {
-              for (var e, r = 0; r < u.length; r++) {
-                for (var t = u[r], n = !0, l = 1; l < t.length; l++) {
-                  var a = t[l];
-                  0 !== o[a] && (n = !1);
-                }
-                n && (u.splice(r--, 1), (e = p((p.s = t[0]))));
-              }
-              return e;
-            }
-            var n = {},
-              o = { 1: 0 },
-              u = [];
-            function p(r) {
-              if (n[r]) return n[r].exports;
-              var t = (n[r] = { i: r, l: !1, exports: {} });
-              return (
-                e[r].call(t.exports, t, t.exports, p), (t.l = !0), t.exports
-              );
-            }
-            (p.m = e),
-              (p.c = n),
-              (p.d = function (e, r, t) {
-                p.o(e, r) ||
-                  Object.defineProperty(e, r, { enumerable: !0, get: t });
-              }),
-              (p.r = function (e) {
-                "undefined" != typeof Symbol &&
-                  Symbol.toStringTag &&
-                  Object.defineProperty(e, Symbol.toStringTag, {
-                    value: "Module",
-                  }),
-                  Object.defineProperty(e, "__esModule", { value: !0 });
-              }),
-              (p.t = function (e, r) {
-                if ((1 & r && (e = p(e)), 8 & r)) return e;
-                if (4 & r && "object" == typeof e && e && e.__esModule)
-                  return e;
-                var t = Object.create(null);
-                if (
-                  (p.r(t),
-                  Object.defineProperty(t, "default", {
-                    enumerable: !0,
-                    value: e,
-                  }),
-                  2 & r && "string" != typeof e)
-                )
-                  for (var n in e)
-                    p.d(
-                      t,
-                      n,
-                      function (r) {
-                        return e[r];
-                      }.bind(null, n)
-                    );
-                return t;
-              }),
-              (p.n = function (e) {
-                var r =
-                  e && e.__esModule
-                    ? function () {
-                        return e.default;
-                      }
-                    : function () {
-                        return e;
-                      };
-                return p.d(r, "a", r), r;
-              }),
-              (p.o = function (e, r) {
-                return Object.prototype.hasOwnProperty.call(e, r);
-              }),
-              (p.p = "/");
-            var l = (this["webpackJsonpsample-app-web"] =
-                this["webpackJsonpsample-app-web"] || []),
-              a = l.push.bind(l);
-            (l.push = r), (l = l.slice());
-            for (var f = 0; f < l.length; f++) r(l[f]);
-            var i = a;
-            t();
-          })([]);
-        </script>
-        <script src="/static/js/2.9b02e67e.chunk.js"></script>
-        <script src="/static/js/main.9735b7ab.chunk.js"></script>
-      </div>
-      <div class="item3">
-        <button id="new-testcase" class="new-testcase" type="button">
-          New Testcase
-        </button>
-        <button id="save" class="save" type="button">Save</button>
-        <table id="myTable"></table>
-      </div>
-      <div class="item2" id="resizeBar"></div>
+    }
+  </style>
+</head>
+<body>
+<div class="grid-container">
+  <div class="item1">
+      <noscript>
+ You need to enable JavaScript to run this app.
+</noscript>
+      <div id="root">
+ <div class="login_container">
+  <div class="login_logo">
+   Swag Labs
+  </div>
+  <div class="login_wrapper">
+   <div class="login_wrapper-inner">
+    <div id="login_button_container" class="form_column">
+     <div class="login-box">
+      <form>
+       <div class="form_group">
+        <input class="input_error form_input" placeholder="Username" type="text" data-test="username" id="user-name" name="user-name" autocorrect="off" autocapitalize="none" value="" cong="valid_username">
+       </div>
+       <div class="form_group">
+        <input class="input_error form_input" placeholder="Password" type="password" data-test="password" id="password" name="password" autocorrect="off" autocapitalize="none" value="" cong="valid_password">
+       </div>
+       <div class="error-message-container"></div><input type="submit" class="submit-button btn_action" data-test="login-button" id="login-button" name="login-button" value="Login" cong>
+      </form>
+     </div>
     </div>
-    <script>
-      let inputValArr = [];
-      let inputValues = [];
-      let allElement = document.getElementsByTagName("*");
-      let inputElement = [];
-      var isEditing = 0;
-      for (let i = 0; i < allElement.length; i++) {
-        if (
-          allElement[i].hasAttribute("cong") &&
-          allElement[i].getAttribute("cong").length != 0
-        ) {
-          if (allElement[i].tagName.localeCompare("TEXTAREA")) {
+   </div>
+   <div class="login_credentials_wrap">
+    <div class="login_credentials_wrap-inner">
+     <div id="login_credentials" class="login_credentials">
+      <h4>Accepted usernames are:</h4>standard_user
+      <br>
+      locked_out_user
+      <br>
+      problem_user
+      <br>
+      performance_glitch_user
+      <br>
+      error_user
+      <br>
+      visual_user
+      <br>
+     </div>
+     <div class="login_password">
+      <h4>Password for all users:</h4>secret_sauce
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+      <script>!function(e){function r(r){for(var n,p,l=r[0],a=r[1],f=r[2],c=0,s=[];c<l.length;c++)p=l[c],Object.prototype.hasOwnProperty.call(o,p)&&o[p]&&s.push(o[p][0]),o[p]=0;for(n in a)Object.prototype.hasOwnProperty.call(a,n)&&(e[n]=a[n]);for(i&&i(r);s.length;)s.shift()();return u.push.apply(u,f||[]),t()}function t(){for(var e,r=0;r<u.length;r++){for(var t=u[r],n=!0,l=1;l<t.length;l++){var a=t[l];0!==o[a]&&(n=!1)}n&&(u.splice(r--,1),e=p(p.s=t[0]))}return e}var n={},o={1:0},u=[];function p(r){if(n[r])return n[r].exports;var t=n[r]={i:r,l:!1,exports:{}};return e[r].call(t.exports,t,t.exports,p),t.l=!0,t.exports}p.m=e,p.c=n,p.d=function(e,r,t){p.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},p.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},p.t=function(e,r){if(1&r&&(e=p(e)),8&r)return e;if(4&r&&"object"==typeof e&&e&&e.__esModule)return e;var t=Object.create(null);if(p.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:e}),2&r&&"string"!=typeof e)for(var n in e)p.d(t,n,function(r){return e[r]}.bind(null,n));return t},p.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return p.d(r,"a",r),r},p.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},p.p="/";var l=this["webpackJsonpsample-app-web"]=this["webpackJsonpsample-app-web"]||[],a=l.push.bind(l);l.push=r,l=l.slice();for(var f=0;f<l.length;f++)r(l[f]);var i=a;t()}([])</script>
+      <script src="/static/js/2.9b02e67e.chunk.js"></script>
+      <script src="/static/js/main.9735b7ab.chunk.js"></script>
+</div>
+  <div class="item3">
+    <button id="new-testcase" class="new-testcase" type="button">
+      New Testcase
+    </button>
+    <button id="save" class="save" type="button">Save</button>
+    <table id="myTable"></table>
+  </div>
+  <div class="item2" id="resizeBar"></div>
+</div>    <script>
+let inputValArr = [];
+  let inputValues = [];
+  let allElement = document.getElementsByTagName("*");
+  let inputElement = [];
+  var isEditing = 0;
+  for (let i = 0; i < allElement.length; i++) {
+    if (
+        allElement[i].hasAttribute("cong") &&
+        allElement[i].getAttribute("cong").length != 0
+    ) {
+      if (allElement[i].tagName.localeCompare("TEXTAREA")) {
+        inputElement.push(allElement[i]);
+      } else if (allElement[i].tagName.localeCompare("INPUT")) {
+        if (allElement[i].hasAttribute("type")) {
+          let typeAttributeValue = allElement[i].getAttribute("type");
+          if (
+              typeAttributeValue.localeCompare("submit") != 0 &&
+              typeAttributeValue.localeCompare("button") != 0 &&
+              typeAttributeValue.localeCompare("reset") != 0 &&
+              typeAttributeValue.localeCompare("image") != 0 &&
+              typeAttributeValue.localeCompare("hidden") != 0
+          ) {
             inputElement.push(allElement[i]);
-          } else if (allElement[i].tagName.localeCompare("INPUT")) {
-            if (allElement[i].hasAttribute("type")) {
-              let typeAttributeValue = allElement[i].getAttribute("type");
-              if (
-                typeAttributeValue.localeCompare("submit") != 0 &&
-                typeAttributeValue.localeCompare("button") != 0 &&
-                typeAttributeValue.localeCompare("reset") != 0 &&
-                typeAttributeValue.localeCompare("image") != 0 &&
-                typeAttributeValue.localeCompare("hidden") != 0
-              ) {
-                inputElement.push(allElement[i]);
-              }
-            } else {
-              inputElement.push(allElement[i]);
-            }
           }
-        }
-      }
-      let numberInputElements = inputElement.length;
-      function attributeElement(e) {
-        return e.getAttribute("cong");
-      }
-      for (let i = 0; i < numberInputElements; i++) {
-        inputValues.push(attributeElement(inputElement[i]));
-      }
-
-      const saveButton = document.getElementById("save");
-      saveButton.addEventListener("click", function () {
-        var table = document.getElementById("myTable");
-        for (var i = 1; i < table.rows.length; i++) {
-          var row = table.rows[i];
-          for (var j = 0; j < row.cells.length - 1; j++) {
-            if (row.cells[j].innerHTML.trim() == "") {
-              inputValues.push("null");
-            } else {
-              inputValues.push(row.cells[j].innerHTML);
-            }
-          }
-        }
-        console.log(inputValues);
-        let fileContent = "";
-        for (let i = 0; i < numberInputElements; i++) {
-          for (let k = i; k < inputValues.length; k += numberInputElements) {
-            if (
-              k <
-              i +
-                (inputValues.length / numberInputElements - 1) *
-                  numberInputElements
-            ) {
-              fileContent += inputValues[k] + ",";
-            } else {
-              fileContent += inputValues[k] + "\n";
-            }
-          }
-        }
-        let blob = new Blob([fileContent], { type: "text/csv" });
-        let url = URL.createObjectURL(blob);
-        let downloadLink = document.createElement("a");
-        downloadLink.href = url;
-        downloadLink.download = "data.csv";
-        downloadLink.click();
-      });
-      const newTestcaseButton = document.getElementById("new-testcase");
-      newTestcaseButton.addEventListener("click", function () {
-        // for (let i = 0; i < numberInputElements; i++) {
-        //   if (inputElement[i].value.length == 0) {
-        //     inputValues.push("null");
-        //   } else {
-        //     inputValues.push(inputElement[i].value);
-        //   }
-
-        // }
-        var table = document.getElementById("myTable");
-        var row = table.insertRow();
-        var val = "";
-        var valArr = [];
-        if (table.rows.length == 1) {
-          var headerRow = table.insertRow(0);
-          headerRow.classList.add("table-header");
-          var thead = table.createTHead();
-          var index_cell = headerRow.insertCell();
-          index_cell.innerHTML = "INDEX";
-          var index_cell = headerRow.insertCell();
-          index_cell.innerHTML = "VALUE";
-          var index_cell = headerRow.insertCell();
-          index_cell.innerHTML = "ACTION";
-        }
-        for (let i = 0; i < numberInputElements; i++) {
-          valArr.push(inputElement[i].value);
-          if (i != 0) {
-            val += ", " + inputElement[i].value;
-          } else {
-            val += inputElement[i].value;
-          }
-        }
-        inputValArr.push(valArr);
-        var index_cell = row.insertCell(0);
-        index_cell.innerHTML = table.rows.length - 1;
-
-        var val_cell = row.insertCell(1);
-
-        if (val.length > 20) {
-          // Display only a part of the text if it's too long
-          val_cell.innerHTML =
-            val.substring(0, 20) + "<span class='ellipsis'> ...</span>";
-          // Add a button to expand and show the full value
-          val_cell.innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;
         } else {
-          val_cell.innerHTML = val;
+          inputElement.push(allElement[i]);
         }
-
-        var cell_action = row.insertCell(2);
-        cell_action.innerHTML =
-          "<button onclick='deleteRow(this)' class='delete_row'></button> <button onclick='editRow(this)' class='edit_row'></button>";
-
-        // Function to expand and show the full value
-
-        for (let i = 0; i < numberInputElements; i++) {
-          inputElement[i].value = null;
-        }
-      });
-
-      function expandText(button, fullText) {
-        var cell = button.parentNode;
-        cell.innerHTML =
-
-          fullText + "<button onclick='collapseText(this)'>Collapse</button>";
-
       }
+    }
+  }
+  let numberInputElements = inputElement.length;
+  function attributeElement(e) {
+    return e.getAttribute("cong");
+  }
+  for (let i = 0; i < numberInputElements; i++) {
+    inputValues.push(attributeElement(inputElement[i]));
+  }
 
-      // Function to collapse the text
-      function collapseText(span) {
-        var cell = span.parentNode;
-        var val = cell.innerText;
-
-        cell.innerHTML =
-          val.substring(0, 20) +
-          "<span class='ellipsis'> ...</span>" +
-          "<button class='expand-button' onclick='expandText(this, \"" +
-          val.substring(0, val.length - 8) +
-          "\")'>Expand</button>";
-
-      }
-
-      function deleteRow(row) {
-        var i = row.parentNode.parentNode.rowIndex;
-        document.getElementById("myTable").deleteRow(i);
-        inputValArr.splice(i - 1, 1);
-        console.log(inputValArr);
-      }
-
-      function editRow(button) {
-        if (isEditing == 0) {
-          var resizeBar = document.getElementById("resizeBar");
-          resizeBar.style.backgroundColor = "var(--color-blue)";
-          isEditing = 1;
-          var i = button.parentNode.parentNode.rowIndex;
+  const saveButton = document.getElementById("save");        saveButton.addEventListener("click", function () {
           var table = document.getElementById("myTable");
-          for (var index in inputElement) {
-            inputElement[index].value = inputValArr[i - 1][index];
-          }
-          button.setAttribute("onclick", "saveRow(this)");
-          button.setAttribute("class", "save_row");
-        }
-      }
-
-      function saveRow(button) {
-        if (isEditing == 1) {
-          isEditing = 0;
-          var resizeBar = document.getElementById("resizeBar");
-          resizeBar.style.backgroundColor = "var(--color-black)";
-          var i = button.parentNode.parentNode.rowIndex;
-          var table = document.getElementById("myTable");
-          var val = "";
-          for (var index in inputElement) {
-            if (index == 0) {
-              val += inputElement[index].value;
-            } else {
-              val += ", " + inputElement[index].value;
+          for (var i = 1; i < table.rows.length; i++) {
+            var row = table.rows[i];
+            let values = row.cells[1].innerHTML.split(',');
+            for (var j = 0; j < values.length; j++) {
+              if (values[j].trim() == "") {
+                inputValues.push("null");
+              } else {
+                inputValues.push(values[j].trim());
+              }
             }
-            inputValArr[i - 1][index] = inputElement[index].value;
           }
-          var editableRow = table.rows.item(i);
-
-          if (val.length > 20) {
-            // Display only a part of the text if it's too long
-            editableRow.cells[1].innerHTML =
-              val.substring(0, 20) + "<span class='ellipsis'> ...</span>";
-            // Add a button to expand and show the full value
-            editableRow.cells[1].innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;
-          } else {
-            editableRow.cells[1].innerHTML = val;
-          }
-          button.setAttribute("onclick", "editRow(this)");
-          button.setAttribute("class", "edit_row");
-
+          console.log(inputValues);
+          let fileContent = "";
           for (let i = 0; i < numberInputElements; i++) {
-            inputElement[i].value = null;
+            for (let k = i; k < inputValues.length; k += numberInputElements) {
+              if (
+                k <
+                i +
+                  (inputValues.length / numberInputElements - 1) *
+                    numberInputElements
+              ) {
+                fileContent += inputValues[k] + ",";
+              } else {
+                fileContent += inputValues[k] + "\n";
+              }
+            }
           }
-        }
-      }
+          console.log(fileContent);         let xhr = new XMLHttpRequest();
+         xhr.open("POST", "/createtest");
+         // xhr.setRequestHeader("Accept", "application/json");
+         xhr.setRequestHeader("Content-Type", "application/json");
+         let data = {
+          "values" : fileContent,
+         }
+         xhr.onload = () => {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+           window.location.href = '/script';
+          } else {
+           console.log(`Error: ${xhr.status}`);
+          }
+         };
 
-      const resizeBar = document.getElementById("resizeBar");
-      let isResizing = false;
-
-      resizeBar.addEventListener("mousedown", (event) => {
-        isResizing = true;
-        document.addEventListener("mousemove", handleMouseMove);
-        document.addEventListener("mouseup", () => {
-          isResizing = false;
-          document.removeEventListener("mousemove", handleMouseMove);
+         xhr.send(JSON.stringify(data));
         });
-      });
+const newTestcaseButton = document.getElementById("new-testcase");
+  newTestcaseButton.addEventListener("click", function () {
+    // for (let i = 0; i < numberInputElements; i++) {
+    //   if (inputElement[i].value.length == 0) {
+    //     inputValues.push("null");
+    //   } else {
+    //     inputValues.push(inputElement[i].value);
+    //   }
 
-      function handleMouseMove(event) {
-        if (isResizing) {
-          const container = document.querySelector(".grid-container");
-          const newWidth = event.clientX;
-          container.style.gridTemplateColumns = `${newWidth}px 0.5% 1fr`;
-        }
+    // }
+    var table = document.getElementById("myTable");
+    var row = table.insertRow();
+    var val = "";
+    var valArr = [];
+    if (table.rows.length == 1) {
+      var headerRow = table.insertRow(0);
+      headerRow.classList.add("table-header");
+      var thead = table.createTHead();
+      var index_cell = headerRow.insertCell();
+      index_cell.innerHTML = "INDEX";
+      var index_cell = headerRow.insertCell();
+      index_cell.innerHTML = "VALUE";
+      var index_cell = headerRow.insertCell();
+      index_cell.innerHTML = "ACTION";
+    }
+    for (let i = 0; i < numberInputElements; i++) {
+      valArr.push(inputElement[i].value);
+      if (i != 0) {
+        val += ", " + inputElement[i].value;
+      } else {
+        val += inputElement[i].value;
       }
-    </script>
-  </body>
+    }
+    inputValArr.push(valArr);
+    var index_cell = row.insertCell(0);
+    index_cell.innerHTML = table.rows.length - 1;
+
+    var val_cell = row.insertCell(1);
+
+    if (val.length > 20) {
+      // Display only a part of the text if it's too long
+      val_cell.innerHTML =
+          val.substring(0, 20) + "<span class='ellipsis'> ...</span>";
+      // Add a button to expand and show the full value
+      val_cell.innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;
+    } else {
+      val_cell.innerHTML = val;
+    }
+
+    var cell_action = row.insertCell(2);
+    cell_action.innerHTML =
+        "<button onclick='deleteRow(this)' class='delete_row'></button> <button onclick='editRow(this)' class='edit_row'></button>";
+
+    // Function to expand and show the full value
+
+    for (let i = 0; i < numberInputElements; i++) {
+      inputElement[i].value = null;
+    }
+  });
+
+  function expandText(button, fullText) {
+    var cell = button.parentNode;
+    cell.innerHTML =
+        fullText +
+        "<button class='collapse-button' onclick='collapseText(this)'>Collapse</button>";
+  }
+
+  // Function to collapse the text
+  function collapseText(span) {
+    var cell = span.parentNode;
+    var val = cell.innerText;
+    var string = val.substring(0,val.length - 8);
+    cell.innerHTML =
+        val.substring(0, 20) +
+        "<span class='ellipsis'> ...</span>" +
+        "<button class='expand-button' onclick='expandText(this, &#39" + string.replace(/\n/g, ' ') + "&#39)'>Expand</button>";
+  }
+
+  function deleteRow(row) {
+    var i = row.parentNode.parentNode.rowIndex;
+    document.getElementById("myTable").deleteRow(i);
+    inputValArr.splice(i - 1, 1);
+    console.log(inputValArr);
+  }
+
+  function editRow(button) {
+    if (isEditing == 0) {
+      var resizeBar = document.getElementById("resizeBar");
+      resizeBar.style.backgroundColor = "var(--color-blue)";
+      isEditing = 1;
+      var i = button.parentNode.parentNode.rowIndex;
+      var table = document.getElementById("myTable");
+      for (var index in inputElement) {
+        inputElement[index].value = inputValArr[i - 1][index];
+      }
+      button.setAttribute("onclick", "saveRow(this)");
+      button.setAttribute("class", "save_row");
+    }
+  }
+
+  function saveRow(button) {
+    if (isEditing == 1) {
+      isEditing = 0;
+      var resizeBar = document.getElementById("resizeBar");
+      resizeBar.style.backgroundColor = "var(--color-black)";
+      var i = button.parentNode.parentNode.rowIndex;
+      var table = document.getElementById("myTable");
+      var val = "";
+      for (var index in inputElement) {
+        if (index == 0) {
+          val += inputElement[index].value;
+        } else {
+          val += ", " + inputElement[index].value;
+        }
+        inputValArr[i - 1][index] = inputElement[index].value;
+      }
+      var editableRow = table.rows.item(i);
+
+      if (val.length > 20) {
+        // Display only a part of the text if it's too long
+        editableRow.cells[1].innerHTML =
+            val.substring(0, 20) + "<span class='ellipsis'> ...</span>";
+        // Add a button to expand and show the full value
+        editableRow.cells[1].innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;
+      } else {
+        editableRow.cells[1].innerHTML = val;
+      }
+      button.setAttribute("onclick", "editRow(this)");
+      button.setAttribute("class", "edit_row");
+
+      for (let i = 0; i < numberInputElements; i++) {
+        inputElement[i].value = null;
+      }
+    }
+  }
+
+  const resizeBar = document.getElementById("resizeBar");
+  let isResizing = false;
+
+  resizeBar.addEventListener("mousedown", (event) => {
+    isResizing = true;
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", () => {
+      isResizing = false;
+      document.removeEventListener("mousemove", handleMouseMove);
+    });
+  });
+
+  function handleMouseMove(event) {
+    if (isResizing) {
+      const container = document.querySelector(".grid-container");
+      const newWidth = event.clientX;
+      container.style.gridTemplateColumns = `${newWidth}px 0.5% 1fr`;
+    }
+  }
+</script>
+</body>
 </html>
