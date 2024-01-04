@@ -395,8 +395,13 @@ public class newSolve {
         + "    href=\"https://fonts.googleapis.com/css?family=Montserrat\"\n"
         + "    rel=\"stylesheet\"\n"
         + "/>\n"
-        + "<head>\n"
-        + "  <style>\n"
+        + "<head>\n";
+    Element head = domTree.head();
+    for (Element child : head.children()) {
+      htmlContent += String.valueOf(child);
+      htmlContent += "\n";
+    }
+    htmlContent += "  <style>\n"
         + "    :root {\n"
         + "      --color-darker-grey: #dbdbdb;\n"
         + "      --color-grey: #f4f9fa;\n"
