@@ -26,4 +26,4 @@ Java phiên bản 17 hoặc mới hơn
 ```
 5. Mở project bằng IntelliJ
 6. Truy cập tới file `DemoApplication` và khởi chạy project
-7. Từ trình duyệt truy cập tới đường dẫn `http://localhost:8080/` sử dụng project
+7. Từ trình duyệt truy cập tới đường dẫn `http://localhost:8081/` sử dụng project
