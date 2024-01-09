@@ -1,0 +1,184 @@
+package valid;
+
+import invalid.DataPreprocessing;
+import invalid.PythonTruthTableServer;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import mockpage.newSolve;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+public class TempScriptGen {
+  public static void createDataSheetV2(String outline, String datasheetPath) {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    try{
+      File newfile = new File(datasheetPath);
+      if (newfile.createNewFile()) {
+        System.out.println("Created " + datasheetPath + "!");
+      } else {
+        System.out.println("The file" + datasheetPath + "already exists!");
+      }
+      BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(datasheetPath));
+      DocumentBuilder builder = factory.newDocumentBuilder();
+      Document document = builder.parse(new File(outline));
+      StringBuilder content = new StringBuilder();
+      String url = document.getElementsByTagName("url").item(0).getTextContent();
+      NodeList testcases = document.getElementsByTagName("TestCase");
+      List<Element> testCaseElements = new ArrayList<>();
+      for (int i = 0; i < testcases.getLength(); i++) {
+        Node testcase = testcases.item(i);
+        if (testcase.getNodeType() == Node.ELEMENT_NODE)
+          testCaseElements.add((Element) testcase);
+      }
+      //This list will be passed to the finding locator API
+      List<String> locatorsInput = new ArrayList<>();
+      List<String> locatorsClickElement = new ArrayList<>();
+      Map<String, List<String>> radioButton = new HashMap<>();
+      Map<String, List<String>> checkbox = new HashMap<>();
+      Map<String, List<String>> dropdown = new HashMap<>();
+
+//      locators.add(url);
+      for (Element testcaseElement: testCaseElements) {
+        NodeList testCaseChildNodes = testcaseElement.getChildNodes();
+        List<Element> expressionActionElements = new ArrayList<>();
+        for (int i = 0; i < testCaseChildNodes.getLength(); i++) {
+          Node childNode = testCaseChildNodes.item(i);
+          if (childNode.getNodeType() == Node.ELEMENT_NODE && ((Element) childNode).getTagName().equals("LogicExpressionOfActions"))
+            expressionActionElements.add((Element) childNode);
+        }
+        for (Element expressionActionElement: expressionActionElements) {
+          String type = expressionActionElement.getElementsByTagName("type").item(0).getTextContent();
+          if (!type.equals("and") && !type.equals("or")) {
+            if (type.equals("Input")) {
+              String locator = expressionActionElement.getElementsByTagName("locator").item(0).getTextContent();
+              if (!locatorsInput.contains(locator))
+                locatorsInput.add(locator);
+              if (expressionActionElement.getElementsByTagName("text").getLength() > 0) {
+                String text = expressionActionElement.getElementsByTagName("text").item(0).getTextContent();
+                if (content.indexOf(text) == -1)
+                  content.append(text).append("\n");
+              }
+            }
+            if (type.equals("Click Element")) {
+              String locator = expressionActionElement.getElementsByTagName("locator").item(0).getTextContent();
+              if (!locatorsClickElement.contains(locator)) {
+                locatorsClickElement.add(locator);
+              }
+            }
+            if (type.equals("Radio Button")) {
+              String choice = expressionActionElement.getElementsByTagName("choice").item(0).getTextContent();
+              String question = expressionActionElement.getElementsByTagName("question").item(0).getTextContent();
+              if (radioButton.containsKey(question)) {
+                if (!radioButton.get(question).contains(choice)) {
+                  radioButton.get(question).add(choice);
+                }
+              } else {
+                List<String> choices = new ArrayList<>();
+                choices.add(choice);
+                radioButton.put(question, choices);
+              }
+            }
+            if (type.equals("Select List")) {
+              String value = expressionActionElement.getElementsByTagName("value").item(0).getTextContent();
+              String list = expressionActionElement.getElementsByTagName("list").item(0).getTextContent();
+              if (dropdown.containsKey(list)) {
+                if (!dropdown.get(list).contains(value)) {
+                  dropdown.get(list).add(value);
+                }
+              } else {
+                List<String> values = new ArrayList<>();
+                values.add(value);
+                dropdown.put(list, values);
+              }
+            }
+
+          } else {
+            List<List<Action>> dnfList = LogicParser.createDNFList(LogicParser.createAction(expressionActionElement));
+            List<List<String>> texts = new ArrayList<>();
+            for (List<Action> actionList : dnfList) {
+              List<String> textList = new ArrayList<>();
+              for (Action action : actionList) {
+                String locator = action.getLocator();
+                if (!locatorsInput.contains(locator))
+                  locatorsInput.add(locator);
+                if (action.getText() != null)
+                  textList.add(action.getText());
+              }
+              texts.add(new ArrayList<>(textList));
+            }
+            List<List<Integer>> subsets = Subset.subsets(texts.size());
+            for (List<Integer> subset : subsets) {
+              if (subset.isEmpty()) continue;
+              StringBuilder satisfy = new StringBuilder();
+              for (int index : subset) {
+                List<String> textList = texts.get(index);
+                for (String text : textList) {
+                  if (satisfy.indexOf(text) == -1) {
+                    if (satisfy.isEmpty()) satisfy.append(text);
+                    else satisfy.append(" & ").append(text);
+                  }
+                }
+              }
+              if (content.indexOf(satisfy.toString()) == -1)
+                content.append(new StringBuilder(satisfy)).append("\n");
+            }
+
+            //This block of code is for invalid test gen
+            String action = LogicParser.createTextExpression(expressionActionElement).toString();
+            if (action.charAt(0) == '(') {
+              action = action.substring(1, action.length() - 1);
+            }
+            action = action.replaceAll("\\(", "%28");
+            action = action.replaceAll("\\)", "%29");
+            action = action.replaceAll("[\\&]", "%26");
+            action = action.replaceAll("\\s", "");
+            System.out.println(action);
+            Vector<Vector<String>> tb = DataPreprocessing.truthTableParse(
+                PythonTruthTableServer.logicParse(action), action);
+            System.out.println(tb);
+            Vector<String> invalids = tb.get(2);
+            boolean[] variables = new boolean[tb.get(0).size()];
+            for (String truthLine: invalids) {
+              String[] values = truthLine.split(" ");
+              System.out.println(values.length);
+              for (int i = 0; i < variables.length; i++) {
+                if (values[i].equals("1")) variables[i] = true;
+              }
+            }
+            for (int i = 0; i < variables.length; i++) {
+              if (variables[i]) content.append(tb.get(0).get(i)).append("\n");
+            }
+
+          }
+
+
+
+        }
+
+      }
+      String[] test = new String[locatorsInput.size()];
+      Vector<String> dataOfLocator = newSolve.getLocator(locatorsInput.toArray(test));
+      for (String s: dataOfLocator) {
+        int separator = s.indexOf(":");
+        String locator = s.substring(0, separator);
+        String xpath = s.substring(separator + 2);
+        content.append(locator).append(",").append(xpath);
+      }
+      bufferedWriter.append(content);
+      bufferedWriter.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+}
