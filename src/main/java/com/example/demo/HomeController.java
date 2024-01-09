@@ -171,7 +171,7 @@ public class HomeController {
 
         }
         String[] urlAndLocators = new String[locators.size()];
-        urlAndLocators   = locators.toArray(urlAndLocators);
+        urlAndLocators = locators.toArray(urlAndLocators);
         System.out.println(urlAndLocators);
         System.out.println(map);
         newSolve.changDomAndCreateMockPage(urlAndLocators, map);
@@ -231,7 +231,18 @@ public class HomeController {
     }
 
     @GetMapping("/test.html")
-    public String test() {
+    public String test(Model model) throws IOException {
+        StringBuilder mockWebContent = new StringBuilder();
+        File mockWebFile = new File("src/main/resources/html/mockweb.html");
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(mockWebFile));
+
+        String line = bufferedReader.readLine();
+        while (line != null) {
+            mockWebContent.append(line).append("\n");
+            line = bufferedReader.readLine();
+        }
+        bufferedReader.close();
+        model.addAttribute("webContent", mockWebContent.toString());
         return "test";
     }
 
@@ -247,8 +258,6 @@ public class HomeController {
             testScript.append(line).append("\n");
             line = bufferedReader.readLine();
         }
-
-
         bufferedReader.close();
         model.addAttribute("testScript", testScript.toString());
         return "script";

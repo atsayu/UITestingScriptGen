@@ -9,10 +9,7 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -375,7 +372,13 @@ public class newSolve {
       traversalDom(domTree, e, mapLocatorVariableAndValueVariable);
     }
 //    addNewElementToDom(domTree);
-    writeDomToHtmlFile(domTree, "src/main/resources/html/test.html");
+//    writeDomToHtmlFile(domTree, "src/main/resources/html/test.html");
+    File mockWebContent = new File("src/main/resources/html/mockweb.html");
+    mockWebContent.createNewFile();
+    BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(mockWebContent));
+//    System.out.println(domTree.body().toString());
+    bufferedWriter.append(domTree.body().html());
+    bufferedWriter.close();
   }
 
   public static void traversalDom(Document domTree, Element e, Map<String, String> mapLocatorVariableAndValueVariable) {
