@@ -339,10 +339,18 @@ function createFromValue(value) {
     value = value.replaceAll("'", "");
     let arr= value.split(' ');
     console.log(arr);
-    if (arr[0] === "Click") {
+    if (arr[0].toLowerCase() === "click") {
         return createFillClick(arr[arr.length - 1]);
-    } else if (arr[0] === "Input") {
+    } else if (arr[0].toLowerCase() === "input") {
         return createFillInput(arr[arr.length - 1], "valid_" + arr[arr.length -1]);
+    } else if (arr[0].toLowerCase() === 'verify') {
+        if (arr[1].toLowerCase() === 'url') {
+            return createURLAssertElement('expected_url');
+        } else if (arr[1].toLowerCase() === 'text') {
+            return createTextAssertElement('expected_text');
+        } else if (arr[1].toLowerCase() === 'element') {
+            return createElementAssertElement('expected_element');
+        }
     }
 }
 
@@ -383,9 +391,10 @@ function jsonToElement(json, layer) {
             if (layer === 1) {
                 orElement = `<li><div class = "action" type="or">
     <input type="checkbox" name="select" onclick="selecting(this)">
+    <span class="info nested"></span>
     <div class="btn-group dropend">
         <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
-            aria-expanded="false">
+            aria-expanded="false" onmouseover="updateExpressionAndShowInfo(this)" onmouseout="hideInfo(this)">
             Combined actions
         </button>
         <ul class="dropdown-menu">
@@ -451,9 +460,10 @@ function jsonToElement(json, layer) {
             andElement  =`<li><div class = "action" type="and">
 
     <input type="checkbox" name="select" onclick="selecting(this)">
+    <span class="info nested"></span>
     <div class="btn-group dropend">
         <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
-            aria-expanded="false">
+            aria-expanded="false" onmouseover="updateExpressionAndShowInfo(this)" onmouseout="hideInfo(this)">
             Combined actions
         </button>
         <ul class="dropdown-menu">
@@ -487,7 +497,7 @@ function jsonToElement(json, layer) {
 }
 
 function parseInput(element) {
-    let s = element.parentNode.parentNode.querySelector('input').value;
+    let s = element.parentNode.parentNode.querySelector('input[type="text"]').value;
     let data = {
         "expr": s
     }
