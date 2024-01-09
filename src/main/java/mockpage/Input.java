@@ -33,7 +33,6 @@ public class Input extends ProcessDetectElement {
           mapStoreLocatorAndElement.put(e.attr("placeholder"), e);
         }
       }
-
     }
     for (String locator : locator_input) {
       Element e = mapStoreLocatorAndElement.get(locator);

@@ -1,19 +1,31 @@
 <TestSuite>
-	<url>https://form.jotform.com/233591282365460</url>
+	<url>https://form.jotform.com/233591762291461</url>
 	<TestCase>
-		<Scenario>Fill Form</Scenario>
+		<Scenario>Fill</Scenario>
 		<LogicExpressionOfActions>
-			<type>and</type>
-			<LogicExpressionOfActions>
-				<type>Input Text</type>
-				<locator>emailAddress</locator>
-				<text>valid_emailAddress</text>
-			</LogicExpressionOfActions>
-			<LogicExpressionOfActions>
-				<type>Input Text</type>
-				<locator>city</locator>
-				<text>valid_city</text>
-			</LogicExpressionOfActions>
+			<type>Input Text</type>
+			<locator>First Name</locator>
+			<text>valif_firstname</text>
+		</LogicExpressionOfActions>
+		<LogicExpressionOfActions>
+			<type>Select List</type>
+			<list>What is your gender?</list>
+			<value>Male</value>
+		</LogicExpressionOfActions>
+		<LogicExpressionOfActions>
+			<type>Select Checkbox</type>
+			<question>Check the conditions that apply to you or any member of your immediate relatives:</question>
+			<answer>Cancer</answer>
+		</LogicExpressionOfActions>
+		<LogicExpressionOfActions>
+			<type>Radio Button</type>
+			<choice>No</choice>
+			<question>Are you currently taking any medication?</question>
+		</LogicExpressionOfActions>
+		<LogicExpressionOfActions>
+			<type>Click Element</type>
+			<locator>Submit</locator>
 		</LogicExpressionOfActions>
 	</TestCase>
 </TestSuite>
+

@@ -12,13 +12,22 @@ import java.util.Map;
 import java.util.Vector;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import mockpage.newSolve;
+import mockpage.Checkbox;
+import mockpage.ClickableElement;
+import mockpage.DropDownList;
+import mockpage.Input;
+import mockpage.RadioButton;
+import mockpage.RadioButton.Pair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class TempScriptGen {
+
+  public static void main(String[] args) {
+    createDataSheetV2("E:\\LAB UI\\TestWebDemo\\SpringbootUITestingForm\\src\\main\\resources\\template\\outline.xml", "E:\\LAB UI\\TestWebDemo\\SpringbootUITestingForm\\src\\main\\resources\\data\\data.csv");
+  }
   public static void createDataSheetV2(String outline, String datasheetPath) {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     try{
@@ -101,6 +110,20 @@ public class TempScriptGen {
                 dropdown.put(list, values);
               }
             }
+            if (type.equals("Select Checkbox")) {
+              String answer = expressionActionElement.getElementsByTagName("answer").item(0).getTextContent();
+              String question = expressionActionElement.getElementsByTagName("question").item(0).getTextContent();
+              if (checkbox.containsKey(question)) {
+                if (!checkbox.get(question).contains(answer)) {
+                  checkbox.get(question).add(answer);
+                }
+              } else {
+                List<String> answers = new ArrayList<>();
+                answers.add(answer);
+                checkbox.put(question, answers);
+              }
+            }
+
 
           } else {
             List<List<Action>> dnfList = LogicParser.createDNFList(LogicParser.createAction(expressionActionElement));
@@ -166,19 +189,31 @@ public class TempScriptGen {
         }
 
       }
-      String[] test = new String[locatorsInput.size()];
-      Vector<String> dataOfLocator = newSolve.getLocator(locatorsInput.toArray(test));
-      for (String s: dataOfLocator) {
-        int separator = s.indexOf(":");
-        String locator = s.substring(0, separator);
-        String xpath = s.substring(separator + 2);
-        content.append(locator).append(",").append(xpath);
-      }
+      Vector<String> vec_locatorsInput = new Vector<>(locatorsInput);
+      Vector<String> vec_locatorsClickElement = new Vector<>(locatorsClickElement);
+      Input ip = new Input();
+      Vector<String> res_locatorsInput = ip.processDetectInputElement(vec_locatorsInput, url);
+      System.out.println(res_locatorsInput);
+      ClickableElement cl = new ClickableElement();
+      Vector<String> res_locatorsClickElement = cl.processDetectClickableElement(vec_locatorsClickElement, url);
+      System.out.println(res_locatorsClickElement);
+      RadioButton rb = new RadioButton();
+      Map<Pair<String, String>, Pair<String, String>> res_radioButton = rb.processDetectRadioButtonElement(radioButton, url);
+      System.out.println(res_radioButton);
+      Checkbox cb = new Checkbox();
+      Map<Checkbox.Pair<String, String>, String> res_checkbox = cb.processDetectCheckboxElement(checkbox, url);
+      System.out.println(res_checkbox);
+      DropDownList ddl = new DropDownList();
+      Map<DropDownList.Pair<String, String>, DropDownList.Pair<String, String>> res_dropdown = ddl.processDetectDropdownList(dropdown, url);
+      System.out.println(res_dropdown);
+
       bufferedWriter.append(content);
       bufferedWriter.close();
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+
   }
 
 }
