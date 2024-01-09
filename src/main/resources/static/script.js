@@ -703,9 +703,11 @@ function parse(element) {
              <value>${element.querySelector("input[placeholder = 'item']").value}</value> 
             </LogicExpressionOfActions>`;
     } else if (element.getAttribute('type') === 'checkbox') {
-        return `<type>Select Checkbox</type>
-        <question>${element.querySelector("input[placeholder = 'question']").value}</question>
-        <answer>${element.querySelector("input[placeholder = 'answer']").value}</answer>`;
+        return ` <LogicExpressionOfActions>
+                   <type>Select Checkbox</type>
+                   <question>${element.querySelector("input[placeholder = 'question']").value}</question>
+                   <answer>${element.querySelector("input[placeholder = 'answer']").value}</answer>
+                  </LogicExpressionOfActions>`;
     }
     else if (element.getAttribute('type') === 'radio') {
         return `<LogicExpressionOfActions>
