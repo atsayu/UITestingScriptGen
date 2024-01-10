@@ -1,5 +1,9 @@
 package mockpage;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -29,8 +33,8 @@ public class Input extends ProcessDetectElement {
     }
     if (countDetectedElements < locator_input.size()) {
       for (Element e : visitedInputElements) {
-        if (!mapStoreLocatorAndElement.containsValue(e) && locator_input.contains(e.attr("placeholder"))) {
-          mapStoreLocatorAndElement.put(e.attr("placeholder"), e);
+        if (!mapStoreLocatorAndElement.containsValue(e) && locator_input.contains(normalize(e.attr("placeholder")))) {
+          mapStoreLocatorAndElement.put(normalize(e.attr("placeholder")), e);
         }
       }
     }
@@ -42,6 +46,36 @@ public class Input extends ProcessDetectElement {
     return result;
   }
 
+  public void changeDomAndCreateMockPage(Vector<String> input, String linkHtml, Map<String, String> mapLocatorVariableAndValueVariable)
+      throws IOException {
+    for (String s : input) {
+      String normalize_s = normalize(s);
+      locator_input.add(normalize_s);
+    }
+    String htmlContent = getHtmlContent(linkHtml);
+    Document domTree = getDomTree(htmlContent);
+    Elements childRoot = domTree.children();
+    for (Element child : childRoot) {
+      traversalDomTree(child);
+    }
+    if (countDetectedElements < locator_input.size()) {
+      for (Element e : visitedInputElements) {
+        if (!mapStoreLocatorAndElement.containsValue(e) && locator_input.contains(normalize(e.attr("placeholder")))) {
+          mapStoreLocatorAndElement.put(normalize(e.attr("placeholder")), e);
+        }
+      }
+    }
+    for (String locator : input) {
+      Element e = mapStoreLocatorAndElement.get(normalize(locator));
+      String valueVariable = mapLocatorVariableAndValueVariable.get(locator);
+      e.attr("cong", valueVariable);
+    }
+    File mockWebContent = new File("src/main/resources/html/mockweb.html");
+    mockWebContent.createNewFile();
+    BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(mockWebContent));
+    bufferedWriter.append(domTree.body().html());
+    bufferedWriter.close();
+  }
   @Override
   public void traversalDomTree(Element e) {
     if (isInputElement(e) && !visitedInputElements.contains(e) && !mapStoreLocatorAndElement.containsValue(e)) {
@@ -148,4 +182,19 @@ public class Input extends ProcessDetectElement {
     return false;
   }
 
+  public static void main(String[] args) {
+    Input ip = new Input();
+    Map<String, String> mapLocatorVariableAndValueVariable = new HashMap<>();
+    mapLocatorVariableAndValueVariable.put("username", "valid_user");
+    mapLocatorVariableAndValueVariable.put("password", "valid_pass");
+    Vector<String> input = new Vector<>();
+    input.add("username");
+    input.add("password");
+    String linkHtml = "https://www.saucedemo.com/";
+    try {
+      ip.changeDomAndCreateMockPage(input, linkHtml, mapLocatorVariableAndValueVariable);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }

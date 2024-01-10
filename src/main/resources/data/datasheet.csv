@@ -1,5 +1,7 @@
-valid_city & valid_emailAddress
-city,xpath=//input[@id='input_6_city' and @name='q6_address[city]' and @class='form-textbox form-address-city' and @data-component='city' and @aria-labelledby='label_6 sublabel_6_city']
-emailAddress,xpath=//input[@type='email' and @name='q5_emailAddress' and @class='form-textbox validate[Email]' and @data-component='email']
-emailAddress,xpath=//input[@name='q6_address[addr_line2]' and @class='form-textbox form-address-line' and @data-component='address_line_2']
-city,xpath=//input[@id='input_6_city' and @name='q6_address[city]' and @class='form-textbox form-address-city' and @data-component='city' and @aria-labelledby='label_6 sublabel_6_city']
+valid_password & valid_username
+password,xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']
+login,xpath=//input[@data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
+username,xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']
+password,xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']
+login,xpath=//input[@data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
+username,xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']
