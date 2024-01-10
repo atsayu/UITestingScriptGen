@@ -1,13 +1,24 @@
-package objects;
+package objects.action;
 
-public class SelectCheckbox extends Expression{
+import objects.Expression;
+
+public class SelectCheckbox implements Expression {
+    private String locator;
 
     public SelectCheckbox(String locator) {
-        super(locator);
+        this.locator = locator;
     }
 
     public SelectCheckbox(SelectCheckbox clickElement) {
-        super(clickElement.getLocator());
+        this.locator = clickElement.locator;
+    }
+
+    public String getLocator() {
+        return locator;
+    }
+
+    public void setLocator(String locator) {
+        this.locator = locator;
     }
 
     @Override

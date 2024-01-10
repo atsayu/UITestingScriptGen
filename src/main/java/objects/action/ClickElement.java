@@ -1,17 +1,28 @@
-package objects;
+package objects.action;
 
-public class ClickElement extends Expression{
+import objects.Expression;
+
+public class ClickElement implements Expression {
+    private String locator;
 
     public ClickElement(String locator) {
-        super(locator);
+        this.locator = locator;
     }
 
     public ClickElement(ClickElement clickElement) {
-        super(clickElement.getLocator());
+        this.locator = clickElement.locator;
+    }
+
+    public String getLocator() {
+        return locator;
+    }
+
+    public void setLocator(String locator) {
+        this.locator = locator;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean isExprEquals(Object obj) {
         if (obj == this) {
             return true;
         }

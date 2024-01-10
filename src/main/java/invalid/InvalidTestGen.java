@@ -2,8 +2,8 @@ package invalid;
 
 
 import invalid.strategies.Context;
-import objects.ClickElement;
-import objects.InputText;
+import objects.action.ClickElement;
+import objects.action.InputText;
 
 import java.util.Collections;
 import java.util.Vector;

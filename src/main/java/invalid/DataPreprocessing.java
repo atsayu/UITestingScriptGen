@@ -2,8 +2,9 @@ package invalid;
 
 import com.opencsv.CSVReader;
 import invalid.strategies.Context;
-import objects.ClickElement;
-import objects.InputText;
+import objects.action.ClickElement;
+import objects.action.InputText;
+import objects.assertion.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -30,10 +31,15 @@ public class DataPreprocessing {
 
     public static HashMap<String, InputText> inputTextMap = new HashMap<>();
     public static HashMap<String, ClickElement> clickElementMap = new HashMap<>();
+    public static HashMap<String, ElementShouldBeVisible> elementShouldBeVisibleMap = new HashMap<>();
+    public static HashMap<String, ElementShouldContain> elementShouldContainMap = new HashMap<>();
+    public static HashMap<String, LocationShouldBe> locationShouldBeMap = new HashMap<>();
+    public static HashMap<String, PageShouldContainElement> pageShouldContainElementMap = new HashMap<>();
+    public static HashMap<String, PageShouldNotContainElement> pageShouldNotContainElementMap = new HashMap<>();
     static Map<String, List<String>> dataMap = new HashMap<>();
 
     public static void main(String[] args) {
-        initInvalidDataParse("code", "src/main/resources/template/outline_demoqa1.xml", "src/main/resources/robot_test_file/final_test.robot");
+        initInvalidDataParse("codecode", "src/main/resources/template/outline_demoqa1.xml", "src/main/resources/robot_test_file/final_test.robot");
     }
 
     public static void initInvalidDataParse(String csvPath, String xmlPath, String robotPath) {

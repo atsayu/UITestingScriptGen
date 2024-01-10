@@ -1,19 +1,28 @@
-package objects;
+package objects.action;
 
-public class InputText extends Expression{
+import objects.Expression;
+
+public class InputText implements Expression {
     private String value;
-    private int size;
+    private String locator;
 
 
     public InputText(String locator, String value) {
-        super(locator);
+        this.locator = locator;
         this.value = value;
     }
 
     public InputText(InputText inputText) {
-        super(inputText.getLocator());
-        this.value = inputText.getValue();
-        this.size = inputText.getSize();
+        this.locator = inputText.locator;
+        this.value = inputText.value;
+    }
+
+    public String getLocator() {
+        return locator;
+    }
+
+    public void setLocator(String locator) {
+        this.locator = locator;
     }
 
     public String getValue() {
@@ -22,14 +31,6 @@ public class InputText extends Expression{
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
     }
 
     @Override
@@ -43,6 +44,11 @@ public class InputText extends Expression{
         }
 
         return (this.getLocator().equals(it.getLocator()) && this.getValue().equals(it.getValue()));
+    }
+
+    @Override
+    public boolean isExprEquals(Object obj) {
+        return false;
     }
 
     @Override

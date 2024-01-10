@@ -1,5 +1,8 @@
 package invalid.strategies;
 
+import invalid.strategies.action.ClickElementStrategy;
+import invalid.strategies.action.InputTextStrategy;
+
 import java.util.Vector;
 
 public class Context {

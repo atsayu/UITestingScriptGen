@@ -1,11 +1,12 @@
-package invalid.strategies;
+package invalid.strategies.action;
 
 
-import objects.InputText;
+import invalid.strategies.Strategy;
+import objects.action.InputText;
 
 import static invalid.DataPreprocessing.inputTextMap;
 
-public class SelectRadioButtonStrategy implements Strategy{
+public class InputTextStrategy implements Strategy {
     @Override
     public String exprEncode(String expr) {
         for (String key : inputTextMap.keySet()) {
@@ -19,7 +20,7 @@ public class SelectRadioButtonStrategy implements Strategy{
         String[] component = expr.split(" {3}");
         InputText it = new InputText(component[1], component[2]);
         if (!inputTextMap.containsValue(it)) {
-            inputTextMap.put("srb" + (inputTextMap.keySet().size() + 1), it);
+            inputTextMap.put("it" + (inputTextMap.keySet().size() + 1), it);
         }
     }
 

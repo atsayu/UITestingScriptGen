@@ -1,11 +1,12 @@
-package invalid.strategies;
+package invalid.strategies.action;
 
 
-import objects.InputText;
+import invalid.strategies.Strategy;
+import objects.action.InputText;
 
 import static invalid.DataPreprocessing.inputTextMap;
 
-public class SelectCheckboxStrategy implements Strategy{
+public class SelectCheckboxStrategy implements Strategy {
     @Override
     public String exprEncode(String expr) {
         for (String key : inputTextMap.keySet()) {

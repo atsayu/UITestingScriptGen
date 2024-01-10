@@ -1,11 +1,12 @@
-package invalid.strategies;
+package invalid.strategies.action;
 
 
-import objects.ClickElement;
+import invalid.strategies.Strategy;
+import objects.action.ClickElement;
 
 import static invalid.DataPreprocessing.clickElementMap;
 
-public class ClickElementStrategy implements Strategy{
+public class ClickElementStrategy implements Strategy {
     @Override
     public String exprEncode(String expr) {
         for (String key : clickElementMap.keySet()) {
@@ -22,7 +23,6 @@ public class ClickElementStrategy implements Strategy{
         if (!clickElementMap.containsValue(ce)) {
             clickElementMap.put("ce" + (clickElementMap.keySet().size() + 1), ce);
         }
-
     }
 
     @Override

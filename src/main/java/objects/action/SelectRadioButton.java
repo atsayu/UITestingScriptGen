@@ -1,17 +1,20 @@
-package objects;
+package objects.action;
 
-public class SelectRadioButton extends Expression{
+import objects.Expression;
+
+public class SelectRadioButton implements Expression {
+    private String locator;
     private String groupName;
     private String value;
 
     public SelectRadioButton(String locator, String groupName, String value) {
-        super(locator);
+        this.locator = locator;
         this.groupName = groupName;
         this.value = value;
     }
 
     public SelectRadioButton(SelectRadioButton selectRadioButton) {
-        super("");
+        this.locator = selectRadioButton.locator;
         this.groupName = selectRadioButton.groupName;
         this.value = selectRadioButton.value;
     }
