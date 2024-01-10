@@ -5,7 +5,9 @@ Robot Framework TestScript Generation for UI Testing
 ## Requirements
 Python phiên bản 3.10 hoặc mới hơn  
 Java phiên bản 17 hoặc mới hơn  
-
+[ChromeDriver](https://chromedriver.chromium.org/) cùng phiên bản với GoogleChrome:
+- Windows: Thêm đường dẫn tới thư mục chứa file executable vào biến môi trường `PATH`
+- MacOS: Đặt file executable vào thư mục `/usr/local/bin`
 
 ## Installation
 
