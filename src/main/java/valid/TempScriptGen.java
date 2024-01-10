@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Vector;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -68,7 +69,7 @@ public class TempScriptGen {
         for (Element expressionActionElement: expressionActionElements) {
           String type = expressionActionElement.getElementsByTagName("type").item(0).getTextContent();
           if (!type.equals("and") && !type.equals("or")) {
-            if (type.equals("Input")) {
+            if (type.equals("Input Text")) {
               String locator = expressionActionElement.getElementsByTagName("locator").item(0).getTextContent();
               if (!locatorsInput.contains(locator))
                 locatorsInput.add(locator);
@@ -193,19 +194,44 @@ public class TempScriptGen {
       Vector<String> vec_locatorsClickElement = new Vector<>(locatorsClickElement);
       Input ip = new Input();
       Vector<String> res_locatorsInput = ip.processDetectInputElement(vec_locatorsInput, url);
-      System.out.println(res_locatorsInput);
+      Map<String, String> map_locatorsInput = new HashMap<>();  //map lưu locator_variable và locator_value(xpath) của các phần tử input
+      for (int i = 0; i < vec_locatorsInput.size(); i++) {
+        map_locatorsInput.put(vec_locatorsInput.get(i), res_locatorsInput.get(i));
+      }
+      System.out.println("Detect input " + res_locatorsInput);
       ClickableElement cl = new ClickableElement();
       Vector<String> res_locatorsClickElement = cl.processDetectClickableElement(vec_locatorsClickElement, url);
-      System.out.println(res_locatorsClickElement);
+      Map<String, String> map_locatorsClickElement = new HashMap<>();  //map lưu locator_variable và locator_value(xpath) của các phần tử click element
+      for (int i = 0; i < vec_locatorsClickElement.size(); i++) {
+        map_locatorsClickElement.put(vec_locatorsClickElement.get(i), res_locatorsClickElement.get(i));
+      }
+      System.out.println("Detect click " + res_locatorsClickElement);
       RadioButton rb = new RadioButton();
-      Map<Pair<String, String>, Pair<String, String>> res_radioButton = rb.processDetectRadioButtonElement(radioButton, url);
-      System.out.println(res_radioButton);
-      Checkbox cb = new Checkbox();
-      Map<Checkbox.Pair<String, String>, String> res_checkbox = cb.processDetectCheckboxElement(checkbox, url);
-      System.out.println(res_checkbox);
+      Map<Pair<String, String>, Pair<String, String>> res_radioButton = rb.processDetectRadioButtonElement(radioButton, url);  // map lưu pair[question, choice] và pair[group name, value] của radio button
+      System.out.print("Detect radio button ");
+      for (Entry<Pair<String, String>, Pair<String, String>> entry : res_radioButton.entrySet()) {
+        Pair<String, String> pair1 = entry.getKey();
+        Pair<String, String> pair2 = entry.getValue();
+        System.out.println(pair1.getFirst() + " " + pair1.getSecond() + " " + pair2.getFirst() + " " + pair2.getSecond());
+      }
+
       DropDownList ddl = new DropDownList();
-      Map<DropDownList.Pair<String, String>, DropDownList.Pair<String, String>> res_dropdown = ddl.processDetectDropdownList(dropdown, url);
-      System.out.println(res_dropdown);
+      Map<DropDownList.Pair<String, String>, DropDownList.Pair<String, String>> res_dropdown = ddl.processDetectDropdownList(dropdown, url); // map lưu pair[list, value] và pair[locator của select, value của option]
+      System.out.println("Detect dropdown ");
+      for (Entry<DropDownList.Pair<String, String>, DropDownList.Pair<String, String>> entry : res_dropdown.entrySet()) {
+        DropDownList.Pair<String, String> pair1 = entry.getKey();
+        DropDownList.Pair<String, String> pair2 = entry.getValue();
+        System.out.println(pair1.getFirst() + " " + pair1.getSecond() + " " + pair2.getFirst() + " " + pair2.getSecond());
+      }
+
+      Checkbox cb = new Checkbox();
+      Map<Checkbox.Pair<String, String>, String> res_checkbox = cb.processDetectCheckboxElement(checkbox, url); // map lưu pair[question, answer] và locator(xpath) của checkbox
+      System.out.print("Detect checkbox ");
+      for (Entry<Checkbox.Pair<String, String>, String> entry : res_checkbox.entrySet()) {
+        Checkbox.Pair<String, String> pair1 = entry.getKey();
+        String xpath = entry.getValue();
+        System.out.println(pair1.getFirst() + " " + pair1.getSecond() + " " + xpath);
+      }
 
       bufferedWriter.append(content);
       bufferedWriter.close();
