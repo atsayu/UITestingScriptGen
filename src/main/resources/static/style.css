@@ -19,6 +19,8 @@
     width: fit-content;
 }
 
+
+
 .testcase {
     border: 1px solid black;
     margin: 5px;
@@ -247,6 +249,9 @@ li::marker {
     display: block;
 }
 
+.delete-button {
+    background: darkred;
+}
 /*.action .info {*/
 /*    display: none;*/
 /*}*/

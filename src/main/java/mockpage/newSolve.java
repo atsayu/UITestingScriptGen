@@ -9,10 +9,7 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -375,7 +372,13 @@ public class newSolve {
       traversalDom(domTree, e, mapLocatorVariableAndValueVariable);
     }
 //    addNewElementToDom(domTree);
-    writeDomToHtmlFile(domTree, "src/main/resources/templates/test.html");
+//    writeDomToHtmlFile(domTree, "src/main/resources/html/test.html");
+    File mockWebContent = new File("src/main/resources/html/mockweb.html");
+    mockWebContent.createNewFile();
+    BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(mockWebContent));
+//    System.out.println(domTree.body().toString());
+    bufferedWriter.append(domTree.body().html());
+    bufferedWriter.close();
   }
 
   public static void traversalDom(Document domTree, Element e, Map<String, String> mapLocatorVariableAndValueVariable) {
@@ -390,96 +393,150 @@ public class newSolve {
   }
 
   public static String  contentOfMockWeb(Document domTree) {
-    String htmlContent = "<html>\n" +
-            "  <head>\n" +
-            "    <style>\n" +
-            "      :root {\n" +
-            "        grey: #bdbdbd;\n" +
-            "        white: #fefffe;\n" +
-            "        black: #282627;\n" +
-            "      }\n" +
-            "\n" +
-            "      .item1 {\n" +
-            "        grid-area: main;\n" +
-            "      }\n" +
-            "\n" +
-            "      .item2 {\n" +
-            "        grid-area: custom;\n" +
-            "      }\n" +
-            "      .item3 {\n" +
-            "        grid-area: gap;\n" +
-            "        background-color: grey;\n" +
-            "      }\n" +
-            "\n" +
-            "      .grid-container {\n" +
-            "        display: grid;\n" +
-            "        grid-template-areas: \"main gap custom\";\n" +
-            "        grid-template-columns: 63% 0.5% 35%;\n" +
-            "        column-gap: 0px;\n" +
-            "        width: 100%;\n" +
-            "        height: 100%;\n" +
-            "      }\n" +
-            "\n" +
-            "      .save {\n" +
-            "        background-color: white;\n" +
-            "        color: grey;\n" +
-            "        border: 2px solid grey;\n" +
-            "        width: 100px;\n" +
-            "        position: relative;\n" +
-            "        left: 40%;\n" +
-            "        border-radius: 5px;\n" +
-            "        margin-bottom: 10px;\n" +
-            "      }\n" +
-            "\n" +
-            "      .new-testcase {\n" +
-            "        background-color: white;\n" +
-            "        color: grey;\n" +
-            "        border: 2px solid grey;\n" +
-            "        width: 100px;\n" +
-            "        position: relative;\n" +
-            "        left: 40%;\n" +
-            "        border-radius: 5px;\n" +
-            "        margin-bottom: 10px;\n" +
-            "      }\n" +
-            "\n" +
-            "      /* Add the following styles to your existing CSS */\n" +
-            "\n" +
-            "      #myTable {\n" +
-            "        width: 100%;\n" +
-            "        border-collapse: collapse;\n" +
-            "        margin-top: 20px;\n" +
-            "      }\n" +
-            "\n" +
-            "      #myTable th,\n" +
-            "      #myTable td {\n" +
-            "        border: 1px solid grey;\n" +
-            "        padding: 8px;\n" +
-            "        text-align: left;\n" +
-            "      }\n" +
-            "\n" +
-            "      #myTable th {\n" +
-            "        background-color: #282627;\n" +
-            "        color: white;\n" +
-            "      }\n" +
-            "\n" +
-            "      #myTable td {\n" +
-            "        background-color: #fefffe;\n" +
-            "        color: #282627;\n" +
-            "      }\n" +
-            "\n" +
-            "      #myTable tr:hover {\n" +
-            "        background-color: #bdbdbd;\n" +
-            "      }\n" +
-            "\n" +
-            "      #myTable button {\n" +
-            "        padding: 5px;\n" +
-            "        cursor: pointer;\n" +
-            "      }\n" +
-            "    </style>\n" +
-            "  </head>\n" +
-            "  <body>\n" +
-            "    <div class=\"grid-container\">\n" +
-            "      <div class=\"item1\">";
+    String htmlContent = "<html>\n"
+        + "<link\n"
+        + "    href=\"https://fonts.googleapis.com/css?family=Montserrat\"\n"
+        + "    rel=\"stylesheet\"\n"
+        + "/>\n"
+        + "<head>\n";
+    Element head = domTree.head();
+    for (Element child : head.children()) {
+      htmlContent += String.valueOf(child);
+      htmlContent += "\n";
+    }
+    htmlContent += "  <style>\n"
+        + "    :root {\n"
+        + "      --color-darker-grey: #dbdbdb;\n"
+        + "      --color-grey: #f4f9fa;\n"
+        + "      --color-white: #fefeff;\n"
+        + "      --color-black: #08162a;\n"
+        + "      --color-red: #f24b4b;\n"
+        + "      --color-blue: #215faf;\n"
+        + "    }\n"
+        + "\n"
+        + "    .item1 {\n"
+        + "      grid-area: main;\n"
+        + "    }\n"
+        + "\n"
+        + "    .item2 {\n"
+        + "      grid-area: custom;\n"
+        + "      background-color: var(--color-black);\n"
+        + "      cursor: ew-resize;\n"
+        + "    }\n"
+        + "\n"
+        + "    .item3 {\n"
+        + "      font-family: \"Montserrat\";\n"
+        + "      grid-area: gap;\n"
+        + "      background-color: var(--color-white);\n"
+        + "      padding: 20px; /* Add padding for better spacing */\n"
+        + "    }\n"
+        + "\n"
+        + "    .grid-container {\n"
+        + "      display: grid;\n"
+        + "      grid-template-areas: \"main custom gap\";\n"
+        + "      grid-template-columns: 3fr 0.5% 1fr;\n"
+        + "      width: 100%;\n"
+        + "      height: 100vh;\n"
+        + "    }\n"
+        + "\n"
+        + "    .save,\n"
+        + "    .new-testcase {\n"
+        + "      display: inline-block;\n"
+        + "      background-color: var(--color-blue);\n"
+        + "      color: var(--color-white);\n"
+        + "      width: 150px; /* Adjust the percentage based on your design */\n"
+        + "      border-radius: 40px;\n"
+        + "      border: 0px;\n"
+        + "      margin-bottom: 10px;\n"
+        + "      height: 40px;\n"
+        + "      font-weight: bold;\n"
+        + "    }\n"
+        + "\n"
+        + "    #myTable {\n"
+        + "      width: 100%;\n"
+        + "      border-collapse: collapse;\n"
+        + "      margin-top: 20px;\n"
+        + "      overflow-x: auto; /* Enable horizontal scrolling */\n"
+        + "      border-radius: 10px;\n"
+        + "      font-size: 12;\n"
+        + "    }\n"
+        + "\n"
+        + "    #myTable tr:first-child {\n"
+        + "      font-weight: bold;\n"
+        + "      background-color: var(--color-grey);\n"
+        + "      font-size: 15;\n"
+        + "    }\n"
+        + "\n"
+        + "    #myTable th,\n"
+        + "    #myTable td {\n"
+        + "      border: 2px solid var(--color-darker-grey);\n"
+        + "      padding: 8px;\n"
+        + "      text-align: left;\n"
+        + "    }\n"
+        + "\n"
+        + "    /* Style the first column */\n"
+        + "    #myTable td:nth-child(1) {\n"
+        + "      width: 40px;\n"
+        + "      text-align: center;\n"
+        + "      font-weight: bold;\n"
+        + "    }\n"
+        + "\n"
+        + "    #myTable td:nth-child(3) {\n"
+        + "      width: 50px;\n"
+        + "    }\n"
+        + "\n"
+        + "    #myTable td:nth-child(3) button {\n"
+        + "      background-color: transparent; /* Set background color to transparent */\n"
+        + "      background-repeat: no-repeat;\n"
+        + "      background-position: center;\n"
+        + "      background-size: contain;\n"
+        + "      border: none;\n"
+        + "      cursor: pointer;\n"
+        + "      padding: 5px;\n"
+        + "      width: 20px;\n"
+        + "      height: 20px;\n"
+        + "      background-position: center;\n"
+        + "    }\n"
+        + "\n"
+        + "    .collapse-button,\n"
+        + "    .expand-button {\n"
+        + "      display: inline-block;\n"
+        + "      margin: auto;\n"
+        + "      background-position: right;\n"
+        + "      border: 0px;\n"
+        + "      background-color: var(--color-blue);\n"
+        + "      color: var(--color-white);\n"
+        + "      text-align: center;\n"
+        + "      border-radius: 40px;\n"
+        + "    }\n"
+        + "\n"
+        + "    #myTable td:nth-child(3) button.delete_row {\n"
+        + "      background-image: url(\"/png/delete.png\");\n"
+        + "      /* Add additional styles as needed */\n"
+        + "    }\n"
+        + "\n"
+        + "    /* Style for the edit button */\n"
+        + "    #myTable td:nth-child(3) button.edit_row {\n"
+        + "      background-image: url(\"/png/pen.png\");\n"
+        + "      /* Add additional styles as needed */\n"
+        + "    }\n"
+        + "\n"
+        + "    #myTable td:nth-child(3) button.save_row {\n"
+        + "      background-image: url(\"/png/save.png\");\n"
+        + "      /* Add additional styles as needed */\n"
+        + "    }\n"
+        + "\n"
+        + "    @media screen and (max-width: 600px) {\n"
+        + "      .save,\n"
+        + "      .new-testcase {\n"
+        + "        width: 100%; /* Take up the full width on smaller screens */\n"
+        + "      }\n"
+        + "    }\n"
+        + "  </style>\n"
+        + "</head>\n"
+        + "<body>\n"
+        + "<div class=\"grid-container\">\n"
+        + "  <div class=\"item1\">";
     Element body = domTree.body();
     for (Element child : body.children()) {
       htmlContent += "\n";
@@ -487,84 +544,86 @@ public class newSolve {
       htmlContent += String.valueOf(child);
     }
     htmlContent += "\n";
-    htmlContent += "</div>\n  <div class=\"item3\"></div>\n" +
-            "      <div class=\"item2\">\n" +
-            "        <button id=\"new-testcase\" class=\"new-testcase\" type=\"button\">\n" +
-            "          New Testcase\n" +
-            "        </button>\n" +
-            "        <br />\n" +
-            "        <button id=\"save\" class=\"save\" type=\"button\">Save</button>\n" +
-            "        <br />\n" +
-            "        <table id=\"myTable\"></table>\n" +
-            "      </div>\n" +
-            "    </div>\n" +
+    htmlContent += "</div>\n"
+        + "  <div class=\"item3\">\n"
+        + "    <button id=\"new-testcase\" class=\"new-testcase\" type=\"button\">\n"
+        + "      New Testcase\n"
+        + "    </button>\n"
+        + "    <button id=\"save\" class=\"save\" type=\"button\">Save</button>\n"
+        + "    <table id=\"myTable\"></table>\n"
+        + "  </div>\n"
+        + "  <div class=\"item2\" id=\"resizeBar\"></div>\n"
+        + "</div>" +
             "    <script>\n" +
-            "      let inputValArr = [];\n" +
-            "      let inputValues = [];\n" +
-            "      let allElement = document.getElementsByTagName(\"*\");\n" +
-            "      let inputElement = [];\n" +
-            "      for (let i = 0; i < allElement.length; i++) {\n" +
-            "        if (\n" +
-            "          allElement[i].hasAttribute(\"cong\") &&\n" +
-            "          allElement[i].getAttribute(\"cong\").length != 0\n" +
-            "        ) {\n" +
-            "          if (allElement[i].tagName.localeCompare(\"TEXTAREA\")) {\n" +
-            "            inputElement.push(allElement[i]);\n" +
-            "          } else if (allElement[i].tagName.localeCompare(\"INPUT\")) {\n" +
-            "            if (allElement[i].hasAttribute(\"type\")) {\n" +
-            "              let typeAttributeValue = allElement[i].getAttribute(\"type\");\n" +
-            "              if (\n" +
-            "                typeAttributeValue.localeCompare(\"submit\") != 0 &&\n" +
-            "                typeAttributeValue.localeCompare(\"button\") != 0 &&\n" +
-            "                typeAttributeValue.localeCompare(\"reset\") != 0 &&\n" +
-            "                typeAttributeValue.localeCompare(\"image\") != 0 &&\n" +
-            "                typeAttributeValue.localeCompare(\"hidden\") != 0\n" +
-            "              ) {\n" +
-            "                inputElement.push(allElement[i]);\n" +
+            "let inputValArr = [];\n"
+        + "  let inputValues = [];\n"
+        + "  let allElement = document.getElementsByTagName(\"*\");\n"
+        + "  let inputElement = [];\n"
+        + "  var isEditing = 0;\n"
+        + "  for (let i = 0; i < allElement.length; i++) {\n"
+        + "    if (\n"
+        + "        allElement[i].hasAttribute(\"cong\") &&\n"
+        + "        allElement[i].getAttribute(\"cong\").length != 0\n"
+        + "    ) {\n"
+        + "      if (allElement[i].tagName.localeCompare(\"TEXTAREA\")) {\n"
+        + "        inputElement.push(allElement[i]);\n"
+        + "      } else if (allElement[i].tagName.localeCompare(\"INPUT\")) {\n"
+        + "        if (allElement[i].hasAttribute(\"type\")) {\n"
+        + "          let typeAttributeValue = allElement[i].getAttribute(\"type\");\n"
+        + "          if (\n"
+        + "              typeAttributeValue.localeCompare(\"submit\") != 0 &&\n"
+        + "              typeAttributeValue.localeCompare(\"button\") != 0 &&\n"
+        + "              typeAttributeValue.localeCompare(\"reset\") != 0 &&\n"
+        + "              typeAttributeValue.localeCompare(\"image\") != 0 &&\n"
+        + "              typeAttributeValue.localeCompare(\"hidden\") != 0\n"
+        + "          ) {\n"
+        + "            inputElement.push(allElement[i]);\n"
+        + "          }\n"
+        + "        } else {\n"
+        + "          inputElement.push(allElement[i]);\n"
+        + "        }\n"
+        + "      }\n"
+        + "    }\n"
+        + "  }\n"
+        + "  let numberInputElements = inputElement.length;\n"
+        + "  function attributeElement(e) {\n"
+        + "    return e.getAttribute(\"cong\");\n"
+        + "  }\n"
+        + "  for (let i = 0; i < numberInputElements; i++) {\n"
+        + "    inputValues.push(attributeElement(inputElement[i]));\n"
+        + "  }\n"
+        + "\n"
+        + "  const saveButton = document.getElementById(\"save\");" +
+            "        saveButton.addEventListener(\"click\", function () {\n" +
+            "          var table = document.getElementById(\"myTable\");\n" +
+            "          for (var i = 1; i < table.rows.length; i++) {\n" +
+            "            var row = table.rows[i];\n" +
+            "            let values = row.cells[1].innerHTML.split(',');\n" +
+            "            for (var j = 0; j < values.length; j++) {\n" +
+            "              if (values[j].trim() == \"\") {\n" +
+            "                inputValues.push(\"null\");\n" +
+            "              } else {\n" +
+            "                inputValues.push(values[j].trim());\n" +
             "              }\n" +
-            "            } else {\n" +
-            "              inputElement.push(allElement[i]);\n" +
             "            }\n" +
             "          }\n" +
-            "        }\n" +
-            "      }\n" +
-            "      let numberInputElements = inputElement.length;\n" +
-            "      function attributeElement(e) {\n" +
-            "        return e.getAttribute(\"cong\");\n" +
-            "      }\n" +
-            "      for (let i = 0; i < numberInputElements; i++) {\n" +
-            "        inputValues.push(attributeElement(inputElement[i]));\n" +
-            "      }\n" +
-            "\n" +
-     "const saveButton = document.getElementById(\"save\");\n" +
-            "      saveButton.addEventListener(\"click\", function () {\n" +
-            "        var table = document.getElementById(\"myTable\");\n" +
-            "        for (var i = 1; i < table.rows.length; i++) {\n" +
-            "          var row = table.rows[i];\n" +
-            "          for (var j = 1; j < row.cells.length - 1; j++) {\n" +
-            "            if (row.cells[j].innerHTML.trim() == \"\") {\n" +
-            "              inputValues.push(\"null\");\n" +
-            "            } else {\n" +
-            "              inputValues.push(row.cells[j].innerHTML);\n" +
+            "          console.log(inputValues);\n" +
+            "          let fileContent = \"\";\n" +
+            "          for (let i = 0; i < numberInputElements; i++) {\n" +
+            "            for (let k = i; k < inputValues.length; k += numberInputElements) {\n" +
+            "              if (\n" +
+            "                k <\n" +
+            "                i +\n" +
+            "                  (inputValues.length / numberInputElements - 1) *\n" +
+            "                    numberInputElements\n" +
+            "              ) {\n" +
+            "                fileContent += inputValues[k] + \",\";\n" +
+            "              } else {\n" +
+            "                fileContent += inputValues[k] + \"\\n\";\n" +
+            "              }\n" +
             "            }\n" +
             "          }\n" +
-            "        }\n" +
-            "        console.log(inputValues);\n" +
-            "        let fileContent = \"\";\n" +
-            "        for (let i = 0; i < numberInputElements; i++) {\n" +
-            "          for (let k = i; k < inputValues.length; k += numberInputElements) {\n" +
-            "            if (\n" +
-            "              k <\n" +
-            "              i +\n" +
-            "                (inputValues.length / numberInputElements - 1) *\n" +
-            "                  numberInputElements\n" +
-            "            ) {\n" +
-            "              fileContent += inputValues[k] + \",\";\n" +
-            "            } else {\n" +
-            "              fileContent += inputValues[k] + \"\\n\";\n" +
-            "            }\n" +
-            "          }\n" +
-            "        }"+
+            "          console.log(fileContent);"+
             "         let xhr = new XMLHttpRequest();\n" +
             "         xhr.open(\"POST\", \"/createtest\");\n" +
             "         // xhr.setRequestHeader(\"Accept\", \"application/json\");\n" +
@@ -582,128 +641,164 @@ public class newSolve {
             "\n" +
             "         xhr.send(JSON.stringify(data));\n" +
             "        });\n"+
-            "      const newTestcaseButton = document.getElementById(\"new-testcase\");\n" +
-            "      newTestcaseButton.addEventListener(\"click\", function () {\n" +
-            "        // for (let i = 0; i < numberInputElements; i++) {\n" +
-            "        //   if (inputElement[i].value.length == 0) {\n" +
-            "        //     inputValues.push(\"null\");\n" +
-            "        //   } else {\n" +
-            "        //     inputValues.push(inputElement[i].value);\n" +
-            "        //   }\n" +
-            "\n" +
-            "        // }\n" +
-            "        var table = document.getElementById(\"myTable\");\n" +
-            "        var row = table.insertRow();\n" +
-            "        var val = \"\";\n" +
-            "        var valArr = [];\n" +
-            "        if (table.rows.length == 1) {\n" +
-            "          var headerRow = table.insertRow(0);\n" +
-            "          var thead = table.createTHead();\n" +
-            "          var index_cell = headerRow.insertCell();\n" +
-            "          index_cell.innerHTML = \"Index\";\n" +
-            "          var index_cell = headerRow.insertCell();\n" +
-            "          index_cell.innerHTML = \"Value\";\n" +
-            "          var index_cell = headerRow.insertCell();\n" +
-            "          index_cell.innerHTML = \"Action\";\n" +
-            "        }\n" +
-            "        for (let i = 0; i < numberInputElements; i++) {\n" +
-            "          valArr.push(inputElement[i].value);\n" +
-            "          if (i != 0) {\n" +
-            "            val += \", \" + inputElement[i].value;\n" +
-            "          } else {\n" +
-            "            val += inputElement[i].value;\n" +
-            "          }\n" +
-            "        }\n" +
-            "        inputValArr.push(valArr);\n" +
-            "        var index_cell = row.insertCell(0);\n" +
-            "        index_cell.innerHTML = table.rows.length - 1;\n" +
-            "\n" +
-            "        var val_cell = row.insertCell(1);\n" +
-            "\n" +
-            "        if (val.length > 20) {\n" +
-            "          // Display only a part of the text if it's too long\n" +
-            "          val_cell.innerHTML =\n" +
-            "            val.substring(0, 20) + \"<span class='ellipsis'> ...</span>\";\n" +
-            "          // Add a button to expand and show the full value\n" +
-            "          val_cell.innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;\n" +
-            "        } else {\n" +
-            "          val_cell.innerHTML = val;\n" +
-            "        }\n" +
-            "\n" +
-            "        var cell_action = row.insertCell(2);\n" +
-            "        cell_action.innerHTML =\n" +
-            "          \"<button onclick='deleteRow(this)'>Delete</button> <button onclick='editRow(this)'>Change</button>\";\n" +
-            "\n" +
-            "        // Function to expand and show the full value\n" +
-            "\n" +
-            "        for (let i = 0; i < numberInputElements; i++) {\n" +
-            "          inputElement[i].value = null;\n" +
-            "        }\n" +
-            "      });\n" +
-            "\n" +
-            "      function expandText(button, fullText) {\n" +
-            "        var cell = button.parentNode;\n" +
-            "        cell.innerHTML =\n" +
-            "          fullText + \"<button onclick='collapseText(this)'>Collapse</button>\";\n" +
-            "      }\n" +
-            "\n" +
-            "      // Function to collapse the text\n" +
-            "      function collapseText(span) {\n" +
-            "        var cell = span.parentNode;\n" +
-            "        var val = cell.innerText;\n" +
-            "        cell.innerHTML =\n" +
-            "          val.substring(0, 20) +\n" +
-            "          \"<span class='ellipsis'> ...</span>\" +\n" +
-            "          \"<button class='expand-button' onclick='expandText(this, \\\"\" +\n" +
-            "          val.substring(0, val.length - 8) +\n" +
-            "          \"\\\")'>Expand</button>\";\n" +
-            "      }\n" +
-            "\n" +
-            "      function deleteRow(row) {\n" +
-            "        var i = row.parentNode.parentNode.rowIndex;\n" +
-            "        document.getElementById(\"myTable\").deleteRow(i);\n" +
-            "      }\n" +
-            "\n" +
-            "      function editRow(button) {\n" +
-            "        var i = button.parentNode.parentNode.rowIndex;\n" +
-            "        var table = document.getElementById(\"myTable\");\n" +
-            "        for (var index in inputElement) {\n" +
-            "          inputElement[index].value = inputValArr[i-1][index];\n" +
-            "        }\n" +
-            "        \n" +
-            "        button.innerHTML = 'Save';  \n" +
-            "        button.setAttribute(\"onclick\", \"saveRow(this);\")\n" +
-            "      }\n" +
-            "\n" +
-            "      function saveRow(button) {\n" +
-            "        var i = button.parentNode.parentNode.rowIndex;\n" +
-            "        var table = document.getElementById(\"myTable\");\n" +
-            "        var val = '';\n" +
-            "        for (var index in inputElement) {\n" +
-            "          if (index == 0) {\n" +
-            "            val += inputElement[index].value;\n" +
-            "          } else {\n" +
-            "            val += ', ' + inputElement[index].value;\n" +
-            "          }\n" +
-            "          inputValArr[i-1][index] = inputElement[index].value;\n" +
-            "        }\n" +
-            "        var editableRow = table.rows.item(i);\n" +
-            "\n" +
-            "        if (val.length > 20) {\n" +
-            "          // Display only a part of the text if it's too long\n" +
-            "          editableRow.cells[1].innerHTML =\n" +
-            "            val.substring(0, 20) + \"<span class='ellipsis'> ...</span>\";\n" +
-            "          // Add a button to expand and show the full value\n" +
-            "          editableRow.cells[1].innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;\n" +
-            "        } else {\n" +
-            "          editableRow.cells[1].innerHTML = val;\n" +
-            "        }\n" +
-            "        button.innerHTML = 'Edit';  \n" +
-            "        button.setAttribute(\"onclick\", \"editRow(this);\")\n" +
-            "      }\n" +
-            "    </script>\n" +
-            "  </body>\n" +
-            "</html>";
+            "const newTestcaseButton = document.getElementById(\"new-testcase\");\n"
+        + "  newTestcaseButton.addEventListener(\"click\", function () {\n"
+        + "    // for (let i = 0; i < numberInputElements; i++) {\n"
+        + "    //   if (inputElement[i].value.length == 0) {\n"
+        + "    //     inputValues.push(\"null\");\n"
+        + "    //   } else {\n"
+        + "    //     inputValues.push(inputElement[i].value);\n"
+        + "    //   }\n"
+        + "\n"
+        + "    // }\n"
+        + "    var table = document.getElementById(\"myTable\");\n"
+        + "    var row = table.insertRow();\n"
+        + "    var val = \"\";\n"
+        + "    var valArr = [];\n"
+        + "    if (table.rows.length == 1) {\n"
+        + "      var headerRow = table.insertRow(0);\n"
+        + "      headerRow.classList.add(\"table-header\");\n"
+        + "      var thead = table.createTHead();\n"
+        + "      var index_cell = headerRow.insertCell();\n"
+        + "      index_cell.innerHTML = \"INDEX\";\n"
+        + "      var index_cell = headerRow.insertCell();\n"
+        + "      index_cell.innerHTML = \"VALUE\";\n"
+        + "      var index_cell = headerRow.insertCell();\n"
+        + "      index_cell.innerHTML = \"ACTION\";\n"
+        + "    }\n"
+        + "    for (let i = 0; i < numberInputElements; i++) {\n"
+        + "      valArr.push(inputElement[i].value);\n"
+        + "      if (i != 0) {\n"
+        + "        val += \", \" + inputElement[i].value;\n"
+        + "      } else {\n"
+        + "        val += inputElement[i].value;\n"
+        + "      }\n"
+        + "    }\n"
+        + "    inputValArr.push(valArr);\n"
+        + "    var index_cell = row.insertCell(0);\n"
+        + "    index_cell.innerHTML = table.rows.length - 1;\n"
+        + "\n"
+        + "    var val_cell = row.insertCell(1);\n"
+        + "\n"
+        + "    if (val.length > 20) {\n"
+        + "      // Display only a part of the text if it's too long\n"
+        + "      val_cell.innerHTML =\n"
+        + "          val.substring(0, 20) + \"<span class='ellipsis'> ...</span>\";\n"
+        + "      // Add a button to expand and show the full value\n"
+        + "      val_cell.innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;\n"
+        + "    } else {\n"
+        + "      val_cell.innerHTML = val;\n"
+        + "    }\n"
+        + "\n"
+        + "    var cell_action = row.insertCell(2);\n"
+        + "    cell_action.innerHTML =\n"
+        + "        \"<button onclick='deleteRow(this)' class='delete_row'></button> <button onclick='editRow(this)' class='edit_row'></button>\";\n"
+        + "\n"
+        + "    // Function to expand and show the full value\n"
+        + "\n"
+        + "    for (let i = 0; i < numberInputElements; i++) {\n"
+        + "      inputElement[i].value = null;\n"
+        + "    }\n"
+        + "  });\n"
+        + "\n"
+        + "  function expandText(button, fullText) {\n"
+        + "    var cell = button.parentNode;\n"
+        + "    cell.innerHTML =\n"
+        + "        fullText +\n"
+        + "        \"<button class='collapse-button' onclick='collapseText(this)'>Collapse</button>\";\n"
+        + "  }\n"
+        + "\n"
+        + "  // Function to collapse the text\n"
+        + "  function collapseText(span) {\n"
+        + "    var cell = span.parentNode;\n"
+        + "    var val = cell.innerText;\n"
+        + "    var string = val.substring(0,val.length - 8);\n"
+        + "    cell.innerHTML =\n"
+        + "        val.substring(0, 20) +\n"
+        + "        \"<span class='ellipsis'> ...</span>\" +\n"
+        + "        \"<button class='expand-button' onclick='expandText(this, &#39\" + string.replace(/\\n/g, ' ') + \"&#39)'>Expand</button>\";\n"
+        + "  }\n"
+        + "\n"
+        + "  function deleteRow(row) {\n"
+        + "    var i = row.parentNode.parentNode.rowIndex;\n"
+        + "    document.getElementById(\"myTable\").deleteRow(i);\n"
+        + "    inputValArr.splice(i - 1, 1);\n"
+        + "    console.log(inputValArr);\n"
+        + "  }\n"
+        + "\n"
+        + "  function editRow(button) {\n"
+        + "    if (isEditing == 0) {\n"
+        + "      var resizeBar = document.getElementById(\"resizeBar\");\n"
+        + "      resizeBar.style.backgroundColor = \"var(--color-blue)\";\n"
+        + "      isEditing = 1;\n"
+        + "      var i = button.parentNode.parentNode.rowIndex;\n"
+        + "      var table = document.getElementById(\"myTable\");\n"
+        + "      for (var index in inputElement) {\n"
+        + "        inputElement[index].value = inputValArr[i - 1][index];\n"
+        + "      }\n"
+        + "      button.setAttribute(\"onclick\", \"saveRow(this)\");\n"
+        + "      button.setAttribute(\"class\", \"save_row\");\n"
+        + "    }\n"
+        + "  }\n"
+        + "\n"
+        + "  function saveRow(button) {\n"
+        + "    if (isEditing == 1) {\n"
+        + "      isEditing = 0;\n"
+        + "      var resizeBar = document.getElementById(\"resizeBar\");\n"
+        + "      resizeBar.style.backgroundColor = \"var(--color-black)\";\n"
+        + "      var i = button.parentNode.parentNode.rowIndex;\n"
+        + "      var table = document.getElementById(\"myTable\");\n"
+        + "      var val = \"\";\n"
+        + "      for (var index in inputElement) {\n"
+        + "        if (index == 0) {\n"
+        + "          val += inputElement[index].value;\n"
+        + "        } else {\n"
+        + "          val += \", \" + inputElement[index].value;\n"
+        + "        }\n"
+        + "        inputValArr[i - 1][index] = inputElement[index].value;\n"
+        + "      }\n"
+        + "      var editableRow = table.rows.item(i);\n"
+        + "\n"
+        + "      if (val.length > 20) {\n"
+        + "        // Display only a part of the text if it's too long\n"
+        + "        editableRow.cells[1].innerHTML =\n"
+        + "            val.substring(0, 20) + \"<span class='ellipsis'> ...</span>\";\n"
+        + "        // Add a button to expand and show the full value\n"
+        + "        editableRow.cells[1].innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;\n"
+        + "      } else {\n"
+        + "        editableRow.cells[1].innerHTML = val;\n"
+        + "      }\n"
+        + "      button.setAttribute(\"onclick\", \"editRow(this)\");\n"
+        + "      button.setAttribute(\"class\", \"edit_row\");\n"
+        + "\n"
+        + "      for (let i = 0; i < numberInputElements; i++) {\n"
+        + "        inputElement[i].value = null;\n"
+        + "      }\n"
+        + "    }\n"
+        + "  }\n"
+        + "\n"
+        + "  const resizeBar = document.getElementById(\"resizeBar\");\n"
+        + "  let isResizing = false;\n"
+        + "\n"
+        + "  resizeBar.addEventListener(\"mousedown\", (event) => {\n"
+        + "    isResizing = true;\n"
+        + "    document.addEventListener(\"mousemove\", handleMouseMove);\n"
+        + "    document.addEventListener(\"mouseup\", () => {\n"
+        + "      isResizing = false;\n"
+        + "      document.removeEventListener(\"mousemove\", handleMouseMove);\n"
+        + "    });\n"
+        + "  });\n"
+        + "\n"
+        + "  function handleMouseMove(event) {\n"
+        + "    if (isResizing) {\n"
+        + "      const container = document.querySelector(\".grid-container\");\n"
+        + "      const newWidth = event.clientX;\n"
+        + "      container.style.gridTemplateColumns = `${newWidth}px 0.5% 1fr`;\n"
+        + "    }\n"
+        + "  }\n"
+        + "</script>\n"
+        + "</body>\n"
+        + "</html>";
     return htmlContent;
   }
 
@@ -717,61 +812,91 @@ public class newSolve {
     saveBtn.attr("type", "button");
     saveBtn = saveBtn.text("Save");
     Element script = domTree.body().appendElement("script");
-    script.text("let inputValues = [];\n"
-            + "        let allElement = document.getElementsByTagName(\"*\");\n"
-            + "        let inputElement = [];\n"
-            + "        for (let i = 0; i < allElement.length; i++) {\n"
-            + "            if (allElement[i].hasAttribute(\"cong\") && allElement[i].getAttribute(\"cong\").length != 0) {\n"
-            + "                if (allElement[i].tagName.localeCompare(\"TEXTAREA\")) {\n"
-            + "                    inputElement.push(allElement[i]);\n"
-            + "                } else if (allElement[i].tagName.localeCompare(\"INPUT\")) {\n"
-            + "                    if (allElement[i].hasAttribute(\"type\")) {\n"
-            + "                        let typeAttributeValue = allElement[i].getAttribute(\"type\");\n"
-            + "                        if (typeAttributeValue.localeCompare(\"submit\") != 0 && typeAttributeValue.localeCompare(\"button\") != 0\n"
-            + "                            && typeAttributeValue.localeCompare(\"reset\") != 0 && typeAttributeValue.localeCompare(\"image\") != 0 && typeAttributeValue.localeCompare(\"hidden\") != 0) {\n"
-            + "                            inputElement.push(allElement[i]);\n"
-            + "                        }\n"
-            + "                    } else {\n"
-            + "                        inputValues.push(allElement[i]);\n"
-            + "                    }\n"
-            + "                }\n"
-            + "            }\n"
-            + "        }\n"
-            + "        let numberInputElements = inputElement.length;\n"
-            + "        function attributeElement(e) {\n"
-            + "            return e.getAttribute(\"cong\");\n"
-            + "        }\n"
-            + "        for (let i = 0; i < numberInputElements; i++) {\n"
-            + "            inputValues.push(attributeElement(inputElement[i]));\n"
-            + "        }\n" + "        const saveButton = document.getElementById('save');\n"
-            + "        saveButton.addEventListener('click', function () {\n" +
-            "            let fileContent = \"\";\n" +
-            "            for (let i = 0; i < numberInputElements; i++) {\n" +
-            "                for (let k = i; k < inputValues.length; k += numberInputElements) {\n" +
-            "                    if (k < i + (inputValues.length / numberInputElements - 1) * numberInputElements) {\n" +
-            "                        fileContent += inputValues[k] + ',';\n" +
-            "                    } else {\n" +
-            "                        fileContent += inputValues[k] + '\\n';\n" +
-            "                    }\n" +
+    script.text("       let inputValArr = [];\n" +
+            "        let inputValues = [];\n" +
+            "        let allElement = document.getElementsByTagName(\"*\");\n" +
+            "        let inputElement = [];\n" +
+            "        for (let i = 0; i < allElement.length; i++) {\n" +
+            "          if (\n" +
+            "            allElement[i].hasAttribute(\"cong\") &&\n" +
+            "            allElement[i].getAttribute(\"cong\").length != 0\n" +
+            "          ) {\n" +
+            "            if (allElement[i].tagName.localeCompare(\"TEXTAREA\")) {\n" +
+            "              inputElement.push(allElement[i]);\n" +
+            "            } else if (allElement[i].tagName.localeCompare(\"INPUT\")) {\n" +
+            "              if (allElement[i].hasAttribute(\"type\")) {\n" +
+            "                let typeAttributeValue = allElement[i].getAttribute(\"type\");\n" +
+            "                if (\n" +
+            "                  typeAttributeValue.localeCompare(\"submit\") != 0 &&\n" +
+            "                  typeAttributeValue.localeCompare(\"button\") != 0 &&\n" +
+            "                  typeAttributeValue.localeCompare(\"reset\") != 0 &&\n" +
+            "                  typeAttributeValue.localeCompare(\"image\") != 0 &&\n" +
+            "                  typeAttributeValue.localeCompare(\"hidden\") != 0\n" +
+            "                ) {\n" +
+            "                  inputElement.push(allElement[i]);\n" +
             "                }\n" +
+            "              } else {\n" +
+            "                inputElement.push(allElement[i]);\n" +
+            "              }\n" +
             "            }\n" +
-            "         let xhr = new XMLHttpRequest();\n" +
-            "         xhr.open(\"POST\", \"/createtest\");\n" +
-            "         // xhr.setRequestHeader(\"Accept\", \"application/json\");\n" +
-            "         xhr.setRequestHeader(\"Content-Type\", \"application/json\");\n" +
-            "         let data = {\n" +
-            "          \"values\" : fileContent,\n" +
-            "         }\n" +
-            "         xhr.onload = () => {\n" +
-            "          if (xhr.readyState === 4 && xhr.status === 200) {\n" +
-            "           window.location.href = '/script';\n" +
-            "          } else {\n" +
-            "           console.log(`Error: ${xhr.status}`);\n" +
             "          }\n" +
-            "         };\n" +
+            "        }\n" +
+            "        let numberInputElements = inputElement.length;\n" +
+            "        function attributeElement(e) {\n" +
+            "          return e.getAttribute(\"cong\");\n" +
+            "        }\n" +
+            "        for (let i = 0; i < numberInputElements; i++) {\n" +
+            "          inputValues.push(attributeElement(inputElement[i]));\n" +
+            "        }\n" +
             "\n" +
-            "         xhr.send(JSON.stringify(data));\n" +
-            "        });"
+            "        const saveButton = document.getElementById(\"save\");\n" +
+            "        saveButton.addEventListener(\"click\", function () {\n" +
+            "          var table = document.getElementById(\"myTable\");\n" +
+            "          for (var i = 1; i < table.rows.length; i++) {\n" +
+            "            var row = table.rows[i];\n" +
+            "            let values = row.cells[1].innerHTML.split(',');\n" +
+            "            for (var j = 0; j < values.length; j++) {\n" +
+            "              if (values[j].trim() == \"\") {\n" +
+            "                inputValues.push(\"null\");\n" +
+            "              } else {\n" +
+            "                inputValues.push(values[j].trim());\n" +
+            "              }\n" +
+            "            }\n" +
+            "          }\n" +
+            "          console.log(inputValues);\n" +
+            "          let fileContent = \"\";\n" +
+            "          for (let i = 0; i < numberInputElements; i++) {\n" +
+            "            for (let k = i; k < inputValues.length; k += numberInputElements) {\n" +
+            "              if (\n" +
+            "                k <\n" +
+            "                i +\n" +
+            "                  (inputValues.length / numberInputElements - 1) *\n" +
+            "                    numberInputElements\n" +
+            "              ) {\n" +
+            "                fileContent += inputValues[k] + \",\";\n" +
+            "              } else {\n" +
+            "                fileContent += inputValues[k] + \"\\n\";\n" +
+            "              }\n" +
+            "            }\n" +
+            "          }\n" +
+            "          console.log(fileContent);"+
+            "            \"         let xhr = new XMLHttpRequest();\\n\" +\n" +
+            "            \"         xhr.open(\\\"POST\\\", \\\"/createtest\\\");\\n\" +\n" +
+            "            \"         // xhr.setRequestHeader(\\\"Accept\\\", \\\"application/json\\\");\\n\" +\n" +
+            "            \"         xhr.setRequestHeader(\\\"Content-Type\\\", \\\"application/json\\\");\\n\" +\n" +
+            "            \"         let data = {\\n\" +\n" +
+            "            \"          \\\"values\\\" : fileContent,\\n\" +\n" +
+            "            \"         }\\n\" +\n" +
+            "            \"         xhr.onload = () => {\\n\" +\n" +
+            "            \"          if (xhr.readyState === 4 && xhr.status === 200) {\\n\" +\n" +
+            "            \"           window.location.href = '/script';\\n\" +\n" +
+            "            \"          } else {\\n\" +\n" +
+            "            \"           console.log(`Error: ${xhr.status}`);\\n\" +\n" +
+            "            \"          }\\n\" +\n" +
+            "            \"         };\\n\" +\n" +
+            "            \"\\n\" +\n" +
+            "            \"         xhr.send(JSON.stringify(data));\\n\" +\n" +
+            "            \"        });\\n\"+"
             + "        const newTestcaseButton = document.getElementById('new-testcase');\n"
             + "        newTestcaseButton.addEventListener('click', function () {\n"
             + "            for (let i = 0; i < numberInputElements; i++) {\n"
