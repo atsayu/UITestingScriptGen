@@ -114,8 +114,12 @@ public class Checkbox extends ProcessDetectElement {
 
   /** Kiểm tra xem câu hỏi có lựa chọn hiện tại hay không. */
   public boolean checkChoiceInListChoicesOfText(String text, String choice) {
-    List<String> list = mapStoreTextAndChoices.get(text);
-    return list.contains(choice);
+    if (mapStoreTextAndChoices.containsKey(text)) {
+      List<String> list = mapStoreTextAndChoices.get(text);
+      return list.contains(choice);
+    }
+    return false;
+
   }
 
   public String getXpath(Element e) {

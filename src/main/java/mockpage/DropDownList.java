@@ -77,7 +77,7 @@ public class DropDownList extends ProcessDetectElement {
   private void storeMapTextAndChoiceToSelectAndOptionElement(Element root,String text, Element selectElement) {
     String tagNameCurrentElement = root.tagName();
     String textInCurrentElement = root.ownText();
-    if (tagNameCurrentElement.equals("option") && mapStoreTextAndChoices.get(text).contains(textInCurrentElement)) {
+    if (tagNameCurrentElement.equals("option") && mapStoreTextAndChoices.containsKey(text) && mapStoreTextAndChoices.get(text).contains(textInCurrentElement)) {
       Pair<String, String> pairTextAndChoice = new Pair<>(text, textInCurrentElement);
       Pair<Element, Element> pairSelectAndOptionElement = new Pair<>(selectElement, root);
       mapStoreTextAndChoiceToSelectAndOptionElement.put(pairTextAndChoice, pairSelectAndOptionElement);
