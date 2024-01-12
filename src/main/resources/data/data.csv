@@ -1,7 +1,3 @@
-valid_password & valid_username,null & null
-password,xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']
-login,xpath=//input[@data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
-username,xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']
-password,xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']
-login,xpath=//input[@data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
-username,xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']
+valid_firstname
+valid_lastname
+valid_email

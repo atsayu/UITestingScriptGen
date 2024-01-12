@@ -10,11 +10,11 @@ Library	SeleniumLibrary
 Test Login 1
 	Open Browser	https://www.saucedemo.com/	Chrome
 	Maximize Browser Window
-	Input Text	${password}	null
-	Input Text	${username}	null
+	Input Text	${password}	hello
+	Input Text	${username}	standard_user
 	Click Element	${login}
 Test-Login-1
    Open Browser   https://www.saucedemo.com/   Edge
-   Input Text   xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']   NOTnull
-   Input Text   xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']   NOTnull
+   Input Text   xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']   NOThello
+   Input Text   xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']   NOTstandard_user
    Click Element   NOTxpath=//input[@data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
