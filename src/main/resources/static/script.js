@@ -31,7 +31,7 @@ function createTestCase(element) {
                     <ul class="dropdown-menu">
                                              <li><a class="dropdown-item" onclick="addURLAssertElement(this.parentNode.parentNode)">URL Verification</a></li>
                      <li><a class="dropdown-item" onclick="addTextAssert(this.parentNode.parentNode)">Text Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addElementAssert(this.parentNode.parentNode)">Element assert</a></li>
+                     <li><a class="dropdown-item" onclick="addElementTextAssert(this.parentNode.parentNode)">Element Text Assert</a></li>
                     <li><a class="dropdown-item" onclick="addAssertVisibleElement(this.parentNode.parentNode)">Visible Element assert</a></li>
                       
                     </ul>
@@ -537,7 +537,7 @@ function createCustom(element) {
              <div class="custom-container" style="display: inline-block; width: 90%">
                  
                 <input type="text" class="custom-intput-field"  style="width: 80%" placeholder="Your custom action">
-                <button class="" style="margin-top: 5px; margin-bottom: 5px" type="button" id="" onclick="parseInput(this)">Create Action</button>
+                <button class="" style="margin-top: 5px; margin-bottom: 5px" type="button" id="" onclick="parseInput(this.parentNode)">Create Action</button>
             </div>
 </div>
         
@@ -582,7 +582,7 @@ function createOuterAnd(element) {
                     <ul class="dropdown-menu">
                                              <li><a class="dropdown-item" onclick="addURLAssertElement(this.parentNode.parentNode)">URL Verification</a></li>
                      <li><a class="dropdown-item" onclick="addTextAssert(this.parentNode.parentNode)">Text Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addElementAssert(this.parentNode.parentNode)">Element assert</a></li>
+                     <li><a class="dropdown-item" onclick="addElementTextAssert(this.parentNode.parentNode)">Element Text Assert</a></li>
                     <li><a class="dropdown-item" onclick="addAssertVisibleElement(this.parentNode.parentNode)">Visible Element assert</a></li>
                       
                     </ul>
@@ -632,7 +632,7 @@ function createAnd(element) {
                     <ul class="dropdown-menu">
                                              <li><a class="dropdown-item" onclick="addURLAssertElement(this.parentNode.parentNode)">URL Verification</a></li>
                      <li><a class="dropdown-item" onclick="addTextAssert(this.parentNode.parentNode)">Text Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addElementAssert(this.parentNode.parentNode)">Element assert</a></li>
+                     <li><a class="dropdown-item" onclick="addElementTextAssert(this.parentNode.parentNode)">Element Text Assert</a></li>
                     <li><a class="dropdown-item" onclick="addAssertVisibleElement(this.parentNode.parentNode)">Visible Element assert</a></li>
                       
                     </ul>
@@ -681,7 +681,7 @@ function createOuterOr(element) {
                     <ul class="dropdown-menu">
                                              <li><a class="dropdown-item" onclick="addURLAssertElement(this.parentNode.parentNode)">URL Verification</a></li>
                      <li><a class="dropdown-item" onclick="addTextAssert(this.parentNode.parentNode)">Text Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addElementAssert(this.parentNode.parentNode)">Element assert</a></li>
+                     <li><a class="dropdown-item" onclick="addElementTextAssert(this.parentNode.parentNode)">Element Text Assert</a></li>
                     <li><a class="dropdown-item" onclick="addAssertVisibleElement(this.parentNode.parentNode)">Visible Element assert</a></li>
                       
                     </ul>
@@ -730,7 +730,7 @@ function createOr(element) {
                     <ul class="dropdown-menu">
                                              <li><a class="dropdown-item" onclick="addURLAssertElement(this.parentNode.parentNode)">URL Verification</a></li>
                      <li><a class="dropdown-item" onclick="addTextAssert(this.parentNode.parentNode)">Text Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addElementAssert(this.parentNode.parentNode)">Element assert</a></li>
+                     <li><a class="dropdown-item" onclick="addElementTextAssert(this.parentNode.parentNode)">Element Text Assert</a></li>
                     <li><a class="dropdown-item" onclick="addAssertVisibleElement(this.parentNode.parentNode)">Visible Element assert</a></li>
                       
                     </ul>
@@ -895,21 +895,21 @@ function createURLAssertElement(url) {
     return template.content.firstElementChild;
 
 }
-function addElementAssert(element) {
-    let assertElement = createTextAssertElement();
+function addElementTextAssert(element) {
+    let assertElement = createElementAssertElementText();
     let actionList = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
     actionList.insertAdjacentElement('beforeend', assertElement);
 }
-function createElementAssertElement(existElement) {
+function createElementAssertElementText(existElement, text) {
     let clickElement =  `<li>
-                    <div class="action" type="verify-element">
+                    <div class="action" type="verify-element-text">
                         <div class="label-button">
                             <input type="checkbox" name="select" onclick="selecting(this.parentNode)">
-                            <button type="button" class="up">Asser Element ...   </button>
+                            <button type="button" class="up">Assert Element Text ...   </button>
                         </div>
-                        <span class="info nested">Assert Element ...</span>
+                        <span class="info nested">Assert Element Text ...</span>
                         <div class="user-input nested">
-                            Assert Element <input type="text" placeholder="element" value="${existElement ? existElement : ''}">
+                            Assert Element Text <input type="text" placeholder="element" value="${existElement ? existElement : ''}"> contains <input type="text" placeholder="text" value="${text ? text : ''}">
                             <button type="button">Update</button>
                         </div>
                     </div>
@@ -924,9 +924,10 @@ function createElementAssertElement(existElement) {
         console.log(this);
         let label_btn = this.parentNode.parentNode.querySelector('.label-button').querySelector('button[type="button"]');
         console.log(label_btn);
-        let locator = this.parentNode.querySelector('input[type="text"]').value;
+        let text = this.parentNode.querySelector('input[placeholder="text"]').value;
+        let element = this.parentNode.querySelector('input[placeholder="element"]').value;
         let info = this.parentNode.parentNode.querySelector('span.info');
-        info.textContent = 'Assert URL ' + locator;
+        info.textContent = 'Assert Element Text ' + locator + 'contains' + text;
         // if (locator.length > 3) {
         //     label_btn.innerHTML = 'Click ' + locator.substring(0, 3) + '...';
         // } else {

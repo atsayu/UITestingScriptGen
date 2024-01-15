@@ -364,7 +364,7 @@ function createFromValue(value) {
         } else if (arr[1].toLowerCase() === 'text') {
             return createTextAssertElement('expected_text');
         } else if (arr[1].toLowerCase() === 'element') {
-            return createElementAssertElement('expected_element');
+            return createElementAssertElementText(arr[3], arr[3] +'_text');
         }
     }
 }
