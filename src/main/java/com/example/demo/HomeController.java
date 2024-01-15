@@ -181,6 +181,14 @@ public class HomeController {
         System.out.println(urlAndLocators);
         System.out.println(map);
         newSolve.changDomAndCreateMockPage(urlAndLocators, map);
+        /* Sửa lại như sau: mapLocatorVariableAndValueVariable là map ngay trên,chỉ lấy locatorsInput do chỉ nhập data ở các phần tử input
+        Input ip = new Input();
+        try {
+          ip.changeDomAndCreateMockPage(locatorsInput, url, mapLocatorVariableAndValueVariable);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+         */
 
 
         File template = new File ("src/main/resources/template/outline.xml");

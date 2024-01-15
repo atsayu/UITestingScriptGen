@@ -1,19 +1,23 @@
 <TestSuite>
-	<url>https://www.saucedemo.com/</url>
+	<url>https://form.jotform.com/233591762291461</url>
 	<TestCase>
 		<Scenario>
 		</Scenario>
 		<LogicExpressionOfActions>
-			<type>and</type>
+			<type>Select List</type>
+			<list>do   you use any kind of tobacco or have You ever used them </list>
+			<value> no</value>
+		</LogicExpressionOfActions>
+		<LogicExpressionOfActions>
+			<type>or</type>
 			<LogicExpressionOfActions>
-				<type>Input Text</type>
-				<locator>username</locator>
-				<text>valid_username</text>
+				<type>Select Checkbox</type>
+				<question>check   The conditions that apply to you or any member of your immediate relatives </question>
+				<answer>cancer </answer>
 			</LogicExpressionOfActions>
 			<LogicExpressionOfActions>
-				<type>Input Text</type>
-				<locator>password</locator>
-				<text>valid_password</text>
+				<type>Radio Button</type>
+				<choice>not   Sure</choice>
 			</LogicExpressionOfActions>
 		</LogicExpressionOfActions>
 		<LogicExpressionOfActions>
