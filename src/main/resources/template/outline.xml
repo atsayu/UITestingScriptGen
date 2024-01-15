@@ -1,37 +1,24 @@
 <TestSuite>
 	<url>https://form.jotform.com/233591762291461</url>
 	<TestCase>
-		<Scenario>Fill form</Scenario>
+		<Scenario>Fill Form</Scenario>
 		<LogicExpressionOfActions>
-			<type>and</type>
-			<LogicExpressionOfActions>
-				<type>Input Text</type>
-				<locator>First Name</locator>
-				<text>valid_firstname</text>
-			</LogicExpressionOfActions>
-			<LogicExpressionOfActions>
-				<type>Input Text</type>
-				<locator>Last name</locator>
-				<text>valid_lastname</text>
-			</LogicExpressionOfActions>
+			<type>Select List</type>
+			<list>do   you use any kind of tobacco or have You ever used them </list>
+			<value> no</value>
 		</LogicExpressionOfActions>
 		<LogicExpressionOfActions>
 			<type>or</type>
 			<LogicExpressionOfActions>
-				<type>Select List</type>
-				<list>What is your gender?</list>
-				<value>Male</value>
+				<type>Select Checkbox</type>
+				<question>check   The conditions that apply to you or any member of your immediate relatives </question>
+				<answer>cancer </answer>
 			</LogicExpressionOfActions>
 			<LogicExpressionOfActions>
 				<type>Radio Button</type>
-				<choice>No</choice>
-				<question>Are you currently taking any medication?</question>
+				<choice>not   Sure</choice>
+				<question>  do you have   any medication allergies</question>
 			</LogicExpressionOfActions>
-		</LogicExpressionOfActions>
-		<LogicExpressionOfActions>
-			<type>Input Text</type>
-			<locator>Email Address</locator>
-			<text>valid_email</text>
 		</LogicExpressionOfActions>
 	</TestCase>
 </TestSuite>
