@@ -18,7 +18,7 @@ import mockpage.ClickableElement;
 import mockpage.DropDownList;
 import mockpage.Input;
 import mockpage.RadioButton;
-import mockpage.RadioButton.Pair;
+import mockpage.Pair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -216,19 +216,19 @@ public class TempScriptGen {
       }
 
       DropDownList ddl = new DropDownList();
-      Map<DropDownList.Pair<String, String>, DropDownList.Pair<String, String>> res_dropdown = ddl.processDetectDropdownList(dropdown, url); // map lưu pair[list, value] và pair[locator của select, value của option]
+      Map<Pair<String, String>, Pair<String, String>> res_dropdown = ddl.processDetectDropdownList(dropdown, url); // map lưu pair[list, value] và pair[locator của select, value của option]
       System.out.println("Detect dropdown ");
-      for (Entry<DropDownList.Pair<String, String>, DropDownList.Pair<String, String>> entry : res_dropdown.entrySet()) {
-        DropDownList.Pair<String, String> pair1 = entry.getKey();
-        DropDownList.Pair<String, String> pair2 = entry.getValue();
+      for (Entry<Pair<String, String>, Pair<String, String>> entry : res_dropdown.entrySet()) {
+       Pair<String, String> pair1 = entry.getKey();
+       Pair<String, String> pair2 = entry.getValue();
         System.out.println(pair1.getFirst() + " " + pair1.getSecond() + " " + pair2.getFirst() + " " + pair2.getSecond());
       }
 
       Checkbox cb = new Checkbox();
-      Map<Checkbox.Pair<String, String>, String> res_checkbox = cb.processDetectCheckboxElement(checkbox, url); // map lưu pair[question, answer] và locator(xpath) của checkbox
+      Map<Pair<String, String>, String> res_checkbox = cb.processDetectCheckboxElement(checkbox, url); // map lưu pair[question, answer] và locator(xpath) của checkbox
       System.out.print("Detect checkbox ");
-      for (Entry<Checkbox.Pair<String, String>, String> entry : res_checkbox.entrySet()) {
-        Checkbox.Pair<String, String> pair1 = entry.getKey();
+      for (Entry<Pair<String, String>, String> entry : res_checkbox.entrySet()) {
+        Pair<String, String> pair1 = entry.getKey();
         String xpath = entry.getValue();
         System.out.println(pair1.getFirst() + " " + pair1.getSecond() + " " + xpath);
       }
@@ -373,19 +373,19 @@ public class TempScriptGen {
       }
 
       DropDownList ddl = new DropDownList();
-      Map<DropDownList.Pair<String, String>, DropDownList.Pair<String, String>> res_dropdown = ddl.processDetectDropdownList(dropdown, url); // map lưu pair[list, value] và pair[locator của select, value của option]
+      Map<Pair<String, String>, Pair<String, String>> res_dropdown = ddl.processDetectDropdownList(dropdown, url); // map lưu pair[list, value] và pair[locator của select, value của option]
       System.out.println("Detect dropdown ");
-      for (Entry<DropDownList.Pair<String, String>, DropDownList.Pair<String, String>> entry : res_dropdown.entrySet()) {
-        DropDownList.Pair<String, String> pair1 = entry.getKey();
-        DropDownList.Pair<String, String> pair2 = entry.getValue();
+      for (Entry<Pair<String, String>, Pair<String, String>> entry : res_dropdown.entrySet()) {
+        Pair<String, String> pair1 = entry.getKey();
+        Pair<String, String> pair2 = entry.getValue();
         System.out.println(pair1.getFirst() + " " + pair1.getSecond() + " " + pair2.getFirst() + " " + pair2.getSecond());
       }
 
       Checkbox cb = new Checkbox();
-      Map<Checkbox.Pair<String, String>, String> res_checkbox = cb.processDetectCheckboxElement(checkbox, url); // map lưu pair[question, answer] và locator(xpath) của checkbox
+      Map<Pair<String, String>, String> res_checkbox = cb.processDetectCheckboxElement(checkbox, url); // map lưu pair[question, answer] và locator(xpath) của checkbox
       System.out.print("Detect checkbox ");
-      for (Entry<Checkbox.Pair<String, String>, String> entry : res_checkbox.entrySet()) {
-        Checkbox.Pair<String, String> pair1 = entry.getKey();
+      for (Entry<Pair<String, String>, String> entry : res_checkbox.entrySet()) {
+        Pair<String, String> pair1 = entry.getKey();
         String xpath = entry.getValue();
         System.out.println(pair1.getFirst() + " " + pair1.getSecond() + " " + xpath);
       }
