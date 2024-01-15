@@ -5,26 +5,38 @@ function createTestCase(element) {
             <span class="keyword">Scenario</span>
             <input type="text" placeholder="Test case name" class="test-case-name">
             <div class="btn-group dropend root-btn" id="add-action-btn">
-                <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
+                <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-auto-close="outside" data-bs-toggle="dropdown"
                         aria-expanded="false">
                     Add Action
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" onclick="createCustom(this)">Describe your actions</a></li>
-                    <li><a class="dropdown-item" onclick="createOuterAnd(this)">And of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createOuterOr(this)">Or of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
-                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
-                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
-                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
-                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
-                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
-                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li>
-                     <li><a class="dropdown-item" onclick="addURLAssertElement(this)">URL Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addTextAssert(this)">Text Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addElementAssert(this)">Element assert</a></li>
-                    <li><a class="dropdown-item" onclick="addAssertVisibleElement(this)">Visible Element assert</a></li>
+                <li><a class="dropdown-item" onclick="createCustom(this)">Actions flow</a></li>
+                <li class="dropend">
+                    <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown">Normal Action</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" onclick="createOuterAnd(this.parentNode.parentNode)">And of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOuterOr(this.parentNode.parentNode)">Or of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this.parentNode.parentNode)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this.parentNode.parentNode)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="addSelectList(this.parentNode.parentNode)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="addRadioAction(this.parentNode.parentNode)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="addCheckbox(this.parentNode.parentNode)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="addAcceptPopup(this.parentNode.parentNode)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="addCancelPopUp(this.parentNode.parentNode)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="addInputPopup(this.parentNode.parentNode)">Input to popup</a></li>
+                    </ul>
+                </li>
+                <li class="dropend">
+                    <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown">Assertion</a>
+                    <ul class="dropdown-menu">
+                                             <li><a class="dropdown-item" onclick="addURLAssertElement(this.parentNode.parentNode)">URL Verification</a></li>
+                     <li><a class="dropdown-item" onclick="addTextAssert(this.parentNode.parentNode)">Text Verification</a></li>
+                     <li><a class="dropdown-item" onclick="addElementAssert(this.parentNode.parentNode)">Element assert</a></li>
+                    <li><a class="dropdown-item" onclick="addAssertVisibleElement(this.parentNode.parentNode)">Visible Element assert</a></li>
+                      
+                    </ul>
+                </li> 
+<!--                    <li><a class="dropdown-item" onclick="createOuterAnd(this)">And of actions</a></li>-->
                 </ul>
             </div>
             <div class="keyword">
@@ -54,7 +66,7 @@ function createTestCase(element) {
 <!--            <div class="response-container">-->
 <!--            </div>-->
                    <div>
-                    <button class="btn btn-danger btn-sm" onclick="deleteSelectedAction(this)">
+                    <button class="btn btn-danger btn-sm delete-action-btn d-none" onclick="deleteSelectedAction(this)">
                         Delete Selected Element
                         <i class="fa-solid fa-trash"></i>
                     </button>
@@ -156,8 +168,14 @@ function  createClick(element) {
     actionList.insertAdjacentElement('beforeend', template.content.firstElementChild);
 
 }
+function addSelectList(element) {
+    let selectListElement = createSelectList();
+    console.log(element.parentNode.parentNode.parentNode.parentNode);
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentElement('beforeend', selectListElement);
+}
 
-function createSelectList(element) {
+function createSelectList(listName) {
     let selectListElement = `<li>
                     <div class="action" type="select-list">
                         <div class="label-button">
@@ -166,7 +184,7 @@ function createSelectList(element) {
                         </div>
                         <span class="info nested">Select ... for ...</span>
                         <div class="user-input nested">
-                            Select <input type="text" placeholder="item"> for <input type="text" placeholder="list">
+                            Select <input type="text" placeholder="item" value="${listName ? listName: ''}"> for <input type="text" placeholder="list" value="${listName? listName : ''}">
                             <button type="button">Update</button>
                         </div>
                     </div>
@@ -212,13 +230,17 @@ function createSelectList(element) {
         if (!info.classList.contains('nested')) info.classList.add('nested');
     });
 
-    console.log(element.parentNode.parentNode.parentNode.parentNode);
-    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
-    list.insertAdjacentElement('beforeend', template.content.firstElementChild);
+    return template.content.firstElementChild;
 
 }
+function addRadioAction(element) {
+    let radioElement = createRadioAction();
 
-function createRadioChoice(element) {
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentElement('beforeend', radioElement);
+}
+
+function createRadioAction(groupName) {
     let inputElement = `<li>
                     <div class="action" type="radio">
                         <div class="label-button">
@@ -227,7 +249,7 @@ function createRadioChoice(element) {
                         </div>
                         <span class="info nested">Choose ... for ...</span>
                         <div class="user-input nested">
-                            Choose <input type="text" placeholder="choice"> for <input type="text" placeholder="question">
+                            Choose <input type="text" placeholder="choice" value="${groupName? groupName+'_choice' : ''}"> for <input type="text" placeholder="question" value="${groupName? groupName : ''}">
                             <button type="button">Update</button>
                         </div>
                     </div>
@@ -273,12 +295,17 @@ function createRadioChoice(element) {
     });
 
 
-    console.log(element.parentNode.parentNode.parentNode.parentNode);
-    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
-    list.insertAdjacentElement('beforeend', template.content.firstElementChild);
+
+    return template.content.firstElementChild;
 }
 
-function createCheckbox(element) {
+function addCheckbox(element) {
+    let checkboxElement = createCheckbox();
+    console.log(element.parentNode.parentNode.parentNode.parentNode);
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentElement('beforeend', checkboxElement);
+}
+function createCheckbox(question) {
     let checkboxElement = `<li>
                     <div class="action" type="checkbox">
                         <div class="label-button">
@@ -287,7 +314,7 @@ function createCheckbox(element) {
                         </div>
                         <span class="info nested">Select ... for ...</span>
                         <div class="user-input nested">
-                            Select <input type="text" placeholder="answer"> for <input type="text" placeholder="question">
+                            Select <input type="text" placeholder="answer" value="${question? question + '_answer' : ''}"> for <input type="text" placeholder="question" value="${question? question : ''}">
                             <button type="button">Update</button>
                         </div>
                     </div>
@@ -333,12 +360,17 @@ function createCheckbox(element) {
     });
 
 
-    console.log(element.parentNode.parentNode.parentNode.parentNode);
-    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
-    list.insertAdjacentElement('beforeend', template.content.firstElementChild);
+    return template.content.firstElementChild;
 }
 
-function createAcceptPopUp(element) {
+function addAcceptPopup(element) {
+    let acceptPopupElement = createAcceptPopUp();
+    console.log(element.parentNode.parentNode.parentNode.parentNode);
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentElement('beforeend', acceptPopupElement);
+}
+
+function createAcceptPopUp() {
     let accept = `<li>
                     <div class="action" type="accept-popup">
                     <span class="label-button">
@@ -350,11 +382,16 @@ function createAcceptPopUp(element) {
     let template = document.createElement('template');
     template.innerHTML = accept;
 
-    console.log(element.parentNode.parentNode.parentNode.parentNode);
-    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
-    list.insertAdjacentElement('beforeend', template.content.firstElementChild);
+
+    return template.content.firstElementChild;
 }
 
+function addCancelPopUp(element) {
+    let cancelPopUpElement = createCancelPopUp();
+    console.log(element.parentNode.parentNode.parentNode.parentNode);
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentElement('beforeend', cancelPopUpElement);
+}
 function createCancelPopUp(element) {
     let cancel = `<li>
                     <div class="action" type="cancel-popup">
@@ -367,12 +404,15 @@ function createCancelPopUp(element) {
     let template = document.createElement('template');
     template.innerHTML = cancel;
 
-    console.log(element.parentNode.parentNode.parentNode.parentNode);
-    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
-    list.insertAdjacentElement('beforeend', template.content.firstElementChild);
+    return template.content.firstElementChild;
 }
 
-function createInputToPopUp(element) {
+function addInputPopup(element) {
+    let inputPopupElement = createInputToPopUp();
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentElement('beforeend', inputPopupElement);
+}
+function createInputToPopUp(value) {
     let inputElement = `<li>
                     <div class="action" type="input-popup">
                         <div class="label-button">
@@ -381,7 +421,7 @@ function createInputToPopUp(element) {
                         </div>
                         <span class="info nested">Input popup ...</span>
                         <div class="user-input nested">
-                            Input <input type="text" placeholder="text"> to popup
+                            Input <input type="text" placeholder="text" value="${value? value : ''}"> to popup
                             <button type="button">Update</button>
                         </div>
                     </div>
@@ -426,9 +466,7 @@ function createInputToPopUp(element) {
     });
 
 
-    console.log(element.parentNode.parentNode.parentNode.parentNode);
-    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
-    list.insertAdjacentElement('beforeend', template.content.firstElementChild);
+    return template.content.firstElementChild;
 }
 
 function createInputText(element) {
@@ -493,12 +531,15 @@ function createInputText(element) {
 
 function createCustom(element) {
     let custom = `<li>
+            
+            <div class="action" type="custom">
             <input type="checkbox" name="select" onclick="selecting(this)">
-             <div class="custom-container" style="display: inline-block">
+             <div class="custom-container" style="display: inline-block; width: 90%">
                  
-                <input type="text" class="custom-intput-field"  placeholder="Your custom action">
-                <button class="" type="button" id="" onclick="parseInput(this)">Create Action</button>
+                <input type="text" class="custom-intput-field"  style="width: 80%" placeholder="Your custom action">
+                <button class="" style="margin-top: 5px; margin-bottom: 5px" type="button" id="" onclick="parseInput(this)">Create Action</button>
             </div>
+</div>
         
         
     </li>`;
@@ -514,29 +555,41 @@ function createOuterAnd(element) {
 
     <input type="checkbox" name="select" onclick="selecting(this)">
     <span class="info nested"></span>
-    <div class="btn-group dropend">
-        <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
-            aria-expanded="false" onmouseover="updateExpressionAndShowInfo(this)" onmouseout="hideInfo(this)">
-            Combined actions
-        </button>
-        <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" onclick="createCustom(this)">Describe your actions</a></li>
-                    <li><a class="dropdown-item" onclick="createAnd(this)">And of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createOr(this)">Or of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
-                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
-                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
-                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
-                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
-                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
-                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li>
-                     <li><a class="dropdown-item" onclick="addURLAssertElement(this)">URL Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addTextAssert(this)">Text Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addElementAssert(this)">Element assert</a></li>
-                    <li><a class="dropdown-item" onclick="addAssertVisibleElement(this)">Visible Element assert</a></li>
-            </ul>
-    </div>
+    <div class="btn-group dropend root-btn" id="add-action-btn">
+                <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-auto-close="outside" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Combined Action
+                </button>
+                <ul class="dropdown-menu">
+                <li><a class="dropdown-item" onclick="createCustom(this)">Actions flow</a></li>
+                <li class="dropend">
+                    <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown">Normal Action</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" onclick="createAnd(this.parentNode.parentNode)">And of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOr(this.parentNode.parentNode)">Or of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this.parentNode.parentNode)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this.parentNode.parentNode)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="addSelectList(this.parentNode.parentNode)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="addRadioAction(this.parentNode.parentNode)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="addCheckbox(this.parentNode.parentNode)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="addAcceptPopup(this.parentNode.parentNode)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="addCancelPopUp(this.parentNode.parentNode)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="addInputPopup(this.parentNode.parentNode)">Input to popup</a></li>
+                    </ul>
+                </li>
+                <li class="dropend">
+                    <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown">Assertion</a>
+                    <ul class="dropdown-menu">
+                                             <li><a class="dropdown-item" onclick="addURLAssertElement(this.parentNode.parentNode)">URL Verification</a></li>
+                     <li><a class="dropdown-item" onclick="addTextAssert(this.parentNode.parentNode)">Text Verification</a></li>
+                     <li><a class="dropdown-item" onclick="addElementAssert(this.parentNode.parentNode)">Element assert</a></li>
+                    <li><a class="dropdown-item" onclick="addAssertVisibleElement(this.parentNode.parentNode)">Visible Element assert</a></li>
+                      
+                    </ul>
+                </li> 
+<!--                    <li><a class="dropdown-item" onclick="createOuterAnd(this)">And of actions</a></li>-->
+                </ul>
+            </div>
     <ol class="actions nested active">
 
                 </ol>
@@ -552,29 +605,41 @@ function createAnd(element) {
     
     <input type="checkbox" name="select" onclick="selecting(this)">
     <span class="caret" onclick="showAndHide(this)"></span>
-    <div class="btn-group dropend">
-        <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Combined actions
-        </button>
-        <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" onclick="createCustom(this)">Describe your actions</a></li>
-                    <li><a class="dropdown-item" onclick="createAnd(this)">And of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createOr(this)">Or of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
-                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
-                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
-                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
-                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
-                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
-                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li>
-                     <li><a class="dropdown-item" onclick="addURLAssertElement(this)">URL Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addTextAssert(this)">Text Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addElementAssert(this)">Element assert</a></li>
-                    <li><a class="dropdown-item" onclick="addAssertVisibleElement(this)">Visible Element assert</a></li>
-            </ul>
-    </div>
+    <div class="btn-group dropend root-btn" id="add-action-btn">
+                <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-auto-close="outside" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Combined Action
+                </button>
+                <ul class="dropdown-menu">
+                <li><a class="dropdown-item" onclick="createCustom(this)">Actions flow</a></li>
+                <li class="dropend">
+                    <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown">Normal Action</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" onclick="createAnd(this.parentNode.parentNode)">And of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOr(this.parentNode.parentNode)">Or of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this.parentNode.parentNode)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this.parentNode.parentNode)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="addSelectList(this.parentNode.parentNode)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="addRadioAction(this.parentNode.parentNode)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="addCheckbox(this.parentNode.parentNode)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="addAcceptPopup(this.parentNode.parentNode)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="addCancelPopUp(this.parentNode.parentNode)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="addInputPopup(this.parentNode.parentNode)">Input to popup</a></li>
+                    </ul>
+                </li>
+                <li class="dropend">
+                    <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown">Assertion</a>
+                    <ul class="dropdown-menu">
+                                             <li><a class="dropdown-item" onclick="addURLAssertElement(this.parentNode.parentNode)">URL Verification</a></li>
+                     <li><a class="dropdown-item" onclick="addTextAssert(this.parentNode.parentNode)">Text Verification</a></li>
+                     <li><a class="dropdown-item" onclick="addElementAssert(this.parentNode.parentNode)">Element assert</a></li>
+                    <li><a class="dropdown-item" onclick="addAssertVisibleElement(this.parentNode.parentNode)">Visible Element assert</a></li>
+                      
+                    </ul>
+                </li> 
+<!--                    <li><a class="dropdown-item" onclick="createOuterAnd(this)">And of actions</a></li>-->
+                </ul>
+            </div>
     <ol class="actions nested">
 
                 </ol>
@@ -589,29 +654,41 @@ function createOuterOr(element) {
     let orElement = `<li><div class = "action" type="or">
 
     <input type="checkbox" name="select" onclick="selecting(this)">
-    <div class="btn-group dropend">
-        <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Combined actions
-        </button>
-        <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" onclick="createCustom(this)">Describe your actions</a></li>
-                    <li><a class="dropdown-item" onclick="createAnd(this)">And of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createOr(this)">Or of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
-                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
-                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
-                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
-                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
-                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
-                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li>
-                     <li><a class="dropdown-item" onclick="addURLAssertElement(this)">URL Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addTextAssert(this)">Text Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addElementAssert(this)">Element assert</a></li>
-                    <li><a class="dropdown-item" onclick="addAssertVisibleElement(this)">Visible Element assert</a></li>
-            </ul>
-    </div>
+    <div class="btn-group dropend root-btn" id="add-action-btn">
+                <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-auto-close="outside" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Combined Action
+                </button>
+                <ul class="dropdown-menu">
+                <li><a class="dropdown-item" onclick="createCustom(this)">Actions flow</a></li>
+                <li class="dropend">
+                    <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown">Normal Action</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" onclick="createAnd(this.parentNode.parentNode)">And of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOr(this.parentNode.parentNode)">Or of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this.parentNode.parentNode)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this.parentNode.parentNode)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="addSelectList(this.parentNode.parentNode)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="addRadioAction(this.parentNode.parentNode)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="addCheckbox(this.parentNode.parentNode)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="addAcceptPopup(this.parentNode.parentNode)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="addCancelPopUp(this.parentNode.parentNode)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="addInputPopup(this.parentNode.parentNode)">Input to popup</a></li>
+                    </ul>
+                </li>
+                <li class="dropend">
+                    <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown">Assertion</a>
+                    <ul class="dropdown-menu">
+                                             <li><a class="dropdown-item" onclick="addURLAssertElement(this.parentNode.parentNode)">URL Verification</a></li>
+                     <li><a class="dropdown-item" onclick="addTextAssert(this.parentNode.parentNode)">Text Verification</a></li>
+                     <li><a class="dropdown-item" onclick="addElementAssert(this.parentNode.parentNode)">Element assert</a></li>
+                    <li><a class="dropdown-item" onclick="addAssertVisibleElement(this.parentNode.parentNode)">Visible Element assert</a></li>
+                      
+                    </ul>
+                </li> 
+<!--                    <li><a class="dropdown-item" onclick="createOuterAnd(this)">And of actions</a></li>-->
+                </ul>
+            </div>
     <ol class="actions nested active">
 
                 </ol>
@@ -626,29 +703,41 @@ function createOr(element) {
 
     <input type="checkbox" name="select" onclick="selecting(this)">
     <span class="caret" onclick="showAndHide(this)"></span>
-    <div class="btn-group dropend">
-        <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Combined actions
-        </button>
-        <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" onclick="createCustom(this)">Describe your actions</a></li>
-                    <li><a class="dropdown-item" onclick="createAnd(this)">And of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createOr(this)">Or of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createClick(this)">Click</a></li>
-                    <li><a class="dropdown-item" onclick="createInputText(this)">InputText</a></li>
-                    <li><a class="dropdown-item" onclick="createSelectList(this)">Select list</a></li>
-                    <li><a class="dropdown-item" onclick="createRadioChoice(this)">Radio Button</a></li>
-                    <li><a class="dropdown-item" onclick="createCheckbox(this)">Check box</a></li>
-                    <li><a class="dropdown-item" onclick="createAcceptPopUp(this)">Accept popup</a></li>
-                    <li><a class="dropdown-item" onclick="createCancelPopUp(this)">Cancel popup</a></li>
-                    <li><a class="dropdown-item" onclick="createInputToPopUp(this)">Input to popup</a></li>
-                     <li><a class="dropdown-item" onclick="addURLAssertElement(this)">URL Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addTextAssert(this)">Text Verification</a></li>
-                     <li><a class="dropdown-item" onclick="addElementAssert(this)">Element assert</a></li>
-                    <li><a class="dropdown-item" onclick="addAssertVisibleElement(this)">Visible Element assert</a></li>
-            </ul>
-    </div>
+    <div class="btn-group dropend root-btn" id="add-action-btn">
+                <button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-bs-auto-close="outside" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Combined Action
+                </button>
+                <ul class="dropdown-menu">
+                <li><a class="dropdown-item" onclick="createCustom(this)">Actions flow</a></li>
+                <li class="dropend">
+                    <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown">Normal Action</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" onclick="createAnd(this.parentNode.parentNode)">And of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createOr(this.parentNode.parentNode)">Or of actions</a></li>
+                    <li><a class="dropdown-item" onclick="createClick(this.parentNode.parentNode)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="createInputText(this.parentNode.parentNode)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="addSelectList(this.parentNode.parentNode)">Select list</a></li>
+                    <li><a class="dropdown-item" onclick="addRadioAction(this.parentNode.parentNode)">Radio Button</a></li>
+                    <li><a class="dropdown-item" onclick="addCheckbox(this.parentNode.parentNode)">Check box</a></li>
+                    <li><a class="dropdown-item" onclick="addAcceptPopup(this.parentNode.parentNode)">Accept popup</a></li>
+                    <li><a class="dropdown-item" onclick="addCancelPopUp(this.parentNode.parentNode)">Cancel popup</a></li>
+                    <li><a class="dropdown-item" onclick="addInputPopup(this.parentNode.parentNode)">Input to popup</a></li>
+                    </ul>
+                </li>
+                <li class="dropend">
+                    <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown">Assertion</a>
+                    <ul class="dropdown-menu">
+                                             <li><a class="dropdown-item" onclick="addURLAssertElement(this.parentNode.parentNode)">URL Verification</a></li>
+                     <li><a class="dropdown-item" onclick="addTextAssert(this.parentNode.parentNode)">Text Verification</a></li>
+                     <li><a class="dropdown-item" onclick="addElementAssert(this.parentNode.parentNode)">Element assert</a></li>
+                    <li><a class="dropdown-item" onclick="addAssertVisibleElement(this.parentNode.parentNode)">Visible Element assert</a></li>
+                      
+                    </ul>
+                </li> 
+<!--                    <li><a class="dropdown-item" onclick="createOuterAnd(this)">And of actions</a></li>-->
+                </ul>
+            </div>
     <ol class="actions nested">
 
                 </ol>
@@ -707,11 +796,11 @@ function parse(element) {
                    <type>Select Checkbox</type>
                    <question>${element.querySelector("input[placeholder = 'question']").value}</question>
                    <answer>${element.querySelector("input[placeholder = 'answer']").value}</answer>
-                  </LogicExpressionOfActions>`;
+                       </LogicExpressionOfActions>`;
     }
     else if (element.getAttribute('type') === 'radio') {
         return `<LogicExpressionOfActions>
-            <type>Radio Button</type>
+            <type>Select Radio Button</type>
              <choice>${element.querySelector("input[placeholder = 'choice']").value}</choice>       
              <question>${element.querySelector("input[placeholder = 'question']").value}</question> 
             </LogicExpressionOfActions>`;
@@ -997,6 +1086,9 @@ function createTestTemplate() {
 
 
     let url = document.querySelector('#url');
+    if (url.value === '') {
+
+    }
     xml = xml.concat(`<url>${url.value}</url>`);
     let validTestCase = document.querySelectorAll('.valids .testcase');
     console.log(validTestCase.length);
@@ -1043,8 +1135,43 @@ function createTestTemplate() {
 function selecting(element) {
     if (element.parentNode.classList.contains('selected')) {
         element.parentNode.classList.remove('selected');
+        element.parentNode.querySelectorAll('input[type="checkbox"]').forEach((child) => {
+              child.checked = false;
+        });
+        element.parentNode.querySelectorAll('.action').forEach((action) => {
+            if (action.classList.contains('selected')) action.classList.remove('selected');
+        });
+        if (element.parentNode.classList.contains('testcase')) {
+            numOfSelectedTestCase--;
+            if (numOfSelectedTestCase === 0) {
+                document.querySelector('.delete-testcase-btn').classList.add('d-none');
+            }
+        } else {
+            let testCaseElement = element;
+            while (!testCaseElement.classList.contains('testcase')) testCaseElement = testCaseElement.parentNode;
+
+            let numOfSelectedAction = testCaseElement.querySelectorAll('.selected').length;
+            if (numOfSelectedAction === 0) {
+                let deleteBtn = testCaseElement.querySelector('.delete-action-btn');
+                if (!deleteBtn.classList.contains('d-none')) deleteBtn.classList.add('d-none');
+            }
+        }
     } else {
         element.parentNode.classList.add("selected");
+        element.parentNode.querySelectorAll('input[type="checkbox"]').forEach((child) => {
+            child.checked = true;
+        })
+        element.parentNode.querySelectorAll('.action').forEach((action) => {
+            if (!action.classList.contains('selected')) action.classList.add('selected');
+        });
+        if (element.parentNode.classList.contains('testcase')) {
+            numOfSelectedTestCase++;
+            document.querySelector('.delete-testcase-btn').classList.remove('d-none');
+        } else {
+            let testCaseElement = element;
+            while (!testCaseElement.classList.contains('testcase')) testCaseElement = testCaseElement.parentNode;
+            testCaseElement.querySelector('.delete-action-btn').classList.remove('d-none');
+        }
     }
 
 }
@@ -1143,6 +1270,7 @@ function hideInfo(element) {
     infoElement.classList.remove('active');
 }
 
+let numOfSelectedTestCase = 0;
 
 window.onmousemove = function(e) {
     let tooltips = document.querySelectorAll('.info');

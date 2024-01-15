@@ -1,19 +1,24 @@
 <TestSuite>
-	<url>https://form.jotform.com/233591282365460</url>
+	<url>https://www.saucedemo.com/</url>
 	<TestCase>
-		<Scenario>Fill Form</Scenario>
+		<Scenario>
+		</Scenario>
 		<LogicExpressionOfActions>
 			<type>and</type>
 			<LogicExpressionOfActions>
 				<type>Input Text</type>
-				<locator>emailAddress</locator>
-				<text>valid_emailAddress</text>
+				<locator>username</locator>
+				<text>valid_username</text>
 			</LogicExpressionOfActions>
 			<LogicExpressionOfActions>
 				<type>Input Text</type>
-				<locator>city</locator>
-				<text>valid_city</text>
+				<locator>password</locator>
+				<text>valid_password</text>
 			</LogicExpressionOfActions>
+		</LogicExpressionOfActions>
+		<LogicExpressionOfActions>
+			<type>Click Element</type>
+			<locator>login</locator>
 		</LogicExpressionOfActions>
 	</TestCase>
 </TestSuite>

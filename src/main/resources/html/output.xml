@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.1.1 (Python 3.10.10 on win32)" generated="20240115 17:03:05.181" rpa="false" schemaversion="4">
+<suite id="s1" name="Final Test" source="C:\Users\quyenhoang\IdeaProjects\SpringbootUITestingForm\src\main\resources\robot_test_file\final_test.robot">
+<test id="s1-t1" name="Test Login 1" line="10">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://www.saucedemo.com/</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20240115 17:03:05.607" level="INFO">Opening browser 'Chrome' to base url 'https://www.saucedemo.com/'.</msg>
+<status status="PASS" starttime="20240115 17:03:05.605" endtime="20240115 17:03:09.366"/>
+</kw>
+<kw name="Maximize Browser Window" library="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" starttime="20240115 17:03:09.366" endtime="20240115 17:03:09.489"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${password}</arg>
+<arg>p2</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240115 17:03:09.490" level="INFO">Typing text 'p2' into text field 'xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']'.</msg>
+<status status="PASS" starttime="20240115 17:03:09.489" endtime="20240115 17:03:09.641"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${username}</arg>
+<arg>u2</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240115 17:03:09.642" level="INFO">Typing text 'u2' into text field 'xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']'.</msg>
+<status status="PASS" starttime="20240115 17:03:09.641" endtime="20240115 17:03:09.759"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>${login_button}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20240115 17:03:09.761" level="INFO">Clicking element 'xpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']'.</msg>
+<status status="PASS" starttime="20240115 17:03:09.760" endtime="20240115 17:03:09.848"/>
+</kw>
+<status status="PASS" starttime="20240115 17:03:05.602" endtime="20240115 17:03:09.849"/>
+</test>
+<test id="s1-t2" name="Test-Login-1" line="16">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://www.saucedemo.com/</arg>
+<arg>Edge</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20240115 17:03:09.851" level="INFO">Opening browser 'Edge' to base url 'https://www.saucedemo.com/'.</msg>
+<status status="PASS" starttime="20240115 17:03:09.850" endtime="20240115 17:03:12.160"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']</arg>
+<arg>NOTu1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240115 17:03:12.162" level="INFO">Typing text 'NOTu1' into text field 'xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']'.</msg>
+<status status="PASS" starttime="20240115 17:03:12.161" endtime="20240115 17:03:12.333"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']</arg>
+<arg>NOTp1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240115 17:03:12.334" level="INFO">Typing text 'NOTp1' into text field 'xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']'.</msg>
+<status status="PASS" starttime="20240115 17:03:12.333" endtime="20240115 17:03:12.468"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20240115 17:03:12.469" level="INFO">Clicking element 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']'.</msg>
+<msg timestamp="20240115 17:03:12.723" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-110.png"&gt;&lt;img src="selenium-screenshot-110.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20240115 17:03:12.724" level="FAIL">Element with locator 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']' not found.</msg>
+<status status="FAIL" starttime="20240115 17:03:12.468" endtime="20240115 17:03:12.810"/>
+</kw>
+<status status="FAIL" starttime="20240115 17:03:09.849" endtime="20240115 17:03:12.810">Element with locator 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']' not found.</status>
+</test>
+<test id="s1-t3" name="Test Login 1" line="21">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://www.saucedemo.com/</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20240115 17:03:12.813" level="INFO">Opening browser 'Chrome' to base url 'https://www.saucedemo.com/'.</msg>
+<status status="PASS" starttime="20240115 17:03:12.812" endtime="20240115 17:03:14.898"/>
+</kw>
+<kw name="Maximize Browser Window" library="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" starttime="20240115 17:03:14.898" endtime="20240115 17:03:15.023"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${password}</arg>
+<arg>p2</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240115 17:03:15.024" level="INFO">Typing text 'p2' into text field 'xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']'.</msg>
+<status status="PASS" starttime="20240115 17:03:15.023" endtime="20240115 17:03:15.206"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${username}</arg>
+<arg>u2</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240115 17:03:15.207" level="INFO">Typing text 'u2' into text field 'xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']'.</msg>
+<status status="PASS" starttime="20240115 17:03:15.206" endtime="20240115 17:03:15.318"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>${login_button}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20240115 17:03:15.319" level="INFO">Clicking element 'xpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']'.</msg>
+<status status="PASS" starttime="20240115 17:03:15.319" endtime="20240115 17:03:15.407"/>
+</kw>
+<status status="PASS" starttime="20240115 17:03:12.811" endtime="20240115 17:03:15.407"/>
+</test>
+<test id="s1-t4" name="Test-Login-1" line="27">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://www.saucedemo.com/</arg>
+<arg>Edge</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20240115 17:03:15.410" level="INFO">Opening browser 'Edge' to base url 'https://www.saucedemo.com/'.</msg>
+<status status="PASS" starttime="20240115 17:03:15.409" endtime="20240115 17:03:19.544"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']</arg>
+<arg>NOTu1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240115 17:03:19.545" level="INFO">Typing text 'NOTu1' into text field 'xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']'.</msg>
+<status status="PASS" starttime="20240115 17:03:19.544" endtime="20240115 17:03:19.731"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']</arg>
+<arg>NOTp1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240115 17:03:19.732" level="INFO">Typing text 'NOTp1' into text field 'xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']'.</msg>
+<status status="PASS" starttime="20240115 17:03:19.731" endtime="20240115 17:03:19.860"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20240115 17:03:19.862" level="INFO">Clicking element 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']'.</msg>
+<msg timestamp="20240115 17:03:20.107" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-111.png"&gt;&lt;img src="selenium-screenshot-111.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20240115 17:03:20.108" level="FAIL">Element with locator 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']' not found.</msg>
+<status status="FAIL" starttime="20240115 17:03:19.861" endtime="20240115 17:03:20.109"/>
+</kw>
+<kw name="Test Login 1">
+<status status="NOT RUN" starttime="20240115 17:03:20.113" endtime="20240115 17:03:20.114"/>
+</kw>
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://www.saucedemo.com/</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.114" endtime="20240115 17:03:20.114"/>
+</kw>
+<kw name="Maximize Browser Window" library="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.114" endtime="20240115 17:03:20.114"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${password}</arg>
+<arg>p2</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.114" endtime="20240115 17:03:20.114"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${username}</arg>
+<arg>u2</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.114" endtime="20240115 17:03:20.114"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>${login_button}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.115" endtime="20240115 17:03:20.115"/>
+</kw>
+<kw name="Test-Login-1">
+<status status="NOT RUN" starttime="20240115 17:03:20.119" endtime="20240115 17:03:20.119"/>
+</kw>
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://www.saucedemo.com/</arg>
+<arg>Edge</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.119" endtime="20240115 17:03:20.119"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']</arg>
+<arg>NOTu1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.119" endtime="20240115 17:03:20.120"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']</arg>
+<arg>NOTp1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.120" endtime="20240115 17:03:20.120"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.120" endtime="20240115 17:03:20.120"/>
+</kw>
+<kw name="Test Login 1">
+<status status="NOT RUN" starttime="20240115 17:03:20.124" endtime="20240115 17:03:20.124"/>
+</kw>
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://www.saucedemo.com/</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.124" endtime="20240115 17:03:20.124"/>
+</kw>
+<kw name="Maximize Browser Window" library="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.125" endtime="20240115 17:03:20.125"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${password}</arg>
+<arg>p2</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.125" endtime="20240115 17:03:20.125"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${username}</arg>
+<arg>u2</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.125" endtime="20240115 17:03:20.125"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>${login_button}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.125" endtime="20240115 17:03:20.125"/>
+</kw>
+<kw name="Test-Login-1">
+<status status="NOT RUN" starttime="20240115 17:03:20.130" endtime="20240115 17:03:20.130"/>
+</kw>
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://www.saucedemo.com/</arg>
+<arg>Edge</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.130" endtime="20240115 17:03:20.130"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']</arg>
+<arg>NOTu1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.130" endtime="20240115 17:03:20.130"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']</arg>
+<arg>NOTp1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.130" endtime="20240115 17:03:20.130"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.130" endtime="20240115 17:03:20.130"/>
+</kw>
+<kw name="Test Login 1">
+<status status="NOT RUN" starttime="20240115 17:03:20.135" endtime="20240115 17:03:20.135"/>
+</kw>
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://www.saucedemo.com/</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.135" endtime="20240115 17:03:20.135"/>
+</kw>
+<kw name="Maximize Browser Window" library="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.135" endtime="20240115 17:03:20.135"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${password}</arg>
+<arg>p2</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.136" endtime="20240115 17:03:20.136"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${username}</arg>
+<arg>u2</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.136" endtime="20240115 17:03:20.136"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>${login_button}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.136" endtime="20240115 17:03:20.136"/>
+</kw>
+<kw name="Test-Login-1">
+<status status="NOT RUN" starttime="20240115 17:03:20.140" endtime="20240115 17:03:20.140"/>
+</kw>
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://www.saucedemo.com/</arg>
+<arg>Edge</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.141" endtime="20240115 17:03:20.141"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']</arg>
+<arg>NOTu1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.141" endtime="20240115 17:03:20.141"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']</arg>
+<arg>NOTp1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.141" endtime="20240115 17:03:20.141"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240115 17:03:20.141" endtime="20240115 17:03:20.141"/>
+</kw>
+<status status="FAIL" starttime="20240115 17:03:15.408" endtime="20240115 17:03:20.141">Element with locator 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']' not found.</status>
+</test>
+<status status="FAIL" starttime="20240115 17:03:05.184" endtime="20240115 17:03:20.142"/>
+</suite>
+<statistics>
+<total>
+<stat pass="2" fail="2" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="2" fail="2" skip="0" id="s1" name="Final Test">Final Test</stat>
+</suite>
+</statistics>
+<errors>
+<msg timestamp="20240115 17:03:12.811" level="WARN">Multiple tests with name 'Test Login 1' executed in suite 'Final Test'.</msg>
+<msg timestamp="20240115 17:03:15.408" level="WARN">Multiple tests with name 'Test-Login-1' executed in suite 'Final Test'.</msg>
+</errors>
+</robot>

@@ -343,7 +343,22 @@ function createFromValue(value) {
         return createFillClick(arr[arr.length - 1]);
     } else if (arr[0].toLowerCase() === "input") {
         return createFillInput(arr[arr.length - 1], "valid_" + arr[arr.length -1]);
-    } else if (arr[0].toLowerCase() === 'verify') {
+    }else if (arr[0].toLowerCase() === "select") {
+        if (arr[1].toLowerCase() === "list") {
+            return createSelectList(arr[2]);
+        } else if (arr[1].toLowerCase() === "checkbox") {
+            return createSelectCheckbox(arr[2]);
+        }
+    }else if (arr[0].toLowerCase() === "popup") {
+        if (arr[1].toLowerCase() === "accept") {
+            return createAcceptPopUp();
+        } else if (arr[1].toLowerCase() === "input") {
+            return createInputToPopUp('value');
+        } else if (arr[1].toLowerCase() === "cancel") {
+            return createCancelPopUp();
+        }
+    }
+    else if (arr[0].toLowerCase() === 'verify') {
         if (arr[1].toLowerCase() === 'url') {
             return createURLAssertElement('expected_url');
         } else if (arr[1].toLowerCase() === 'text') {

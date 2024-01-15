@@ -16,7 +16,7 @@
 
 .action {
     text-indent: 12px;
-    width: fit-content;
+    /*width: fit-content;*/
 }
 
 
@@ -249,9 +249,9 @@ li::marker {
     display: block;
 }
 
-.delete-button {
-    background: darkred;
-}
+/*.delete-button {*/
+/*    background: darkred;*/
+/*}*/
 /*.action .info {*/
 /*    display: none;*/
 /*}*/
