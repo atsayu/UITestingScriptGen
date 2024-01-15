@@ -1,7 +1,8 @@
 <TestSuite>
 	<url>https://form.jotform.com/233591762291461</url>
 	<TestCase>
-		<Scenario>Fill Form</Scenario>
+		<Scenario>
+		</Scenario>
 		<LogicExpressionOfActions>
 			<type>Select List</type>
 			<list>do   you use any kind of tobacco or have You ever used them </list>
@@ -17,8 +18,11 @@
 			<LogicExpressionOfActions>
 				<type>Radio Button</type>
 				<choice>not   Sure</choice>
-				<question>  do you have   any medication allergies</question>
 			</LogicExpressionOfActions>
+		</LogicExpressionOfActions>
+		<LogicExpressionOfActions>
+			<type>Click Element</type>
+			<locator>login</locator>
 		</LogicExpressionOfActions>
 	</TestCase>
 </TestSuite>

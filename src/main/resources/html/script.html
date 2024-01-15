@@ -5,14 +5,82 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
     <title>Test Script</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        .button {
+            /*background: linear-gradient(90deg,#f5f5f5 35%,#00c0b5 40%,#00c0b5 60%,#f5f5f5 65%);*/
+            /*background-size: 300%;*/
+            /*background-position: 110% 50%;*/
+            /*border-radius: 10px;*/
+            /*border: none;*/
+            /*animation: moveGradient 2s infinite;*/
+            /*animation-timing-function: cubic-bezier(.9,0,.1,1);*/
+        }
+
+        .run-btn {
+
+        }
+        .hidden {
+            display: none;
+        }
+        .fakeScreen {
+            background-color: #151515;
+            box-sizing: border-box;
+            /*width: 500px;*/
+            margin: 20px 20px 20px 20px;
+            padding: 20px;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            height: 500px;
+            overflow-y: auto;
+        }
+
+        /*p {*/
+        /*    position: relative;*/
+        /*    left: 50%;*/
+        /*    margin-left: -8.5em;*/
+        /*    text-align: left;*/
+        /*    font-size: 1.25em;*/
+        /*    font-family: monospace;*/
+        /*    white-space: normal;*/
+        /*    overflow: hidden;*/
+        /*    width: 0;*/
+        /*}*/
+
+        .line {
+            color: #FFFFFF;
+            /*-webkit-animation: type .5s 1s steps(20, end) forwards;*/
+            /*-moz-animation: type .5s 1s steps(20, end) forwards;*/
+            /*-o-animation: type .5s 1s steps(20, end) forwards;*/
+            /*animation: type .5s 1s steps(20, end) forwards;*/
+        }
+    </style>
 </head>
 <body>
    <h1>Test Script created</h1>
-   <input type="button" id="run-btn" value="Run Script">
-   <input type="button" id="copy-btn" value="Copy Script">
-   <input type="button" id="download-btn" value="Download Script">
-   <pre th:text="${testScript}"></pre>
+   <input class="run-btn" style="float: right;" type="button" id="run-btn" value="Run Script">
+   <input class="button" type="button" id="copy-btn" value="Copy Script">
+   <input class="button" type="button" id="download-btn" value="Download Script">
+
+   <blockquote>
+       <pre  style="">
+           <code th:text="${testScript}" style="font-family: 'JetBrains Mono Medium'; height: 500px; overflow-y: auto" class="python">
+
+           </code>
+       </pre>
+   </blockquote>
+   <blockquote>
+       <div class="fakeScreen hidden">
+           <p class="line">Initializing...</p>
+       </div>
+   </blockquote>
+
+   <input class="button hidden" type="button" id="download-report-btn" value="Download Report" disabled>
+   <input class="button hidden" type="button" id="download-log-btn" value="Download Log" disabled>
    <script>
        document.querySelector('#download-btn').addEventListener('click', function() {
            let script = document.querySelector('pre').innerHTML;
@@ -28,6 +96,59 @@
            let script = document.querySelector('pre').innerHTML;
            navigator.clipboard.writeText(script);
        })
+
+       document.querySelector('#run-btn').addEventListener('click', function () {
+           document.querySelector('#run-btn').disabled = true;
+           console.log('run button clicked');
+           const evenSource = new EventSource('/run-script-robot');
+           let fakeTerminal = document.querySelector('.fakeScreen');
+           fakeTerminal.childNodes.forEach(child => child.remove());
+           fakeTerminal.classList.remove('hidden');
+           evenSource.onmessage = function (event) {
+               console.log(event.data);
+               let pElement = document.createElement('p');
+               pElement.classList.add('line');
+               pElement.innerText = event.data;
+               fakeTerminal.appendChild(pElement);
+           }
+
+           evenSource.onerror = function (err) {
+               console.log("Err: ", err);
+               evenSource.close();
+               document.querySelector('#run-btn').disabled = false;
+               document.querySelector('#download-report-btn').disabled = false;
+               document.querySelector('#download-log-btn').disabled = false;
+               document.querySelector('#download-report-btn').classList.remove('hidden');
+               document.querySelector('#download-log-btn').classList.remove('hidden');
+           }
+           // window.scrollTo(document.querySelector('.fakeScreen').getBoundingClientRect().x,document.querySelector('.fakeScreen').getBoundingClientRect().y);
+           document.querySelector('.fakeScreen').scrollIntoView();
+       });
+       document.querySelector('#download-report-btn').addEventListener('click', function () {
+          fetch('/download-robot-report')
+              .then(response => response.blob())
+              .then((blob) => {
+                  const url = window.URL.createObjectURL(new Blob([blob]));
+                  const aElement = document.createElement('a');
+                  aElement.href = url;
+                  aElement.download = 'robot-report.html';
+                  aElement.click();
+              })
+       });
+       document.querySelector('#download-log-btn').addEventListener('click', function () {
+           fetch('/download-robot-log')
+               .then(response => response.blob())
+               .then((blob) => {
+                   const url = window.URL.createObjectURL(new Blob([blob]));
+                   const aElement = document.createElement('a');
+                   aElement.href = url;
+                   aElement.download = 'robot-log.html';
+                   aElement.click();
+               })
+       });
    </script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+   <script>hljs.highlightAll();</script>
 </body>
 </html>

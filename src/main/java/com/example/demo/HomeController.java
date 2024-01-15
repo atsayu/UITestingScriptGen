@@ -1,6 +1,9 @@
 package com.example.demo;
 
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
+//import org.springframework.messaging.simp.SimpMessagingTemplate;
 import com.bpodgursky.jbool_expressions.And;
 import com.bpodgursky.jbool_expressions.Expression;
 import com.bpodgursky.jbool_expressions.Or;
@@ -13,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -28,10 +32,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 
 @Controller
 public class HomeController {
+
     @GetMapping("/")
     public String index() {
         return "index";
@@ -271,7 +277,78 @@ public class HomeController {
         return "script";
     }
 
+    private void runRobotScript(SseEmitter emitter) throws IOException {
 
+            String outputDirectory = "src/main/resources/html";
+            ProcessBuilder processBuilder = new ProcessBuilder("robot","--outputdir", outputDirectory, "src/main/resources/robot_test_file/final_test.robot");
+            processBuilder.redirectErrorStream(true);
+            // Set working directory if necessary
+            // processBuilder.directory(new File("path/to/your/script"));
+
+            Process process = processBuilder.start();
+            // Capture the output stream
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("Users")) line = line.split("\\\\")[line.split("\\\\").length - 1];
+                // Send each line of output to the client
+                emitter.send(line, MediaType.TEXT_PLAIN);
+            }
+        } catch (IOException e) {
+            emitter.completeWithError(e);
+        } finally {
+            int exitCode;
+            try {
+                exitCode = process.waitFor();
+            } catch (InterruptedException e) {
+                emitter.completeWithError(e);
+                return;
+            }
+
+            // Send the exit code to the client
+            emitter.send("Exit Code: " + exitCode, MediaType.TEXT_PLAIN);
+            emitter.complete();
+        }
+    }
+
+    @GetMapping("/download-robot-report")
+    public ResponseEntity<InputStreamResource> downloadReport() throws IOException {
+        File reportFile = new File("src/main/resources/html/report.html");
+        InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(reportFile));
+//        byte[] reportFileContent = Files.readAllBytes(new ClassPathResource("src/main/resources/html/report.html").getFile().toPath());
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=report.html")
+                .body(inputStreamResource);
+    }
+
+    @GetMapping("/download-robot-log")
+    public ResponseEntity<InputStreamResource> downloadLog() throws IOException {
+        File reportFile = new File("src/main/resources/html/log.html");
+        InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(reportFile));
+//        byte[] reportFileContent = Files.readAllBytes(new ClassPathResource("src/main/resources/html/report.html").getFile().toPath());
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=log.html")
+                .body(inputStreamResource);
+    }
+    @GetMapping("/run-script-robot")
+    public SseEmitter runRobotFramework() {
+        System.out.println("Run");
+        SseEmitter emitter = new SseEmitter();
+
+        CompletableFuture.runAsync(() -> {
+            try {
+                runRobotScript(emitter);
+            } catch (IOException e) {
+                emitter.completeWithError(e);
+            }
+        });
+
+        return emitter;
+    }
+    @GetMapping("/report-robot")
+    public String viewRobotReport() {
+        return "Final Test Log";
+    }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
