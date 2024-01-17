@@ -16,8 +16,8 @@ function createTestCase(element) {
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" onclick="createOuterAnd(this.parentNode.parentNode)">And of actions</a></li>
                     <li><a class="dropdown-item" onclick="createOuterOr(this.parentNode.parentNode)">Or of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createClick(this.parentNode.parentNode)">Click</a></li>
-                    <li><a class="dropdown-item" onclick="createInputText(this.parentNode.parentNode)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="addClickElement(this.parentNode.parentNode)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="addInputTextElement(this.parentNode.parentNode)">InputText</a></li>
                     <li><a class="dropdown-item" onclick="addSelectList(this.parentNode.parentNode)">Select list</a></li>
                     <li><a class="dropdown-item" onclick="addRadioAction(this.parentNode.parentNode)">Radio Button</a></li>
                     <li><a class="dropdown-item" onclick="addCheckbox(this.parentNode.parentNode)">Check box</a></li>
@@ -76,8 +76,16 @@ function createTestCase(element) {
     element.insertAdjacentHTML('beforebegin', testcaseElement);
 }
 
+function addClickElement(element) {
+    let clickElement = createClick();
+    let actionList = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    console.log(actionList);
+    // lastElement.insertAdjacentHTML('beforebegin', clickElement);
+    // ulist.insertAdjacentHTML('beforeend', clickElement);
+    actionList.insertAdjacentElement('beforeend', clickElement);
+}
 
-function  createClick(element) {
+function  createClick(locator) {
 //     let clickElement = `<div class="action" type="click">
 //     <input type="checkbox" name="select" onclick="selecting(this)">
 //     Click
@@ -96,17 +104,16 @@ function  createClick(element) {
     let clickElement =  `<li>
                     <div class="action" type="click">
                         <div class="label-button">
-                            <input type="checkbox" name="select" onclick="selecting(this.parentNode)">
-                            <button type="button" class="up">Click ...   </button>
+                            <input type="checkbox" name="select" onclick="selecting(this.parentNode.parentNode)">
+                            <button type="button" class="up">${(locator && locator.length <= 3)? 'Click ' + locator : 'Click ...'}</button>
                         </div>
-                        <span class="info nested">Click ...</span>
+                        <span class="info nested">${locator? 'Click ' +locator : '...'}</span>
                         <div class="user-input nested">
-                            Click <input type="text" placeholder="locator" value="">
+                            Click <input type="text" placeholder="locator" value="${locator? locator : ''}">
                             <button type="button">Update</button>
                         </div>
                     </div>
                 </li>`;
-    console.log(element.parentNode.parentNode.parentNode.parentNode);
     let template = document.createElement('template');
     template.innerHTML = clickElement;
 
@@ -161,12 +168,8 @@ function  createClick(element) {
 
 
 
-    let actionList = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
-    console.log(actionList);
-    // lastElement.insertAdjacentHTML('beforebegin', clickElement);
-    // ulist.insertAdjacentHTML('beforeend', clickElement);
-    actionList.insertAdjacentElement('beforeend', template.content.firstElementChild);
 
+    return template.content.firstElementChild;
 }
 function addSelectList(element) {
     let selectListElement = createSelectList();
@@ -469,16 +472,23 @@ function createInputToPopUp(value) {
     return template.content.firstElementChild;
 }
 
-function createInputText(element) {
+function addInputTextElement(element) {
+    let inputElement = createInputText();
+    console.log(element.parentNode.parentNode.parentNode.parentNode);
+    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
+    list.insertAdjacentElement('beforeend', inputElement);
+}
+
+function createInputText(locator) {
     let inputElement = `<li>
                     <div class="action" type="input-text">
                         <div class="label-button">
                             <input type="checkbox" name="select" onclick="selecting(this.parentNode)">
-                            <button type="button" class="up">Input ...   </button>
+                            <button type="button" class="up">Input ...  </button>
                         </div>
-                        <span class="info nested">Input ... to ...</span>
+                        <span class="info nested">${locator? 'Input valid_' +locator + ' to ' +locator : '...'}</span>
                         <div class="user-input nested">
-                            Input <input type="text" placeholder="text"> to <input type="text" placeholder="locator">
+                            Input <input type="text" placeholder="text" value="${locator? 'valid_'+locator : ''}"> to <input type="text" placeholder="locator" value="${locator ? locator : ''}">
                             <button type="button">Update</button>
                         </div>
                     </div>
@@ -524,9 +534,8 @@ function createInputText(element) {
     });
 
 
-    console.log(element.parentNode.parentNode.parentNode.parentNode);
-    let list = element.parentNode.parentNode.parentNode.parentNode.querySelector('.actions');
-    list.insertAdjacentElement('beforeend', template.content.firstElementChild);
+
+    return template.content.firstElementChild;
 }
 
 function createCustom(element) {
@@ -567,8 +576,8 @@ function createOuterAnd(element) {
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" onclick="createAnd(this.parentNode.parentNode)">And of actions</a></li>
                     <li><a class="dropdown-item" onclick="createOr(this.parentNode.parentNode)">Or of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createClick(this.parentNode.parentNode)">Click</a></li>
-                    <li><a class="dropdown-item" onclick="createInputText(this.parentNode.parentNode)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="addClickElement(this.parentNode.parentNode)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="addInputTextElement(this.parentNode.parentNode)">InputText</a></li>
                     <li><a class="dropdown-item" onclick="addSelectList(this.parentNode.parentNode)">Select list</a></li>
                     <li><a class="dropdown-item" onclick="addRadioAction(this.parentNode.parentNode)">Radio Button</a></li>
                     <li><a class="dropdown-item" onclick="addCheckbox(this.parentNode.parentNode)">Check box</a></li>
@@ -617,8 +626,8 @@ function createAnd(element) {
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" onclick="createAnd(this.parentNode.parentNode)">And of actions</a></li>
                     <li><a class="dropdown-item" onclick="createOr(this.parentNode.parentNode)">Or of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createClick(this.parentNode.parentNode)">Click</a></li>
-                    <li><a class="dropdown-item" onclick="createInputText(this.parentNode.parentNode)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="addClickElement(this.parentNode.parentNode)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="addInputTextElement(this.parentNode.parentNode)">InputText</a></li>
                     <li><a class="dropdown-item" onclick="addSelectList(this.parentNode.parentNode)">Select list</a></li>
                     <li><a class="dropdown-item" onclick="addRadioAction(this.parentNode.parentNode)">Radio Button</a></li>
                     <li><a class="dropdown-item" onclick="addCheckbox(this.parentNode.parentNode)">Check box</a></li>
@@ -666,8 +675,8 @@ function createOuterOr(element) {
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" onclick="createAnd(this.parentNode.parentNode)">And of actions</a></li>
                     <li><a class="dropdown-item" onclick="createOr(this.parentNode.parentNode)">Or of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createClick(this.parentNode.parentNode)">Click</a></li>
-                    <li><a class="dropdown-item" onclick="createInputText(this.parentNode.parentNode)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="addClickElement(this.parentNode.parentNode)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="addInputTextElement(this.parentNode.parentNode)">InputText</a></li>
                     <li><a class="dropdown-item" onclick="addSelectList(this.parentNode.parentNode)">Select list</a></li>
                     <li><a class="dropdown-item" onclick="addRadioAction(this.parentNode.parentNode)">Radio Button</a></li>
                     <li><a class="dropdown-item" onclick="addCheckbox(this.parentNode.parentNode)">Check box</a></li>
@@ -715,8 +724,8 @@ function createOr(element) {
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" onclick="createAnd(this.parentNode.parentNode)">And of actions</a></li>
                     <li><a class="dropdown-item" onclick="createOr(this.parentNode.parentNode)">Or of actions</a></li>
-                    <li><a class="dropdown-item" onclick="createClick(this.parentNode.parentNode)">Click</a></li>
-                    <li><a class="dropdown-item" onclick="createInputText(this.parentNode.parentNode)">InputText</a></li>
+                    <li><a class="dropdown-item" onclick="addClickElement(this.parentNode.parentNode)">Click</a></li>
+                    <li><a class="dropdown-item" onclick="addInputTextElement(this.parentNode.parentNode)">InputText</a></li>
                     <li><a class="dropdown-item" onclick="addSelectList(this.parentNode.parentNode)">Select list</a></li>
                     <li><a class="dropdown-item" onclick="addRadioAction(this.parentNode.parentNode)">Radio Button</a></li>
                     <li><a class="dropdown-item" onclick="addCheckbox(this.parentNode.parentNode)">Check box</a></li>
@@ -822,18 +831,26 @@ function parse(element) {
     }
     else if (element.getAttribute('type') === 'and') {
         let xml = `<LogicExpressionOfActions><type>and</type>`;
-        let actions = element.querySelectorAll('.action');
-        for (let i = 0; i < actions.length; i++) {
-            xml = xml.concat(parse(actions[i]));
-        }
+        let actions = element.querySelector('.actions');
+        console.log(actions.children);
+        Array.from(actions.children).forEach(child => {
+           xml = xml.concat(parse(child.firstElementChild));
+        });
+        // for (let i = 0; i < actions.length; i++) {
+        //     xml = xml.concat(parse(actions[i]));
+        // }
         xml = xml.concat(`</LogicExpressionOfActions>`);
         return xml;
     } else if (element.getAttribute('type') === 'or') {
         let xml = `<LogicExpressionOfActions><type>or</type>`;
-        let actions = element.querySelectorAll('.action');
-        for (let i = 0; i < actions.length; i++) {
-            xml = xml.concat(parse(actions[i]));
-        }
+        let actions = element.querySelector('.actions');
+        Array.from(actions.children).forEach(child => {
+            console.log(child.firstElementChild);
+            xml = xml.concat(parse(child.firstElementChild));
+        });
+        // for (let i = 0; i < actions.length; i++) {
+        //     xml = xml.concat(parse(actions[i]));
+        // }
         xml = xml.concat(`</LogicExpressionOfActions>`);
         return xml;
     }
@@ -1148,6 +1165,12 @@ function selecting(element) {
             if (numOfSelectedTestCase === 0) {
                 document.querySelector('.delete-testcase-btn').classList.add('d-none');
             }
+            let numOfSelectedAction = element.parentNode.querySelectorAll('.selected').length;
+            if (numOfSelectedAction === 0) {
+                let deleteBtn = element.parentNode.querySelector('.delete-action-btn');
+                if (!deleteBtn.classList.contains('d-none')) deleteBtn.classList.add('d-none');
+            }
+
         } else {
             let testCaseElement = element;
             while (!testCaseElement.classList.contains('testcase')) testCaseElement = testCaseElement.parentNode;
@@ -1169,6 +1192,11 @@ function selecting(element) {
         if (element.parentNode.classList.contains('testcase')) {
             numOfSelectedTestCase++;
             document.querySelector('.delete-testcase-btn').classList.remove('d-none');
+            let numOfSelectedAction = element.parentNode.querySelectorAll('.selected').length;
+            if (numOfSelectedAction > 0) {
+                let deleteBtn = element.parentNode.querySelector('.delete-action-btn');
+                deleteBtn.classList.remove('d-none');
+            }
         } else {
             let testCaseElement = element;
             while (!testCaseElement.classList.contains('testcase')) testCaseElement = testCaseElement.parentNode;

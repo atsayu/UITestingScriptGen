@@ -205,7 +205,14 @@ public class DataPreprocessing {
             tbString += " 1 : 1 0 : 0";
         }
         Vector<Vector<String>> tb = new Vector<>();
-        tb.add(arrToVec(encodeExpr.split("\\||%26|%28|%29")));
+//        tb.add(arrToVec(encodeExpr.split("\\||%26|%28|%29")));
+        String[] splitted = encodeExpr.split("\\||%26|%28|%29");
+        String[] cleanSplitted = Arrays.stream(splitted).filter(split -> !split.isEmpty()).toArray(String[]::new);
+        tb.add(arrToVec(cleanSplitted));
+        for (String split: splitted) {
+
+            System.out.println(split);
+        }
         for (String header : tb.get(0)) {
             tbString = tbString.replaceAll(header, "");
         }

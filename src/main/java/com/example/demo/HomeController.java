@@ -180,6 +180,15 @@ public class HomeController {
         locatorsInput = locators.toArray(locatorsInput);
         System.out.println(locatorsInput);
         System.out.println(map);
+        File template = new File ("src/main/resources/template/outline.xml");
+        if (template.createNewFile()) {
+            System.out.println("Created template file");
+        } else {
+            System.out.println("File existed");
+        }
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(template));
+        bufferedWriter.append(xml);
+        bufferedWriter.close();
 //        try {
 //            newSolve.changDomAndCreateMockPage(urlAndLocators, map);
 //        } catch (Exception e) {
@@ -199,15 +208,7 @@ public class HomeController {
          */
 
 
-        File template = new File ("src/main/resources/template/outline.xml");
-        if (template.createNewFile()) {
-            System.out.println("Created template file");
-        } else {
-            System.out.println("File existed");
-        }
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(template));
-        bufferedWriter.append(xml);
-        bufferedWriter.close();
+
 
         ScriptGen.createDataSheetV2("src/main/resources/template/outline.xml", "src/main/resources/data/datasheet.csv");
         return new ResponseEntity<>("Mocked the page", HttpStatus.OK);

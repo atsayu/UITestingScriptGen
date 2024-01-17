@@ -54,6 +54,7 @@ public class ScriptGen {
                     if (childNode.getNodeType() == Node.ELEMENT_NODE && ((Element) childNode).getTagName().equals("LogicExpressionOfActions"))
                         expressionActionElements.add((Element) childNode);
                 }
+                List<List<String>> beforeAssertActions = new ArrayList<>();
                 Stack<String> assertionStack = new Stack<>();
                 for (Element expressionActionElement: expressionActionElements) {
 
@@ -68,8 +69,15 @@ public class ScriptGen {
 //                            if (content.indexOf(cur) == -1) continue;
 //                            content.delete(content.indexOf(cur), cur.length());
 //                        }
-                        content.append(assertionExpression).append("\n");
-
+                        List<String> verifyList = new ArrayList<>();
+                        verifyList.add(expressionActionElement.getElementsByTagName("url").item(0).getTextContent());
+                        beforeAssertActions.add(verifyList);
+//                        content.append(assertionExpression).append("\n");
+                        StringBuilder andActions = new StringBuilder();
+                        List<String> output = new ArrayList<>();
+                        addActionAndAssert(beforeAssertActions, output, 0, new StringBuilder());
+                        System.out.println(output);
+                        for (String assertString: output) content.append(assertString).append("\n");
                     }
                     if (!type.equals("and") && !type.equals("or") && !type.equals("Verify URL")) {
                         String locator = expressionActionElement.getElementsByTagName("locator").item(0).getTextContent();
@@ -81,6 +89,9 @@ public class ScriptGen {
                             System.out.println(assertionStack);
                             if (content.indexOf(text) == -1)
                                 content.append(text).append("\n");
+                            List<String> curActionListString = new ArrayList<>();
+                            curActionListString.add(text);
+                            beforeAssertActions.add(curActionListString);
                         }
                     } else if(!type.equals("Verify URL")) {
                         List<List<Expression>> dnfList = LogicParser.createDNFList(LogicParser.createAction(expressionActionElement));
@@ -97,6 +108,7 @@ public class ScriptGen {
                             texts.add(new ArrayList<>(textList));
                         }
                         List<List<Integer>> subsets = Subset.subsets(texts.size());
+                        List<String> curActionListString = new ArrayList<>();
                         for (List<Integer> subset : subsets) {
                             if (subset.isEmpty()) continue;
                             StringBuilder satisfy = new StringBuilder();
@@ -110,12 +122,15 @@ public class ScriptGen {
                                 }
                             }
                             assertionStack.add(satisfy.toString());
+                            curActionListString.add(satisfy.toString());
                             if (content.indexOf(satisfy.toString()) == -1)
                                 content.append(new StringBuilder(satisfy)).append("\n");
                         }
+                        beforeAssertActions.add(curActionListString);
 
                         //This block of code is for invalid test gen
                         String action = LogicParser.createTextExpression(expressionActionElement).toString();
+                        System.out.println(action);
                         if (action.charAt(0) == '(') {
                             action = action.substring(1, action.length() - 1);
                         }
@@ -159,7 +174,23 @@ public class ScriptGen {
         }
     }
 
-
+    public static void addActionAndAssert(List<List<String>> actionTextList, List<String> output, int n, StringBuilder andActions) {
+        if (n >= actionTextList.size()) {
+            output.add(andActions.toString());
+            return;
+        }
+        List<String> curActions = actionTextList.get(n);
+        for (String curAction: curActions) {
+            int startIndex = andActions.length();
+            if (andActions.isEmpty()) andActions.append(curAction);
+            else andActions.append(" & ").append(curAction);
+            addActionAndAssert(actionTextList, output, n + 1, new StringBuilder(andActions));
+            int endIndex = -1;
+            if (startIndex == 0) endIndex = startIndex + curAction.length();
+            else endIndex = startIndex + curAction.length() + 3;
+            andActions.delete(startIndex, endIndex);
+        }
+    }
     public static Map<String, List<String>> createDataMap(String path) {
         Map<String, List<String>> variables = new HashMap<>();
         try (CSVReader csvReader = new CSVReader(new FileReader(path))) {
@@ -306,7 +337,11 @@ public class ScriptGen {
                                 Element actionElement = (Element) actions.item(k);
                                 StringBuilder actionString = new StringBuilder();
                                 String realLocator = actionElement.getElementsByTagName("locator").item(0).getTextContent();
+
                                 String locator = "${" + realLocator + "}";
+                                StringBuilder locatorAndXpath = new StringBuilder().append(locator).append("\t").append(dataMap.get(realLocator).get(0)).append("\n");
+                                if (header.indexOf(locatorAndXpath.toString()) == -1)
+                                    header.append(locatorAndXpath);
                                 String text = null;
                                 if (actionElement.getElementsByTagName("text").getLength() > 0) {
                                     text = actionElement.getElementsByTagName("text").item(0).getTextContent();
@@ -487,8 +522,8 @@ public class ScriptGen {
         }
     }
     public static void main(String[] args) {
-//        createDataSheetV2("outline].xml", "src/main/resources/data/data_sheet.csv");
-        createScriptV2("outline].xml", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
+        createDataSheetV2("outline].xml", "src/main/resources/data/data_sheet.csv");
+//        createScriptV2("outline].xml", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
 //
 //        createDataSheetV2("outline_demoqa.xml", "data_demoqa.csv");
 //        createScriptV2("outline_demoqa.xml", "data_demoqa.csv", "test_demoqa.robot");
