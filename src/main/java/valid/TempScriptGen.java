@@ -409,5 +409,52 @@ public class TempScriptGen {
   }
 
 
+  public static String contentAction(Element expressionActionElement, Vector<String> allValueVariable, Vector<String> valueVariableNotAssert,  Map<String, String> mapLocatorVariableAndValueVariable, Vector<String> input) {
+    String type = expressionActionElement.getElementsByTagName("type").item(0).getTextContent();
+    System.out.println(type);
+    if (!type.equals("and") && !type.equals("or")) {
+      if (type.equals("Input Text")) {
+        String locator = expressionActionElement.getElementsByTagName("locator").item(0).getTextContent();
+        input.add(locator);
+        String text = "";
+        if (expressionActionElement.getElementsByTagName("text").getLength() > 0) {
+          text = expressionActionElement.getElementsByTagName("text").item(0).getTextContent();
+        }
+       if (!mapLocatorVariableAndValueVariable.containsKey(locator)) {
+         mapLocatorVariableAndValueVariable.put(locator, text);
+       }
+        allValueVariable.add(text);
+        valueVariableNotAssert.add(text);
+        return "Input " + text + " to " + locator;
+      }
+      if (type.equals("Click Element")) {
+        String locator = expressionActionElement.getElementsByTagName("locator").item(0).getTextContent();
+        return "Click " + locator;
+      }
+      if (type.equals("Radio Button")) {
+        String choice = expressionActionElement.getElementsByTagName("choice").item(0).getTextContent();
+        String question = expressionActionElement.getElementsByTagName("question").item(0).getTextContent();
+        return "Choose " + choice + " for " + question;
+      }
+      if (type.equals("Select List")) {
+        String value = expressionActionElement.getElementsByTagName("value").item(0).getTextContent();
+        String list = expressionActionElement.getElementsByTagName("list").item(0).getTextContent();
+        return "Select " + value + " for " + list;
+      }
+      if (type.equals("Select Checkbox")) {
+        String answer = expressionActionElement.getElementsByTagName("answer").item(0).getTextContent();
+        String question = expressionActionElement.getElementsByTagName("question").item(0).getTextContent();
+        return "Select " + answer + " for " + question;
+      }
+      if (type.equals("Verify URL")) {
+        String url = expressionActionElement.getElementsByTagName("url").item(0).getTextContent();
+        allValueVariable.add(url);
+        return "Assert URL" +  "<input class='assert_url' type='text' value=''>";
+      }
+    }
+      return null;
+  }
+
+
 
 }
