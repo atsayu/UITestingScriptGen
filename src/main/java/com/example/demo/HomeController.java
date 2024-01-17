@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import mockpage.Input;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
@@ -28,10 +29,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 
@@ -162,25 +160,35 @@ public class HomeController {
         Map<String, String> map = new HashMap<>();
         String url = document.getElementsByTagName("url").item(0).getTextContent();
         List<String> locators = new ArrayList<>();
-        locators.add(url);
+//        locators.add(url);
         NodeList actions = document.getElementsByTagName("LogicExpressionOfActions");
         for (int i = 0; i < actions.getLength(); i++) {
             if (actions.item(i).getNodeType() != Node.ELEMENT_NODE) continue;
             Element action = (Element) actions.item(i);
             String type = action.getElementsByTagName("type").item(0).getTextContent();
-            String locator = action.getElementsByTagName("locator").item(0).getTextContent();
-            if (!locators.contains(locator)) locators.add(locator);
-            if (type.equals("Input Text")) {
-                String text = action.getElementsByTagName("text").item(0).getTextContent();
-                if (!map.containsKey(locator)) map.put(locator, text);
+            if (action.getElementsByTagName("locator").getLength() != 0) {
+                String locator = action.getElementsByTagName("locator").item(0).getTextContent();
+                if (!locators.contains(locator) && type.equals("Input Text")) locators.add(locator);
+                if (type.equals("Input Text")) {
+                    String text = action.getElementsByTagName("text").item(0).getTextContent();
+                    if (!map.containsKey(locator)) map.put(locator, text);
+                }
             }
 
         }
-        String[] urlAndLocators = new String[locators.size()];
-        urlAndLocators = locators.toArray(urlAndLocators);
-        System.out.println(urlAndLocators);
+        String[] locatorsInput = new String[locators.size()];
+        locatorsInput = locators.toArray(locatorsInput);
+        System.out.println(locatorsInput);
         System.out.println(map);
-        newSolve.changDomAndCreateMockPage(urlAndLocators, map);
+//        try {
+//            newSolve.changDomAndCreateMockPage(urlAndLocators, map);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        Input ip = new Input();
+        ip.changeDomAndCreateMockPage(new Vector<>(locators), url, map);
+
+
         /* Sửa lại như sau: mapLocatorVariableAndValueVariable là map ngay trên,chỉ lấy locatorsInput do chỉ nhập data ở các phần tử input
         Input ip = new Input();
         try {

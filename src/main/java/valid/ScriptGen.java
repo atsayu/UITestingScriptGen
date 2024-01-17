@@ -11,6 +11,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import mockpage.newSolve;
 import invalid.DataPreprocessing;
 import invalid.PythonTruthTableServer;
+import objects.ClickElement;
+import objects.Expression;
+import objects.InputText;
+import org.springframework.web.socket.server.HandshakeHandler;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -50,28 +54,45 @@ public class ScriptGen {
                     if (childNode.getNodeType() == Node.ELEMENT_NODE && ((Element) childNode).getTagName().equals("LogicExpressionOfActions"))
                         expressionActionElements.add((Element) childNode);
                 }
+                Stack<String> assertionStack = new Stack<>();
                 for (Element expressionActionElement: expressionActionElements) {
+
                     String type = expressionActionElement.getElementsByTagName("type").item(0).getTextContent();
-                    if (!type.equals("and") && !type.equals("or")) {
+                    if (type.equals("Verify URL")) {
+                        System.out.println(expressionActionElement.getElementsByTagName("url").getLength());
+                        assertionStack.add(expressionActionElement.getElementsByTagName("url").item(0).getTextContent());
+                        String assertionExpression = String.join(" & ", assertionStack.stream().toList());
+                        System.out.println(assertionExpression);
+//                        while (!assertionStack.isEmpty()) {
+//                            String cur = assertionStack.pop();
+//                            if (content.indexOf(cur) == -1) continue;
+//                            content.delete(content.indexOf(cur), cur.length());
+//                        }
+                        content.append(assertionExpression).append("\n");
+
+                    }
+                    if (!type.equals("and") && !type.equals("or") && !type.equals("Verify URL")) {
                         String locator = expressionActionElement.getElementsByTagName("locator").item(0).getTextContent();
                         if (!locators.contains(locator))
                             locators.add(locator);
                         if (expressionActionElement.getElementsByTagName("text").getLength() > 0) {
                             String text = expressionActionElement.getElementsByTagName("text").item(0).getTextContent();
+                            assertionStack.add(text);
+                            System.out.println(assertionStack);
                             if (content.indexOf(text) == -1)
                                 content.append(text).append("\n");
                         }
-                    } else {
-                        List<List<Action>> dnfList = LogicParser.createDNFList(LogicParser.createAction(expressionActionElement));
+                    } else if(!type.equals("Verify URL")) {
+                        List<List<Expression>> dnfList = LogicParser.createDNFList(LogicParser.createAction(expressionActionElement));
                         List<List<String>> texts = new ArrayList<>();
-                        for (List<Action> actionList : dnfList) {
+                        for (List<Expression> actionList : dnfList) {
                             List<String> textList = new ArrayList<>();
-                            for (Action action : actionList) {
+                            for (Expression action : actionList) {
                                 String locator = action.getLocator();
                                 if (!locators.contains(locator))
                                     locators.add(locator);
-                                if (action.getText() != null)
-                                    textList.add(action.getText());
+                                if ( action instanceof InputText && ((InputText)action).getValue() != null)
+                                    textList.add(((InputText)action).getValue());
                             }
                             texts.add(new ArrayList<>(textList));
                         }
@@ -88,6 +109,7 @@ public class ScriptGen {
                                     }
                                 }
                             }
+                            assertionStack.add(satisfy.toString());
                             if (content.indexOf(satisfy.toString()) == -1)
                                 content.append(new StringBuilder(satisfy)).append("\n");
                         }
@@ -118,8 +140,6 @@ public class ScriptGen {
                         }
 
                     }
-
-
 
                 }
 
@@ -201,6 +221,10 @@ public class ScriptGen {
                 String testName = testcaseElement.getElementsByTagName("Scenario").item(0).getTextContent();
                 StringBuilder validations = new StringBuilder();
                 NodeList validationNodes = testcaseElement.getElementsByTagName("Validation");
+                boolean haveAssert = false;
+                NodeList types = testcaseElement.getElementsByTagName("type");
+//                for (int j = 0; j < )
+                //Giả sử luôn có assert URL
                 for (int j = 0; j < validationNodes.getLength(); j++) {
                     Node validation = validationNodes.item(j);
                     if (validation.getNodeType() != Node.ELEMENT_NODE) continue;
@@ -226,129 +250,195 @@ public class ScriptGen {
                         parentLogicOfActions.add((Element) nodes.item(j));
                 }
                 Map<Integer, List<StringBuilder>> lines = new HashMap<>();
+                Stack<String> assertionStack = new Stack<>();
+                StringBuilder blockOfActions = new StringBuilder();
                 for (int j = 0; j < parentLogicOfActions.size(); j++) {
-                    Element cur = parentLogicOfActions.get(j);
-                    String type = cur.getElementsByTagName("type").item(0).getTextContent();
-                    if (!type.equals("or") && !type.equals("and")) {
-                        List<StringBuilder> list = new ArrayList<>();
-                        StringBuilder actionString = new StringBuilder();
-                        String realLocator = cur.getElementsByTagName("locator").item(0).getTextContent();
-                        String locator = "${" + realLocator + "}";
-                        String text = null;
-                        if (cur.getElementsByTagName("text").getLength() > 0) {
-                            text = cur.getElementsByTagName("text").item(0).getTextContent();
-                        }
-                        actionString.append("\t").append(type).append("\t").append(locator);
-                        if (text != null) {
-                            actionString.append("\t").append(text).append("\n");
-                        }
-                        else {
-                            actionString.append("\n");
-                        }
-                        if (text != null) {
-                            for (String s: dataMap.get(text)) {
-                                StringBuilder prev = new StringBuilder(actionString);
-                                replace(text, s, actionString);
-                                list.add(new StringBuilder(actionString));
-                                actionString = new StringBuilder(prev);
-                            }
-                        } else {
-                            list.add(actionString);
-                        }
-                        lines.put(j, list);
-                        StringBuilder locatorAndXpath = new StringBuilder().append(locator).append("\t").append(dataMap.get(realLocator).get(0)).append("\n");
-                        if (header.indexOf(locatorAndXpath.toString()) == -1)
-                            header.append(locatorAndXpath);
-                    } else {
-                        List<List<Action>> elementList = LogicParser.createDNFList(LogicParser.createAction(cur));
-                        List<StringBuilder> listOfChoices = new ArrayList<>();
-                        List<List<String>> placeHoldersEachAction = new ArrayList<>();
-                        List<List<StringBuilder>> actionStringList = new ArrayList<>();
-                        for (List<Action> actions : elementList) {
-                            List<String> locators = new ArrayList<>();
-                            List<String> placeholders = new ArrayList<>();
+                    List<StringBuilder> possibleAction = new ArrayList<>();
+                    while (!parentLogicOfActions.get(j).getElementsByTagName("type").item(0).getTextContent().equals("Verify URL")) {
+                        Element cur = parentLogicOfActions.get(j);
+                        String type = cur.getElementsByTagName("type").item(0).getTextContent();
+                        if (!type.equals("or") && !type.equals("and")) {
+                            List<StringBuilder> list = new ArrayList<>();
                             StringBuilder actionString = new StringBuilder();
-                            List<StringBuilder> temp = new ArrayList<>();
-                            for (Action action: actions) {
-                                actionString.append("\t").append(action.getType());
-                                String realLocator = action.getLocator();
-                                actionString.append("\t").append("${").append(realLocator).append("}");
-                                StringBuilder locatorAndXpath = new StringBuilder().append("${").append(realLocator).append("}").append("\t").append(dataMap.get(realLocator).get(0)).append("\n");
-                                if (header.indexOf(locatorAndXpath.toString()) == -1)
-                                    header.append(locatorAndXpath);
-                                locators.add(action.getLocator());
-                                if (action.getText() != null) {
-                                    placeholders.add(action.getText());
-                                    actionString.append("\t").append(action.getText());
-                                }
+                            String realLocator = cur.getElementsByTagName("locator").item(0).getTextContent();
+                            String locator = "${" + realLocator + "}";
+                            String text = null;
+                            if (cur.getElementsByTagName("text").getLength() > 0) {
+                                text = cur.getElementsByTagName("text").item(0).getTextContent();
+                                assertionStack.push(text);
+                            }
+
+                            actionString.append("\t").append(type).append("\t").append(locator);
+                            if (text != null) {
+                                actionString.append("\t").append(text).append("\n");
+//                                blockOfActions.append("\t").append(text).append("\n");
+                            }
+                            else {
                                 actionString.append("\n");
-                                temp.add(actionString);
-                                actionString = new StringBuilder();
+
                             }
-                            placeHoldersEachAction.add(placeholders);
-                            actionStringList.add(temp);
+                            blockOfActions.append(actionString);
+//                            if (text != null) {
+//                                for (String s: dataMap.get(text)) {
+//                                    StringBuilder prev = new StringBuilder(actionString);
+////                                    replace(text, s, actionString);
+//                                    list.add(new StringBuilder(actionString));
+//                                    actionString = new StringBuilder(prev);
+//                                }
+//                            } else {
+//                                list.add(actionString);
+//                            }
+//                            lines.put(j, list);
+                            StringBuilder locatorAndXpath = new StringBuilder().append(locator).append("\t").append(dataMap.get(realLocator).get(0)).append("\n");
+                            if (header.indexOf(locatorAndXpath.toString()) == -1)
+                                header.append(locatorAndXpath);
                         }
-                        List<List<Integer>> subsets = Subset.subsets(actionStringList.size());
-                        DisjointSet disjointSet = new DisjointSet(placeHoldersEachAction.size());
-                        for (List<Integer> subset : subsets) {
-                            if (subset.isEmpty()) continue;
-                            StringBuilder subsetOfActions = new StringBuilder();
-                            Map<String, String> mapChoseData = new HashMap<>();
-                            for (int index1 = 0; index1 < subset.size() - 1; index1++) {
-                                for (int index2 = index1 + 1; index2 < subset.size(); index2++) {
-                                    List<String> placeHolders1 = placeHoldersEachAction.get(subset.get(index1));
-                                    List<String> placeHolders2 = placeHoldersEachAction.get(subset.get(index2));
-                                    Set<String> check = new HashSet<>(placeHolders1);
-                                    check.retainAll(placeHolders2);
-                                    if (!check.isEmpty()) disjointSet.union(subset.get(index1), subset.get(index2));
-                                }
-                            }
-                            for (int index1 = 0; index1 < subset.size(); index1++) {
-                                int index = subset.get(index1);
-                                if (placeHoldersEachAction.get(index).isEmpty()) {
-                                    subsetOfActions.append(actionStringList.get(index));
-                                    continue;
-                                }
-                                if (!mapChoseData.containsKey(placeHoldersEachAction.get(index).get(0))) {
-                                    List<String> list = new ArrayList<>(placeHoldersEachAction.get(index));
-                                    for (int k = index1 + 1; k < subset.size(); k++) {
-                                        if (disjointSet.sameSet(index, subset.get(k))) {
-                                            for (String placeholder : placeHoldersEachAction.get(subset.get(k))) {
-                                                if (!list.contains(placeholder)) list.add(placeholder);
-                                            }
-                                        }
-                                    }
-                                    StringBuilder combinePlaceHolder = new StringBuilder(String.join(" & ", list));
-                                    int randomIndex = new Random().nextInt(dataMap.get(combinePlaceHolder.toString()).size());
-                                    String realDatas = dataMap.get(combinePlaceHolder.toString()).get(randomIndex);
-                                    String[] datas = realDatas.split(" & ");
-                                    for (int k = 0; k < list.size(); k++) {
-                                        mapChoseData.put(list.get(k), datas[k]);
-                                    }
-                                    List<StringBuilder> actionString = actionStringList.get(index);
-                                    for (int k = 0; k < placeHoldersEachAction.get(index).size(); k++) {
-                                        StringBuilder temp = new StringBuilder(actionString.get(k));
-                                        String placeholder = placeHoldersEachAction.get(index).get(k);
-                                        replace(placeholder, mapChoseData.get(placeholder), temp);
-                                        if (subsetOfActions.indexOf(temp.toString()) == -1)
-                                            subsetOfActions.append(temp);
-                                    }
-                                } else {
-                                    List<StringBuilder> actionString = actionStringList.get(index);
-                                    for (int k = 0; k < placeHoldersEachAction.get(index).size(); k++) {
-                                        StringBuilder temp = new StringBuilder(actionString.get(k));
-                                        String placeholder = placeHoldersEachAction.get(index).get(k);
-                                        replace(placeholder, mapChoseData.get(placeholder), temp);
-                                        if (subsetOfActions.indexOf(temp.toString()) == -1)
-                                            subsetOfActions.append(temp);
-                                    }
-                                }
-                            }
-                            listOfChoices.add(new StringBuilder(subsetOfActions));
-                            disjointSet.makeSet();
-                        }
-                        lines.put(j, listOfChoices);
+                        j++;
                     }
+                    Element cur = parentLogicOfActions.get(j);
+                    String expectedUrl = cur.getElementsByTagName("url").item(0).getTextContent();
+                    assertionStack.push(expectedUrl);
+                    blockOfActions.append("\tLocation should be\t").append(expectedUrl).append("\n");
+                    String assertionString = String.join(" & ", assertionStack.stream().toList());
+                    System.out.println(assertionString);
+                    List<String> realDataList = dataMap.get(assertionString);
+                    List<StringBuilder> realBlockOfCode = new ArrayList<>();
+                    for (String datas: realDataList) {
+                        StringBuilder newBlock = new StringBuilder(blockOfActions);
+                        String[] variable = assertionString.split(" & ");
+                        String[] data = datas.split(" & ");
+                        Map<String, String> variableData = new HashMap<>();
+                        StringBuilder realBlock = new StringBuilder();
+                        for (int k = 0; k < variable.length; k++) {
+                            int startIndex = newBlock.indexOf(variable[k]);
+                            newBlock.replace(startIndex, startIndex + variable[k].length(), data[k]);
+                        }
+                        realBlockOfCode.add(newBlock);
+                    }
+                    lines.put(lines.size(), realBlockOfCode);
+//                    if (!type.equals("Verify URL")) {
+//                        if (!type.equals("or") && !type.equals("and")) {
+//                            List<StringBuilder> list = new ArrayList<>();
+//                            StringBuilder actionString = new StringBuilder();
+//                            String realLocator = cur.getElementsByTagName("locator").item(0).getTextContent();
+//                            String locator = "${" + realLocator + "}";
+//                            String text = null;
+//                            if (cur.getElementsByTagName("text").getLength() > 0) {
+//                                text = cur.getElementsByTagName("text").item(0).getTextContent();
+//                            }
+//                            actionString.append("\t").append(type).append("\t").append(locator);
+//                            if (text != null) {
+//                                actionString.append("\t").append(text).append("\n");
+//                            }
+//                            else {
+//                                actionString.append("\n");
+//                            }
+//                            if (text != null) {
+//                                for (String s: dataMap.get(text)) {
+//                                    StringBuilder prev = new StringBuilder(actionString);
+//                                    replace(text, s, actionString);
+//                                    list.add(new StringBuilder(actionString));
+//                                    actionString = new StringBuilder(prev);
+//                                }
+//                            } else {
+//                                list.add(actionString);
+//                            }
+//                            lines.put(j, list);
+//                            StringBuilder locatorAndXpath = new StringBuilder().append(locator).append("\t").append(dataMap.get(realLocator).get(0)).append("\n");
+//                            if (header.indexOf(locatorAndXpath.toString()) == -1)
+//                                header.append(locatorAndXpath);
+//                        }
+//                        else {
+//                            List<List<Expression>> elementList = LogicParser.createDNFList(LogicParser.createAction(cur));
+//                            List<StringBuilder> listOfChoices = new ArrayList<>();
+//                            List<List<String>> placeHoldersEachAction = new ArrayList<>();
+//                            List<List<StringBuilder>> actionStringList = new ArrayList<>();
+//                            for (List<Expression> actions : elementList) {
+//                                List<String> locators = new ArrayList<>();
+//                                List<String> placeholders = new ArrayList<>();
+//                                StringBuilder actionString = new StringBuilder();
+//                                List<StringBuilder> temp = new ArrayList<>();
+//                                for (Expression action: actions) {
+//                                    actionString.append("\t").append(action.getType());
+//                                    String realLocator = action.getLocator();
+//                                    actionString.append("\t").append("${").append(realLocator).append("}");
+//                                    StringBuilder locatorAndXpath = new StringBuilder().append("${").append(realLocator).append("}").append("\t").append(dataMap.get(realLocator).get(0)).append("\n");
+//                                    if (header.indexOf(locatorAndXpath.toString()) == -1)
+//                                        header.append(locatorAndXpath);
+//                                    locators.add(action.getLocator());
+//                                    if (action instanceof InputText &&  ((InputText)action).getValue() != null) {
+//                                        placeholders.add(((InputText)action).getValue());
+//                                        actionString.append("\t").append(((InputText)action).getValue());
+//                                    }
+//                                    actionString.append("\n");
+//                                    temp.add(actionString);
+//                                    actionString = new StringBuilder();
+//                                }
+//                                placeHoldersEachAction.add(placeholders);
+//                                actionStringList.add(temp);
+//                            }
+//                            List<List<Integer>> subsets = Subset.subsets(actionStringList.size());
+//                            DisjointSet disjointSet = new DisjointSet(placeHoldersEachAction.size());
+//                            for (List<Integer> subset : subsets) {
+//                                if (subset.isEmpty()) continue;
+//                                StringBuilder subsetOfActions = new StringBuilder();
+//                                Map<String, String> mapChoseData = new HashMap<>();
+//                                for (int index1 = 0; index1 < subset.size() - 1; index1++) {
+//                                    for (int index2 = index1 + 1; index2 < subset.size(); index2++) {
+//                                        List<String> placeHolders1 = placeHoldersEachAction.get(subset.get(index1));
+//                                        List<String> placeHolders2 = placeHoldersEachAction.get(subset.get(index2));
+//                                        Set<String> check = new HashSet<>(placeHolders1);
+//                                        check.retainAll(placeHolders2);
+//                                        if (!check.isEmpty()) disjointSet.union(subset.get(index1), subset.get(index2));
+//                                    }
+//                                }
+//                                for (int index1 = 0; index1 < subset.size(); index1++) {
+//                                    int index = subset.get(index1);
+//                                    if (placeHoldersEachAction.get(index).isEmpty()) {
+//                                        subsetOfActions.append(actionStringList.get(index));
+//                                        continue;
+//                                    }
+//                                    if (!mapChoseData.containsKey(placeHoldersEachAction.get(index).get(0))) {
+//                                        List<String> list = new ArrayList<>(placeHoldersEachAction.get(index));
+//                                        for (int k = index1 + 1; k < subset.size(); k++) {
+//                                            if (disjointSet.sameSet(index, subset.get(k))) {
+//                                                for (String placeholder : placeHoldersEachAction.get(subset.get(k))) {
+//                                                    if (!list.contains(placeholder)) list.add(placeholder);
+//                                                }
+//                                            }
+//                                        }
+//                                        StringBuilder combinePlaceHolder = new StringBuilder(String.join(" & ", list));
+//                                        int randomIndex = new Random().nextInt(dataMap.get(combinePlaceHolder.toString()).size());
+//                                        String realDatas = dataMap.get(combinePlaceHolder.toString()).get(randomIndex);
+//                                        String[] datas = realDatas.split(" & ");
+//                                        for (int k = 0; k < list.size(); k++) {
+//                                            mapChoseData.put(list.get(k), datas[k]);
+//                                        }
+//                                        List<StringBuilder> actionString = actionStringList.get(index);
+//                                        for (int k = 0; k < placeHoldersEachAction.get(index).size(); k++) {
+//                                            StringBuilder temp = new StringBuilder(actionString.get(k));
+//                                            String placeholder = placeHoldersEachAction.get(index).get(k);
+//                                            replace(placeholder, mapChoseData.get(placeholder), temp);
+//                                            if (subsetOfActions.indexOf(temp.toString()) == -1)
+//                                                subsetOfActions.append(temp);
+//                                        }
+//                                    } else {
+//                                        List<StringBuilder> actionString = actionStringList.get(index);
+//                                        for (int k = 0; k < placeHoldersEachAction.get(index).size(); k++) {
+//                                            StringBuilder temp = new StringBuilder(actionString.get(k));
+//                                            String placeholder = placeHoldersEachAction.get(index).get(k);
+//                                            replace(placeholder, mapChoseData.get(placeholder), temp);
+//                                            if (subsetOfActions.indexOf(temp.toString()) == -1)
+//                                                subsetOfActions.append(temp);
+//                                        }
+//                                    }
+//                                }
+//                                listOfChoices.add(new StringBuilder(subsetOfActions));
+//                                disjointSet.makeSet();
+//                            }
+//                            lines.put(j, listOfChoices);
+//                        }
+//                    }
                 }
                 createTestCase(0, lines, testScript, content,validations, testName, new AtomicInteger(1));
             }
@@ -361,8 +451,8 @@ public class ScriptGen {
         }
     }
     public static void main(String[] args) {
-//        createDataSheetV2("outline_saucedemo.xml", "data_saucedemo.csv");
-//        createScriptV2("outline_saucedemo.xml", "data_saucedemo.csv", "test_saucedemo.robot");
+//        createDataSheetV2("outline].xml", "src/main/resources/data/data_sheet.csv");
+        createScriptV2("outline].xml", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
 //
 //        createDataSheetV2("outline_demoqa.xml", "data_demoqa.csv");
 //        createScriptV2("outline_demoqa.xml", "data_demoqa.csv", "test_demoqa.robot");
@@ -374,11 +464,11 @@ public class ScriptGen {
 //        createDataSheetV2("heroky.xml", "heroky.csv");
 
 
-        String expr = "A%26B";
-        Vector tb = DataPreprocessing.truthTableParse(PythonTruthTableServer.logicParse(expr), expr);
-        System.out.println(tb);
-        System.out.println(tb);
-        System.out.println("hello");
-        DataPreprocessing.initInvalidDataParse("data_saucedemo.csv", "outline_saucedemo.xml", "test_saucedemo.robot");
+//        String expr = "A%26B";
+//        Vector tb = DataPreprocessing.truthTableParse(PythonTruthTableServer.logicParse(expr), expr);
+//        System.out.println(tb);
+//        System.out.println(tb);
+//        System.out.println("hello");
+//        DataPreprocessing.initInvalidDataParse("data_saucedemo.csv", "outline_saucedemo.xml", "test_saucedemo.robot");
     }
 }

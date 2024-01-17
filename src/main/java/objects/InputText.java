@@ -1,27 +1,29 @@
 package objects;
 
 public class InputText extends Expression{
-    private String value;
+    private String text;
     private int size;
+    public String getType() {
+        return "Input Text";
+    }
 
-
-    public InputText(String locator, String value) {
+    public InputText(String locator, String text) {
         super(locator);
-        this.value = value;
+        this.text = text;
     }
 
     public InputText(InputText inputText) {
         super(inputText.getLocator());
-        this.value = inputText.getValue();
+        this.text = inputText.getValue();
         this.size = inputText.getSize();
     }
 
     public String getValue() {
-        return value;
+        return text;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public int getSize() {
@@ -42,11 +44,11 @@ public class InputText extends Expression{
             return false;
         }
 
-        return (this.getLocator().equals(it.getLocator()) && this.getValue().equals(it.getValue()));
+        return (this.getLocator().equals(it.getLocator()) && this.text.equals(it.getValue()));
     }
 
     @Override
     public String toString() {
-        return "Input Text   " + this.getLocator() + "   " + this.value;
+        return "Input Text   " + this.getLocator() + "   " + this.text;
     }
 }

@@ -142,12 +142,12 @@ public class LogicParser {
     }
 
 
-    public static List<List<Action>> createDNFList(Expression expr) {
+    public static List<List<objects.Expression>> createDNFList(Expression expr) {
         expr = RuleSet.toDNF(expr);
-        List<List<Action>> list = new ArrayList<>();
+        List<List<objects.Expression>> list = new ArrayList<>();
         if (expr.getExprType().equals("and")) {
-            List<Action> childOfAnd = expr.getAllK().stream().toList();
-            ArrayList<Action> sortable = new ArrayList<>(childOfAnd);
+            List<objects.Expression > childOfAnd = expr.getAllK().stream().toList();
+            ArrayList<objects.Expression> sortable = new ArrayList<>(childOfAnd);
             Collections.sort(sortable);
             list.add(sortable);
             return list;
@@ -156,12 +156,12 @@ public class LogicParser {
         List<Expression> expressionList = expr.getChildren();
         for (Expression expression : expressionList) {
             List<Expression> andExpressions = expression.getChildren();
-            List<Action> andOfActions = new ArrayList<>();
+            List<objects.Expression> andOfActions = new ArrayList<>();
             for (Expression e : andExpressions) {
-                andOfActions.add((Action) e.getAllK().stream().toList().get(0));
+                andOfActions.add((objects.Expression) e.getAllK().stream().toList().get(0));
             }
             if (expression.getExprType().equals("variable"))
-                andOfActions.add((Action) expression.getAllK().stream().toList().get(0));
+                andOfActions.add((objects.Expression) expression.getAllK().stream().toList().get(0));
             list.add(andOfActions);
         }
         return list;

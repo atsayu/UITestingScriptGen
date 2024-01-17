@@ -1088,7 +1088,8 @@ function createTestTemplate() {
 
     let url = document.querySelector('#url');
     if (url.value === '') {
-
+        window.alert("Empty website!");
+        return;
     }
     xml = xml.concat(`<url>${url.value}</url>`);
     let validTestCase = document.querySelectorAll('.valids .testcase');

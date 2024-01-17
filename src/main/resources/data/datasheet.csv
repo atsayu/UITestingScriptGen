@@ -1,8 +1,9 @@
-valid_password & valid_username
+valid_username
+valid_password
+valid_username & valid_password & expected_url
+password,xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']
+login_button,xpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
+username,xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']
 password,xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']
 username,xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']
-login,xpath=//input[@data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
-password,xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']
-username,xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']
-login,xpath=//input[@data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
-
+login_button,xpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
