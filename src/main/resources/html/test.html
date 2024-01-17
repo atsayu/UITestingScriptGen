@@ -326,7 +326,7 @@
       if (value.length == 0) {
         value = "null";
       }
-      val = val.replace(value_variable_not_assert[i],value);
+      val = val.replace(value_variable_not_assert[i], '"' + value + '"');
     }
     for (let i = 0; i < numberInputElements; i++) {
       if (inputElement[i].value.length == 0) {
@@ -444,7 +444,7 @@
         if (value.length == 0) {
           value = "null";
         }
-        val = val.replace(value_variable_not_assert[j],value);
+        val = val.replace(value_variable_not_assert[j], '"' + value + '"');
         inputValArr[i - 1][j] = value;
       }
       editableRow.cells[1].innerHTML = val;
