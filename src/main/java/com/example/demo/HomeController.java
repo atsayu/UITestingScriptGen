@@ -186,7 +186,7 @@ public class HomeController {
 //            e.printStackTrace();
 //        }
         Input ip = new Input();
-        ip.changeDomAndCreateMockPage(new Vector<>(locators), url, map);
+        ip.changeDomAndCreateMockPageVersion2("src/main/resources/template/outline.xml");
 
 
         /* Sửa lại như sau: mapLocatorVariableAndValueVariable là map ngay trên,chỉ lấy locatorsInput do chỉ nhập data ở các phần tử input

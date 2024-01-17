@@ -275,7 +275,6 @@ public class ScriptGen {
                             }
                             else {
                                 actionString.append("\n");
-
                             }
                             blockOfActions.append(actionString);
 //                            if (text != null) {
@@ -289,9 +288,45 @@ public class ScriptGen {
 //                                list.add(actionString);
 //                            }
 //                            lines.put(j, list);
+                            System.out.println(realLocator);
                             StringBuilder locatorAndXpath = new StringBuilder().append(locator).append("\t").append(dataMap.get(realLocator).get(0)).append("\n");
                             if (header.indexOf(locatorAndXpath.toString()) == -1)
                                 header.append(locatorAndXpath);
+                        } else {
+                            NodeList texts = cur.getElementsByTagName("text");
+                            List<String> allText = new ArrayList<>();
+//                            for (int k = 0; k < texts.getLength(); k++) {
+//                                allText.add(texts.item(k).getTextContent());
+//                            }
+
+                            NodeList actions = cur.getElementsByTagName("LogicExpressionOfActions");
+
+                            for (int k = 0; k < actions.getLength(); k++) {
+                                if (actions.item(k).getNodeType() != Node.ELEMENT_NODE) continue;
+                                Element actionElement = (Element) actions.item(k);
+                                StringBuilder actionString = new StringBuilder();
+                                String realLocator = actionElement.getElementsByTagName("locator").item(0).getTextContent();
+                                String locator = "${" + realLocator + "}";
+                                String text = null;
+                                if (actionElement.getElementsByTagName("text").getLength() > 0) {
+                                    text = actionElement.getElementsByTagName("text").item(0).getTextContent();
+                                }
+                                actionString.append("\t").append(actionElement.getElementsByTagName("type").item(0).getTextContent()).append("\t").append(locator);
+                                if (text != null) {
+                                    allText.add(text);
+                                    actionString.append("\t").append(text).append("\n");
+//                                blockOfActions.append("\t").append(text).append("\n");
+                                }
+                                else {
+                                    actionString.append("\n");
+
+                                }
+                                blockOfActions.append(actionString);
+                            }
+                            Collections.sort(allText);
+                            String andOfText = String.join(" & ", allText);
+                            assertionStack.push(andOfText);
+
                         }
                         j++;
                     }
@@ -311,6 +346,7 @@ public class ScriptGen {
                         StringBuilder realBlock = new StringBuilder();
                         for (int k = 0; k < variable.length; k++) {
                             int startIndex = newBlock.indexOf(variable[k]);
+                            System.out.println(variable[k]);
                             newBlock.replace(startIndex, startIndex + variable[k].length(), data[k]);
                         }
                         realBlockOfCode.add(newBlock);

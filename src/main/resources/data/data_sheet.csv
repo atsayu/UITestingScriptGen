@@ -1,0 +1,6 @@
+valid_username,u1,u1
+valid_password,p1,p2
+valid_username & valid_password & expected_url, p1 & u1 & link1, p2 & u2 & link2
+password,xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']
+login_button,xpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
+username,xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']

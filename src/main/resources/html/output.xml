@@ -1,88 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.1.1 (Python 3.10.10 on win32)" generated="20240117 19:30:17.059" rpa="false" schemaversion="4">
+<robot generator="Robot 6.1.1 (Python 3.10.10 on win32)" generated="20240117 19:55:17.118" rpa="false" schemaversion="4">
 <suite id="s1" name="Final Test" source="C:\Users\quyenhoang\IdeaProjects\SpringbootUITestingForm\src\main\resources\robot_test_file\final_test.robot">
 <test id="s1-t1" name="Test login 1" line="10">
 <kw name="Open Browser" library="SeleniumLibrary">
 <arg>https://www.saucedemo.com/</arg>
 <arg>Chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20240117 19:30:17.233" level="INFO">Opening browser 'Chrome' to base url 'https://www.saucedemo.com/'.</msg>
-<msg timestamp="20240117 19:30:17.486" level="WARN">The chromedriver version (119.0.6045.105) detected in PATH at C:\Users\quyenhoang\Downloads\driver\chromedriver.exe might not be compatible with the detected chrome version (120.0.6099.224); currently, chromedriver 120.0.6099.109 is recommended for chrome 120.*, so it is advised to delete the driver in PATH and retry</msg>
-<status status="PASS" starttime="20240117 19:30:17.233" endtime="20240117 19:30:18.883"/>
+<msg timestamp="20240117 19:55:17.296" level="INFO">Opening browser 'Chrome' to base url 'https://www.saucedemo.com/'.</msg>
+<msg timestamp="20240117 19:55:17.550" level="WARN">The chromedriver version (119.0.6045.105) detected in PATH at C:\Users\quyenhoang\Downloads\driver\chromedriver.exe might not be compatible with the detected chrome version (120.0.6099.224); currently, chromedriver 120.0.6099.109 is recommended for chrome 120.*, so it is advised to delete the driver in PATH and retry</msg>
+<status status="PASS" starttime="20240117 19:55:17.295" endtime="20240117 19:55:19.056"/>
 </kw>
 <kw name="Maximize Browser Window" library="SeleniumLibrary">
 <doc>Maximizes current browser window.</doc>
-<status status="PASS" starttime="20240117 19:30:18.883" endtime="20240117 19:30:19.002"/>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<arg>${password}</arg>
-<arg>142</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20240117 19:30:19.003" level="INFO">Typing text '142' into text field 'xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']'.</msg>
-<status status="PASS" starttime="20240117 19:30:19.002" endtime="20240117 19:30:19.068"/>
+<status status="PASS" starttime="20240117 19:55:19.056" endtime="20240117 19:55:19.166"/>
 </kw>
 <kw name="Input Text" library="SeleniumLibrary">
 <arg>${username}</arg>
-<arg>123</arg>
+<arg>4124</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20240117 19:30:19.069" level="INFO">Typing text '123' into text field 'xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']'.</msg>
-<status status="PASS" starttime="20240117 19:30:19.068" endtime="20240117 19:30:19.124"/>
+<msg timestamp="20240117 19:55:19.167" level="INFO">Typing text '4124' into text field 'xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']'.</msg>
+<status status="PASS" starttime="20240117 19:55:19.166" endtime="20240117 19:55:19.242"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${password}</arg>
+<arg>124</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240117 19:55:19.243" level="INFO">Typing text '124' into text field 'xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']'.</msg>
+<status status="PASS" starttime="20240117 19:55:19.243" endtime="20240117 19:55:19.291"/>
 </kw>
 <kw name="Click Element" library="SeleniumLibrary">
 <arg>${login_button}</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20240117 19:30:19.126" level="INFO">Clicking element 'xpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']'.</msg>
-<status status="PASS" starttime="20240117 19:30:19.125" endtime="20240117 19:30:19.177"/>
+<msg timestamp="20240117 19:55:19.291" level="INFO">Clicking element 'xpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']'.</msg>
+<status status="PASS" starttime="20240117 19:55:19.291" endtime="20240117 19:55:19.334"/>
 </kw>
-<status status="PASS" starttime="20240117 19:30:17.232" endtime="20240117 19:30:19.178"/>
+<kw name="Location Should Be" library="SeleniumLibrary">
+<arg>validlink1</arg>
+<doc>Verifies that the current URL is exactly ``url``.</doc>
+<msg timestamp="20240117 19:55:19.468" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-126.png"&gt;&lt;img src="selenium-screenshot-126.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20240117 19:55:19.468" level="FAIL">Location should have been 'validlink1' but was 'https://www.saucedemo.com/'.</msg>
+<status status="FAIL" starttime="20240117 19:55:19.334" endtime="20240117 19:55:19.469"/>
+</kw>
+<status status="FAIL" starttime="20240117 19:55:17.294" endtime="20240117 19:55:19.469">Location should have been 'validlink1' but was 'https://www.saucedemo.com/'.</status>
 </test>
-<test id="s1-t2" name="Test-login-1" line="16">
-<kw name="Open Browser" library="SeleniumLibrary">
-<arg>https://www.saucedemo.com/</arg>
-<arg>Edge</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20240117 19:30:19.180" level="INFO">Opening browser 'Edge' to base url 'https://www.saucedemo.com/'.</msg>
-<msg timestamp="20240117 19:30:19.487" level="WARN">The msedgedriver version (119.0.2151.97) detected in PATH at C:\Users\quyenhoang\Downloads\driver\msedgedriver.exe might not be compatible with the detected MicrosoftEdge version (120.0.2210.133); currently, msedgedriver 120.0.2210.133 is recommended for MicrosoftEdge 120.*, so it is advised to delete the driver in PATH and retry</msg>
-<status status="PASS" starttime="20240117 19:30:19.179" endtime="20240117 19:30:20.984"/>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<arg>xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']</arg>
-<arg>NOT123</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20240117 19:30:20.985" level="INFO">Typing text 'NOT123' into text field 'xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']'.</msg>
-<status status="PASS" starttime="20240117 19:30:20.985" endtime="20240117 19:30:21.104"/>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<arg>xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']</arg>
-<arg>NOT142</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20240117 19:30:21.105" level="INFO">Typing text 'NOT142' into text field 'xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']'.</msg>
-<status status="PASS" starttime="20240117 19:30:21.104" endtime="20240117 19:30:21.198"/>
-</kw>
-<kw name="Click Element" library="SeleniumLibrary">
-<arg>NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20240117 19:30:21.199" level="INFO">Clicking element 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']'.</msg>
-<msg timestamp="20240117 19:30:21.342" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-124.png"&gt;&lt;img src="selenium-screenshot-124.png" width="800px"&gt;&lt;/a&gt;</msg>
-<msg timestamp="20240117 19:30:21.342" level="FAIL">Element with locator 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']' not found.</msg>
-<status status="FAIL" starttime="20240117 19:30:21.198" endtime="20240117 19:30:21.344"/>
-</kw>
-<status status="FAIL" starttime="20240117 19:30:19.178" endtime="20240117 19:30:21.344">Element with locator 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']' not found.</status>
-</test>
-<status status="FAIL" starttime="20240117 19:30:17.061" endtime="20240117 19:30:21.345"/>
+<status status="FAIL" starttime="20240117 19:55:17.119" endtime="20240117 19:55:19.470"/>
 </suite>
 <statistics>
 <total>
-<stat pass="1" fail="1" skip="0">All Tests</stat>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat pass="1" fail="1" skip="0" id="s1" name="Final Test">Final Test</stat>
+<stat pass="0" fail="1" skip="0" id="s1" name="Final Test">Final Test</stat>
 </suite>
 </statistics>
 <errors>
-<msg timestamp="20240117 19:30:17.486" level="WARN">The chromedriver version (119.0.6045.105) detected in PATH at C:\Users\quyenhoang\Downloads\driver\chromedriver.exe might not be compatible with the detected chrome version (120.0.6099.224); currently, chromedriver 120.0.6099.109 is recommended for chrome 120.*, so it is advised to delete the driver in PATH and retry</msg>
-<msg timestamp="20240117 19:30:19.487" level="WARN">The msedgedriver version (119.0.2151.97) detected in PATH at C:\Users\quyenhoang\Downloads\driver\msedgedriver.exe might not be compatible with the detected MicrosoftEdge version (120.0.2210.133); currently, msedgedriver 120.0.2210.133 is recommended for MicrosoftEdge 120.*, so it is advised to delete the driver in PATH and retry</msg>
+<msg timestamp="20240117 19:55:17.550" level="WARN">The chromedriver version (119.0.6045.105) detected in PATH at C:\Users\quyenhoang\Downloads\driver\chromedriver.exe might not be compatible with the detected chrome version (120.0.6099.224); currently, chromedriver 120.0.6099.109 is recommended for chrome 120.*, so it is advised to delete the driver in PATH and retry</msg>
 </errors>
 </robot>
