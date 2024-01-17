@@ -159,104 +159,156 @@
     <table id="myTable"></table>
   </div>
   <div class="item2" id="resizeBar"></div>
-</div>    <script>
-let inputValArr = [];
-  let inputValues = [];
-  let allElement = document.getElementsByTagName("*");
+</div>
+<script>
+  const map = new Map();   //map luu key la value_variable_not_assert va phan tu tuong ung
+  let all_value_variable = document.getElementById("all_value_variable").getAttribute("value").split(",");
+  let value_variable_not_assert = document.getElementById("value_variable_not_assert").getAttribute("value").split(",");
+  let inputValArr = [];
   let inputElement = [];
-  var isEditing = 0;
-  for (let i = 0; i < allElement.length; i++) {
-    if (
-        allElement[i].hasAttribute("cong") &&
-        allElement[i].getAttribute("cong").length != 0
-    ) {
-      if (allElement[i].tagName.localeCompare("TEXTAREA")) {
+  let allElement = document.getElementsByTagName("*");
+  var script_action = document.getElementById("script_action");
+  var content_script_action = script_action.getAttribute("value");
+
+  for (let j = 0; j < value_variable_not_assert.length; j++) {
+    console.log(value_variable_not_assert[j]);
+    for (let i = 0; i < allElement.length; i++) {
+      if (allElement[i].hasAttribute("cong") && allElement[i].getAttribute("cong").localeCompare(value_variable_not_assert[j]) == 0) {
+        map.set(value_variable_not_assert[j], allElement[i]);
         inputElement.push(allElement[i]);
-      } else if (allElement[i].tagName.localeCompare("INPUT")) {
-        if (allElement[i].hasAttribute("type")) {
-          let typeAttributeValue = allElement[i].getAttribute("type");
-          if (
-              typeAttributeValue.localeCompare("submit") != 0 &&
-              typeAttributeValue.localeCompare("button") != 0 &&
-              typeAttributeValue.localeCompare("reset") != 0 &&
-              typeAttributeValue.localeCompare("image") != 0 &&
-              typeAttributeValue.localeCompare("hidden") != 0
-          ) {
-            inputElement.push(allElement[i]);
-          }
-        } else {
-          inputElement.push(allElement[i]);
-        }
       }
     }
   }
+
+  var isEditing = 0;
+  // for (let i = 0; i < allElement.length; i++) {
+  //     if (
+  //         allElement[i].hasAttribute("cong") &&
+  //         allElement[i].getAttribute("cong").length != 0
+  //     ) {
+  //         if (allElement[i].tagName.localeCompare("TEXTAREA")) {
+  //             inputElement.push(allElement[i]);
+  //         } else if (allElement[i].tagName.localeCompare("INPUT")) {
+  //             if (allElement[i].hasAttribute("type")) {
+  //                 let typeAttributeValue = allElement[i].getAttribute("type");
+  //                 if (
+  //                     typeAttributeValue.localeCompare("submit") != 0 &&
+  //                     typeAttributeValue.localeCompare("button") != 0 &&
+  //                     typeAttributeValue.localeCompare("reset") != 0 &&
+  //                     typeAttributeValue.localeCompare("image") != 0 &&
+  //                     typeAttributeValue.localeCompare("hidden") != 0
+  //                 ) {
+  //                     inputElement.push(allElement[i]);
+  //                 }
+  //             } else {
+  //                 inputElement.push(allElement[i]);
+  //             }
+  //         }
+  //     }
+  // }
   let numberInputElements = inputElement.length;
-  function attributeElement(e) {
-    return e.getAttribute("cong");
-  }
-  for (let i = 0; i < numberInputElements; i++) {
-    inputValues.push(attributeElement(inputElement[i]));
-  }
+  // function attributeElement(e) {
+  //     return e.getAttribute("cong");
+  // }
+  // for (let i = 0; i < numberInputElements; i++) {
+  //     inputValues.push(attributeElement(inputElement[i]));
+  // }
 
-  const saveButton = document.getElementById("save");        saveButton.addEventListener("click", function () {
-          var table = document.getElementById("myTable");
-          for (var i = 1; i < table.rows.length; i++) {
-            var row = table.rows[i];
-            let values = row.cells[1].innerHTML.split(',');
-            for (var j = 0; j < values.length; j++) {
-              if (values[j].trim() == "") {
-                inputValues.push("null");
-              } else {
-                inputValues.push(values[j].trim());
-              }
-            }
-          }
-          console.log(inputValues);
-          let fileContent = "";
-          for (let i = 0; i < numberInputElements; i++) {
-            for (let k = i; k < inputValues.length; k += numberInputElements) {
-              if (
-                k <
-                i +
-                  (inputValues.length / numberInputElements - 1) *
-                    numberInputElements
-              ) {
-                fileContent += inputValues[k] + ",";
-              } else {
-                fileContent += inputValues[k] + "\n";
-              }
-            }
-          }
-          console.log(fileContent);         let xhr = new XMLHttpRequest();
-         xhr.open("POST", "/createtest");
-         // xhr.setRequestHeader("Accept", "application/json");
-         xhr.setRequestHeader("Content-Type", "application/json");
-         let data = {
-          "values" : fileContent,
-         }
-         xhr.onload = () => {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-           window.location.href = '/script';
-          } else {
-           console.log(`Error: ${xhr.status}`);
-          }
-         };
-
-         xhr.send(JSON.stringify(data));
-        });
-const newTestcaseButton = document.getElementById("new-testcase");
-  newTestcaseButton.addEventListener("click", function () {
-    // for (let i = 0; i < numberInputElements; i++) {
-    //   if (inputElement[i].value.length == 0) {
-    //     inputValues.push("null");
-    //   } else {
-    //     inputValues.push(inputElement[i].value);
-    //   }
-
+  const saveButton = document.getElementById("save");
+  saveButton.addEventListener("click", function () {
+    // var table = document.getElementById("myTable");
+    // for (var i = 1; i < table.rows.length; i++) {
+    //     var row = table.rows[i];
+    //     let values = row.cells[1].innerHTML.split(',');
+    //     for (var j = 0; j < values.length; j++) {
+    //         if (values[j].trim() == "") {
+    //             inputValues.push("null");
+    //         } else {
+    //             inputValues.push(values[j].trim());
+    //         }
+    //     }
     // }
+    // console.log(inputValues);
+    // let fileContent = "";
+    // for (let i = 0; i < numberInputElements; i++) {
+    //     for (let k = i; k < inputValues.length; k += numberInputElements) {
+    //         if (
+    //             k <
+    //             i +
+    //             (inputValues.length / numberInputElements - 1) *
+    //             numberInputElements
+    //         ) {
+    //             fileContent += inputValues[k] + ",";
+    //         } else {
+    //             fileContent += inputValues[k] + "\n";
+    //         }
+    //     }
+    // }
+
+    let allInputValues = [];
+    let assertArr = [];
+    const table = document.getElementById("myTable");
+    const rows = table.querySelectorAll("tbody tr:not(.table-header)");
+
+    rows.forEach(row => {
+      const valueCell = row.cells[1];
+      const inputs = valueCell.querySelectorAll("input");
+      let assert = [];
+      inputs.forEach(input => {
+        const inputValue = input.value;
+        assert.push(inputValue);
+      });
+      assertArr.push(assert);
+    });
+    for (let i = 0; i < inputValArr.length; i++) {
+      let indexInputNotAssert = 0;
+      let indexAssert = 0;
+      let allInputValue = [];
+      for (let j = 0; j < all_value_variable.length; j++) {
+        if (value_variable_not_assert.includes(all_value_variable[j])) {
+          allInputValue.push(inputValArr[i][indexInputNotAssert]);
+          indexInputNotAssert++;
+        } else {
+          allInputValue.push(assertArr[i][indexAssert]);
+          indexAssert++;
+        }
+      }
+      allInputValues.push(allInputValue);
+    }
+    console.log(allInputValues);
+    let fileContent = "";
+    for (let i = 0; i < all_value_variable.length; i++) {
+      fileContent += all_value_variable[i];
+      for (let j = 0; j < allInputValues.length; j++) {
+        fileContent += "," + allInputValues[j][i];
+      }
+      if (i != all_value_variable.length - 1) {
+        fileContent += "\n";
+      }
+    }
+    console.log(fileContent);
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "/createtest");
+    // xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    let data = {
+      "values": fileContent,
+    }
+    xhr.onload = () => {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        window.location.href = '/script';
+      } else {
+        console.log(`Error: ${xhr.status}`);
+      }
+    };
+
+    xhr.send(JSON.stringify(data));
+  });
+  const newTestcaseButton = document.getElementById("new-testcase");
+  newTestcaseButton.addEventListener("click", function () {
+    let val = content_script_action;
     var table = document.getElementById("myTable");
     var row = table.insertRow();
-    var val = "";
     var valArr = [];
     if (table.rows.length == 1) {
       var headerRow = table.insertRow(0);
@@ -269,58 +321,72 @@ const newTestcaseButton = document.getElementById("new-testcase");
       var index_cell = headerRow.insertCell();
       index_cell.innerHTML = "ACTION";
     }
-    for (let i = 0; i < numberInputElements; i++) {
-      valArr.push(inputElement[i].value);
-      if (i != 0) {
-        val += ", " + inputElement[i].value;
-      } else {
-        val += inputElement[i].value;
+    for (let i = 0; i < value_variable_not_assert.length; i++) {
+      let value = map.get(value_variable_not_assert[i]).value;
+      if (value.length == 0) {
+        value = "null";
       }
+      val = val.replace(value_variable_not_assert[i],value);
+    }
+    for (let i = 0; i < numberInputElements; i++) {
+      if (inputElement[i].value.length == 0) {
+        valArr.push("null");
+      } else {
+        valArr.push(inputElement[i].value);
+      }
+
+      // if (i != 0) {
+      //     val += ", " + inputElement[i].value;
+      // } else {
+      //     val += inputElement[i].value;
+      // }
     }
     inputValArr.push(valArr);
+    console.log(inputValArr);
     var index_cell = row.insertCell(0);
     index_cell.innerHTML = table.rows.length - 1;
 
     var val_cell = row.insertCell(1);
-
-    if (val.length > 20) {
-      // Display only a part of the text if it's too long
-      val_cell.innerHTML =
-          val.substring(0, 20) + "<span class='ellipsis'> ...</span>";
-      // Add a button to expand and show the full value
-      val_cell.innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;
-    } else {
-      val_cell.innerHTML = val;
-    }
+    val_cell.innerHTML = val;
+    // if (val.length > 20) {
+    //     // Display only a part of the text if it's too long
+    //     val_cell.innerHTML =
+    //         val.substring(0, 20) + "<span class='ellipsis'> ...</span>";
+    //     // Add a button to expand and show the full value
+    //     val_cell.innerHTML += "<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>";
+    // } else {
+    //     val_cell.innerHTML = val;
+    // }
 
     var cell_action = row.insertCell(2);
     cell_action.innerHTML =
-        "<button onclick='deleteRow(this)' class='delete_row'></button> <button onclick='editRow(this)' class='edit_row'></button>";
+            "<button onclick='deleteRow(this)' class='delete_row'></button> <button onclick='editRow(this)' class='edit_row'></button>";
 
     // Function to expand and show the full value
 
     for (let i = 0; i < numberInputElements; i++) {
       inputElement[i].value = null;
     }
+
   });
 
-  function expandText(button, fullText) {
-    var cell = button.parentNode;
-    cell.innerHTML =
-        fullText +
-        "<button class='collapse-button' onclick='collapseText(this)'>Collapse</button>";
-  }
+  // function expandText(button, fullText) {
+  //     var cell = button.parentNode;
+  //     cell.innerHTML =
+  //         fullText +
+  //         "<button class='collapse-button' onclick='collapseText(this)'>Collapse</button>";
+  // }
 
-  // Function to collapse the text
-  function collapseText(span) {
-    var cell = span.parentNode;
-    var val = cell.innerText;
-    var string = val.substring(0,val.length - 8);
-    cell.innerHTML =
-        val.substring(0, 20) +
-        "<span class='ellipsis'> ...</span>" +
-        "<button class='expand-button' onclick='expandText(this, &#39" + string.replace(/\n/g, ' ') + "&#39)'>Expand</button>";
-  }
+  // // Function to collapse the text
+  // function collapseText(span) {
+  //     var cell = span.parentNode;
+  //     var val = cell.innerText;
+  //     var string = val.substring(0, val.length - 8);
+  //     cell.innerHTML =
+  //         val.substring(0, 20) +
+  //         "<span class='ellipsis'> ...</span>" +
+  //         "<button class='expand-button' onclick='expandText(this,&#39${val}&#39)'>Expand</button>";
+  // }
 
   function deleteRow(row) {
     var i = row.parentNode.parentNode.rowIndex;
@@ -339,44 +405,69 @@ const newTestcaseButton = document.getElementById("new-testcase");
       for (var index in inputElement) {
         inputElement[index].value = inputValArr[i - 1][index];
       }
-      button.setAttribute("onclick", "saveRow(this)");
+      let assertValues = "";
+      const inputs = table.rows[i].cells[1].querySelectorAll("input");
+      for (let j = 0; j < inputs.length; j++) {
+        if (j != inputs.length - 1) {
+          assertValues += inputs[j].value + ",";
+        } else {
+          assertValues += inputs[j].value;
+        }
+      }
+      // button.setAttribute("onclick", "saveRow(this,&#39${assertValues}&#39)");
+      button.setAttribute("onclick", `saveRow(this, '${assertValues}')`);
       button.setAttribute("class", "save_row");
     }
   }
 
-  function saveRow(button) {
+  function saveRow(button, assert) {
     if (isEditing == 1) {
       isEditing = 0;
       var resizeBar = document.getElementById("resizeBar");
       resizeBar.style.backgroundColor = "var(--color-black)";
       var i = button.parentNode.parentNode.rowIndex;
       var table = document.getElementById("myTable");
-      var val = "";
-      for (var index in inputElement) {
-        if (index == 0) {
-          val += inputElement[index].value;
-        } else {
-          val += ", " + inputElement[index].value;
-        }
-        inputValArr[i - 1][index] = inputElement[index].value;
-      }
+      let val = content_script_action;
+      let assertValues = assert.split(",");
+      console.log(assertValues);
+      // for (var index in inputElement) {
+      //     if (index == 0) {
+      //         val += inputElement[index].value;
+      //     } else {
+      //         val += ", " + inputElement[index].value;
+      //     }
+      //     inputValArr[i - 1][index] = inputElement[index].value;
+      // }
       var editableRow = table.rows.item(i);
-
-      if (val.length > 20) {
-        // Display only a part of the text if it's too long
-        editableRow.cells[1].innerHTML =
-            val.substring(0, 20) + "<span class='ellipsis'> ...</span>";
-        // Add a button to expand and show the full value
-        editableRow.cells[1].innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;
-      } else {
-        editableRow.cells[1].innerHTML = val;
+      for (let j = 0; j < value_variable_not_assert.length; j++) {
+        let value = map.get(value_variable_not_assert[j]).value;
+        if (value.length == 0) {
+          value = "null";
+        }
+        val = val.replace(value_variable_not_assert[j],value);
+        inputValArr[i - 1][j] = value;
       }
+      editableRow.cells[1].innerHTML = val;
+      const inputs = editableRow.cells[1].querySelectorAll("input");
+      for (let j = 0; j < inputs.length; j++) {
+        inputs[j].value = assertValues[j];
+      }
+      // if (val.length > 20) {
+      //     // Display only a part of the text if it's too long
+      //     editableRow.cells[1].innerHTML =
+      //         val.substring(0, 20) + "<span class='ellipsis'> ...</span>";
+      //     // Add a button to expand and show the full value
+      //     editableRow.cells[1].innerHTML += `<button class='expand-button' onclick='expandText(this, &#39${val}&#39)'>Expand</button>`;
+      // } else {
+      //     editableRow.cells[1].innerHTML = val;
+      // }
       button.setAttribute("onclick", "editRow(this)");
       button.setAttribute("class", "edit_row");
 
       for (let i = 0; i < numberInputElements; i++) {
         inputElement[i].value = null;
       }
+      console.log(inputValArr);
     }
   }
 
