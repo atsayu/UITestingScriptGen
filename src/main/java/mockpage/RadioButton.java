@@ -63,8 +63,8 @@ public class RadioButton extends ProcessDetectElement {
     }
   }
   public boolean isRadioButtonElement(Element e) {
-    return e.tagName().equals("input") && e.hasAttr("type")
-        && e.attr("type").equals("radio");
+    return (e.tagName().equals("input") && e.hasAttr("type")
+        && e.attr("type").equals("radio")) || (e.tagName().equals("div") && e.hasAttr("role") && e.attr("role").equals("radio"));
   }
 
   /** Kiểm tra xem câu hỏi có lựa chọn hiện tại hay không. */

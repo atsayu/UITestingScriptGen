@@ -63,8 +63,8 @@ public class Checkbox extends ProcessDetectElement {
   }
 
   public static boolean isCheckboxElement(Element e) {
-    return e.tagName().equals("input") && e.hasAttr("type")
-        && e.attr("type").equals("checkbox");
+    return (e.tagName().equals("input") && e.hasAttr("type")
+        && e.attr("type").equals("checkbox")) || (e.tagName().equals("div") && e.hasAttr("role") && e.attr("role").equals("checkbox"));
   }
 
   /** Tìm lựa chọn ứng với câu hỏi trong cây con. */
