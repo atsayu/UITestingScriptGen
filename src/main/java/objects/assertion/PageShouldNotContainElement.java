@@ -22,7 +22,12 @@ public class PageShouldNotContainElement implements Expression {
     }
 
     @Override
-    public String toString() {
+    public boolean isExprEquals(Object obj) {
+        return false;
+    }
+
+    @Override
+    public String exprToString() {
         return "Page Should Not Contain Element   " + locator;
     }
 }

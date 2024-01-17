@@ -15,6 +15,9 @@ class CustomHandler(SimpleHTTPRequestHandler):
         elif parsed_url.path == '/simplify':
             # Handle the "/simplify" route
             self.handle_simplify(query_params)
+        elif parsed_url.path == '/todnf':
+            # Handle the "/simplify" route
+            self.handle_todnf(query_params)
         else:
             # Default response for unknown routes
             self.send_response(404)
@@ -44,6 +47,18 @@ class CustomHandler(SimpleHTTPRequestHandler):
 
         # Send a response with the simplified expression
         response = f"200"
+        self.wfile.write(response.encode('utf-8'))
+        
+    def handle_todnf(self, query_params):
+        # Get the value of a specific parameter (e.g., 'param')
+        param_value = query_params.get('param', [''])[0]
+
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+
+        # Send a response with the simplified expression
+        response = f"{expr(param_value).to_dnf()}"
         self.wfile.write(response.encode('utf-8'))
 
 if __name__ == '__main__':

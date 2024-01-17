@@ -10,7 +10,7 @@ public class ClickElementStrategy implements Strategy {
     @Override
     public String exprEncode(String expr) {
         for (String key : clickElementMap.keySet()) {
-            expr = expr.replaceAll(clickElementMap.get(key).toString(), key);
+            expr = expr.replaceAll(clickElementMap.get(key).exprToString(), key);
         }
 
         return expr;

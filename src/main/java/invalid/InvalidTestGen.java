@@ -86,10 +86,10 @@ public class InvalidTestGen {
                         if (multiInvalidTemp.get(i).contains(line) && multiInvalidTemp.get(i).contains(invalidExpr)) {
                             if (invalidExpr.contains("it")) {
                                 InputText multiInvalidIt = new InputText(dataMap.get(inputTextMap.get(invalidExpr).getLocator()).get(0), "NOT" + searchValidValue(invalidExpr));
-                                multiInvalidTemp.set(i, "   " + multiInvalidIt);
+                                multiInvalidTemp.set(i, "   " + multiInvalidIt.exprToString());
                             } else {
                                 ClickElement multiInvalidCe = new ClickElement("NOT" + searchValidValue(invalidExpr));
-                                multiInvalidTemp.set(i, "   " + multiInvalidCe);
+                                multiInvalidTemp.set(i, "   " + multiInvalidCe.exprToString());
                             }
                         }
                     }
@@ -99,10 +99,10 @@ public class InvalidTestGen {
                         if (multiInvalidTemp.get(i).contains(line) && multiInvalidTemp.get(i).contains(validExpr)) {
                             if (validExpr.contains("it")) {
                                 InputText multiInvalidIt = new InputText(dataMap.get(inputTextMap.get(validExpr).getLocator()).get(0), searchValidValue(validExpr));
-                                multiInvalidTemp.set(i, "   " + multiInvalidIt);
+                                multiInvalidTemp.set(i, "   " + multiInvalidIt.exprToString());
                             } else {
                                 ClickElement multiInvalidCe = new ClickElement(searchValidValue(validExpr));
-                                multiInvalidTemp.set(i, "   " + multiInvalidCe);
+                                multiInvalidTemp.set(i, "   " + multiInvalidCe.exprToString());
                             }
                         }
                     }
@@ -115,10 +115,10 @@ public class InvalidTestGen {
                     if (singleInvalidTemp.get(i).contains(line) && singleInvalidTemp.get(i).contains(expr.get(0))) {
                         if (expr.get(0).contains("it")) {
                             InputText singleInvalidIt = new InputText(dataMap.get(inputTextMap.get(expr.get(0)).getLocator()).get(0), "NOT" + searchValidValue(expr.get(0)));
-                            singleInvalidTemp.set(i, "   " + singleInvalidIt);
+                            singleInvalidTemp.set(i, "   " + singleInvalidIt.exprToString());
                         } else {
                             ClickElement singleInvalidCe = new ClickElement("NOT" + searchValidValue(expr.get(0)));
-                            singleInvalidTemp.set(i, "   " + singleInvalidCe);
+                            singleInvalidTemp.set(i, "   " + singleInvalidCe.exprToString());
                         }
                     }
                 }
@@ -133,10 +133,10 @@ public class InvalidTestGen {
                         if (multiValidTemp.get(i).contains(line) && multiValidTemp.get(i).contains(invalidExpr)) {
                             if (invalidExpr.contains("it")) {
                                 InputText invalidIt = new InputText(dataMap.get(inputTextMap.get(invalidExpr).getLocator()).get(0), "NOT" + searchValidValue(invalidExpr));
-                                multiValidTemp.set(i, "   " + invalidIt);
+                                multiValidTemp.set(i, "   " + invalidIt.exprToString());
                             } else if (invalidExpr.contains("ce")) {
                                 ClickElement invalidCe = new ClickElement("NOT" + searchValidValue(invalidExpr));
-                                multiValidTemp.set(i, "   " + invalidCe);
+                                multiValidTemp.set(i, "   " + invalidCe.exprToString());
                             }
                         }
                     }
@@ -170,7 +170,7 @@ public class InvalidTestGen {
                     for (String locExpr : headerLocVec) {
                         if (multiValidTemp.get(i).contains(line) && multiValidTemp.get(i).contains(locExpr)) {
                             ClickElement validCe = new ClickElement(dataMap.get(clickElementMap.get(locExpr).getLocator()).get(0));
-                            multiValidTemp.set(i, "   " + validCe);
+                            multiValidTemp.set(i, "   " + validCe.exprToString());
                         }
                     }
                 }
@@ -183,7 +183,7 @@ public class InvalidTestGen {
                             for (String valExpr : headerValVec) {
                                 if (multiValidTempClone.get(i).contains(line) && multiValidTempClone.get(i).contains(valExpr)) {
                                     InputText validIt = new InputText(dataMap.get(inputTextMap.get(valExpr).getLocator()).get(0), validValVec.get(keyValVec.indexOf(inputTextMap.get(valExpr).getValue())));
-                                    multiValidTempClone.set(i, "   " + validIt);
+                                    multiValidTempClone.set(i, "   " + validIt.exprToString());
                                 }
                             }
                         }
@@ -199,7 +199,7 @@ public class InvalidTestGen {
                             Vector<String> singleValidTemp = new Vector<>(exprTemp);
                             for (int i = 0; i < singleValidTemp.size(); i++) {
                                 if (singleValidTemp.get(i).contains(line) && singleValidTemp.get(i).contains(expr.get(0))) {
-                                    singleValidTemp.set(i, "   " + singleValidIt);
+                                    singleValidTemp.set(i, "   " + singleValidIt.exprToString());
                                 }
                             }
                             templateLine.addAll(singleValidTemp);
@@ -210,7 +210,7 @@ public class InvalidTestGen {
                     Vector<String> singleValidTemp = new Vector<>(exprTemp);
                     for (int i = 0; i < singleValidTemp.size(); i++) {
                         if (singleValidTemp.get(i).contains(line) && singleValidTemp.get(i).contains(expr.get(0))) {
-                            singleValidTemp.set(i, "   " + singleValidCe);
+                            singleValidTemp.set(i, "   " + singleValidCe.exprToString());
                         }
                     }
                     templateLine.addAll(singleValidTemp);
@@ -240,7 +240,7 @@ public class InvalidTestGen {
 
 
     //TODO refactor: DONE
-    private static String getMultiValidKey(Vector<String> header) {
+    public static String getMultiValidKey(Vector<String> header) {
         String keyVal = null;
         Context getMultiValidKeyContext = new Context();
         Vector<String> headerKey = getMultiValidKeyContext.getMultiValid(header);

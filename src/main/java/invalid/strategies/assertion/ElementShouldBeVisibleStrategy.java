@@ -9,7 +9,7 @@ public class ElementShouldBeVisibleStrategy implements Strategy {
     @Override
     public String exprEncode(String expr) {
         for (String key : elementShouldBeVisibleMap.keySet()) {
-            expr = expr.replaceAll(elementShouldBeVisibleMap.get(key).toString(), key);
+            expr = expr.replaceAll(elementShouldBeVisibleMap.get(key).exprToString(), key);
         }
 
         return expr;

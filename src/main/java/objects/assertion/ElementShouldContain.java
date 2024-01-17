@@ -33,7 +33,12 @@ public class ElementShouldContain implements Expression {
     }
 
     @Override
-    public String toString() {
+    public boolean isExprEquals(Object obj) {
+        return false;
+    }
+
+    @Override
+    public String exprToString() {
         return "Element Should Contain   " + locator + "   " + expected;
     }
 }

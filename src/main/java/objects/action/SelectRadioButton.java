@@ -20,7 +20,7 @@ public class SelectRadioButton implements Expression {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean isExprEquals(Object obj) {
         if (obj == this) {
             return true;
         }
@@ -33,7 +33,7 @@ public class SelectRadioButton implements Expression {
     }
 
     @Override
-    public String toString() {
+    public String exprToString() {
         return "Select Radio Button   " + this.groupName + "   " + this.value;
     }
 

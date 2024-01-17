@@ -11,7 +11,7 @@ public class LocationShouldBeStrategy implements Strategy {
     @Override
     public String exprEncode(String expr) {
         for (String key : locationShouldBeMap.keySet()) {
-            expr = expr.replaceAll(locationShouldBeMap.get(key).toString(), key);
+            expr = expr.replaceAll(locationShouldBeMap.get(key).exprToString(), key);
         }
 
         return expr;

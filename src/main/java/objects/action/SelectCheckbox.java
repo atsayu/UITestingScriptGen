@@ -22,7 +22,7 @@ public class SelectCheckbox implements Expression {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean isExprEquals(Object obj) {
         if (obj == this) {
             return true;
         }
@@ -35,7 +35,7 @@ public class SelectCheckbox implements Expression {
     }
 
     @Override
-    public String toString() {
+    public String exprToString() {
         return "Select Checkbox   " + this.getLocator();
     }
 }

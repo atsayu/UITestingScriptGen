@@ -25,4 +25,9 @@ public class ElementShouldBeVisible implements Expression {
     public String exprToString() {
         return "Element Should Be Visible   " + locator;
     }
+
+    @Override
+    public boolean isExprEquals(Object obj) {
+        return false;
+    }
 }

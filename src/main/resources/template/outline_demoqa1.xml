@@ -3,20 +3,28 @@
     <TestCase>
         <Scenario>login</Scenario>
         <LogicExpressionOfActions>
-            <type>and</type>
-            <LogicExpressionOfActions>
-                <type>Input Text</type>
-                <locator>loc_a</locator>
-                <text>a</text>
-            </LogicExpressionOfActions>
-            <LogicExpressionOfActions>
-                <type>Click Element</type>
-                <locator>loc_b</locator>
-            </LogicExpressionOfActions>
+            <type>Input Text</type>
+            <locator>loc_a</locator>
+            <text>a</text>
         </LogicExpressionOfActions>
-        <Validation>
-            <type>URLValidation</type>
-            <url>https://demoqa.com/profile</url>
-        </Validation>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>test_url</url>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Input Text</type>
+            <locator>loc_c</locator>
+            <text>c</text>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Input Text</type>
+            <locator>loc_d</locator>
+            <text>d</text>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify Element Text</type>
+            <locator>locator</locator>
+            <text>text</text>
+        </LogicExpressionOfActions>
     </TestCase>
 </TestSuite>

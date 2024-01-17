@@ -4,6 +4,8 @@ import com.opencsv.CSVReader;
 import invalid.strategies.Context;
 import objects.action.ClickElement;
 import objects.action.InputText;
+import objects.action.SelectCheckbox;
+import objects.action.SelectRadioButton;
 import objects.assertion.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -18,10 +20,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import static invalid.AssertTestGen.initAssertTestGen;
 import static invalid.FileWriteModule.writeStringsToFile;
 import static invalid.InvalidTestGen.invalidTestCaseGen;
 import static invalid.PythonTruthTableServer.logicParse;
+import static invalid.PythonTruthTableServer.toDNF;
+import static invalid.strategies.Context.isAssertion;
 
 
 public class DataPreprocessing {
@@ -31,15 +38,19 @@ public class DataPreprocessing {
 
     public static HashMap<String, InputText> inputTextMap = new HashMap<>();
     public static HashMap<String, ClickElement> clickElementMap = new HashMap<>();
+    public static HashMap<String, SelectCheckbox> selectCheckboxMap = new HashMap<>();
+    public static HashMap<String, SelectRadioButton> selectRadioButtonMap = new HashMap<>();
     public static HashMap<String, ElementShouldBeVisible> elementShouldBeVisibleMap = new HashMap<>();
     public static HashMap<String, ElementShouldContain> elementShouldContainMap = new HashMap<>();
     public static HashMap<String, LocationShouldBe> locationShouldBeMap = new HashMap<>();
     public static HashMap<String, PageShouldContainElement> pageShouldContainElementMap = new HashMap<>();
     public static HashMap<String, PageShouldNotContainElement> pageShouldNotContainElementMap = new HashMap<>();
     static Map<String, List<String>> dataMap = new HashMap<>();
+    public static Vector<String> assertHeap = new Vector<>();
+    public static Vector<Vector<String>> assertVec = new Vector<>();
 
     public static void main(String[] args) {
-        initInvalidDataParse("codecode", "src/main/resources/template/outline_demoqa1.xml", "src/main/resources/robot_test_file/final_test.robot");
+        initInvalidDataParse("src/main/resources/data/data_thinktester.csv", "src/main/resources/template/outline_demoqa1.xml", "src/main/resources/robot_test_file/final_test.robot");
     }
 
     public static void initInvalidDataParse(String csvPath, String xmlPath, String robotPath) {
@@ -62,9 +73,12 @@ public class DataPreprocessing {
                 System.out.println(temp);
                 System.out.println(invalidDict);
                 System.out.println(lineDict);
-                System.out.println(inputTextMap);
-                System.out.println(clickElementMap);
-                Vector<String> finalTest = invalidTestCaseGen();
+                Vector<String> finalTest;
+                if (assertVec.isEmpty()) {
+                    finalTest = invalidTestCaseGen();
+                } else {
+                    finalTest = initAssertTestGen();
+                }
                 writeStringsToFile(finalTest, robotPath);
             }
 
@@ -107,8 +121,8 @@ public class DataPreprocessing {
                     case "Scenario" -> temp.add(0, "Test-" + tempNode.getTextContent());
                     case "LogicExpressionOfActions" -> {
                         exprToMap(logicExpr(tempNode.getChildNodes(), false));
-//                        String rs = exprString.replaceAll("\\d", " $0 ").replaceAll("\\s+", " ").trim();
-                        Vector<Vector<String>> tb = truthTableParse(logicParse(exprEncode(logicExpr(tempNode.getChildNodes(), false))), exprEncode(logicExpr(tempNode.getChildNodes(), false)));
+                        String encodedExpr = assertPreprocessing(count, (exprEncode(logicExpr(tempNode.getChildNodes(), false))));
+                        Vector<Vector<String>> tb = truthTableParse(logicParse(encodedExpr), encodedExpr);
                         lineDict.put("LINE" + count, tb);
                         templateGen(tb, count);
                     }
@@ -117,6 +131,48 @@ public class DataPreprocessing {
             }
         }
 //        System.out.println(lineDict);
+    }
+
+
+    //TODO: Assertion inside expr
+    public static String assertPreprocessing(int count, String encodedExpr) {
+        if (encodedExpr.contains("%26")) {
+            String dnfExpr = toDNF(encodedExpr);
+            dnfExpr = dnfExpr.substring(3, dnfExpr.length() - 1);
+            Vector<String> dnfVector = arrToVec(dnfExpr.split("And"));
+            String[] removed = {" ", ""};
+            dnfVector.replaceAll(String::trim);
+            dnfVector.removeAll(List.of(removed));
+            System.out.println(dnfVector);
+            String regex = "(\\w+)";
+            Pattern pattern = Pattern.compile(regex);
+
+            for (String s : dnfVector) {
+                Vector<String> exprVec = new Vector<>();
+                boolean isAss = false;
+                Matcher matcher = pattern.matcher(s);
+                while (matcher.find()) {
+                    String match = matcher.group();
+                    exprVec.add(match);
+                    if (isAssertion(match)) isAss = true;
+                }
+                if (isAss) {
+                    System.out.println(exprVec);
+                }
+            }
+        } else {
+            if (isAssertion(encodedExpr)) {
+                Vector<String> tempVec = new Vector<>(assertHeap);
+                tempVec.add(0, encodedExpr);
+                tempVec.add(0, "LINE" + count);
+                assertVec.add(tempVec);
+            } else {
+                if (!assertHeap.contains("LINE" + count)) {
+                    assertHeap.add("LINE" + count);
+                }
+            }
+        }
+        return encodedExpr;
     }
 
     public static void templateGen(Vector<Vector<String>> truthTable, int count) {
@@ -150,7 +206,7 @@ public class DataPreprocessing {
         for (int count = 0; count < nodeList.getLength(); count++) {
             Node tempNode = nodeList.item(count);
             if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
-                if (tempNode.getNodeName().equals("url")) {
+                if (tempNode.getNodeName().equals("surl")) {
                     temp.add("   Should Go To   " + tempNode.getTextContent());
                 }
             }
@@ -170,6 +226,8 @@ public class DataPreprocessing {
                         case "or" -> "or";
                         case "Input Text" -> "Input Text";
                         case "Click Element" -> "Click Element";
+                        case "Verify URL" -> "Verify URL";
+                        case "Verify Element Text" -> "Verify Element Text";
                         default -> type;
                     };
                     case "LogicExpressionOfActions" -> {
@@ -187,14 +245,23 @@ public class DataPreprocessing {
                     }
                     case "locator" -> {
                         assert type != null;
-                        if (type.equals("Input Text")) {
-                            temp.append("Input Text   ").append(tempNode.getTextContent());
-                        } else if (type.equals("Click Element")) {
-                            return "Click Element   " + tempNode.getTextContent();
+                        switch (type) {
+                            case "Input Text" -> temp.append("Input Text   ").append(tempNode.getTextContent());
+                            case "Click Element" -> {
+                                return "Click Element   " + tempNode.getTextContent();
+                            }
+                            case "Verify Element Text" ->
+                                    temp.append("Element Should Contain   ").append(tempNode.getTextContent());
                         }
                     }
                     case "text" -> {
                         return temp + "   " + tempNode.getTextContent();
+                    }
+                    case "url" -> {
+                        assert type != null;
+                        if (type.equals("Verify URL")) {
+                            return "Location Should Be   " + tempNode.getTextContent();
+                        }
                     }
                 }
             }
@@ -243,7 +310,10 @@ public class DataPreprocessing {
         StringBuilder expr = new StringBuilder();
         Enumeration<String> enumeration = lineDict.keys();
         while (enumeration.hasMoreElements()) {
-            expr.append(enumeration.nextElement()).append("%26");
+            String line = enumeration.nextElement();
+            if (!isAssertion(lineDict.get(line).get(0).get(0))) {
+                expr.append(line).append("%26");
+            }
         }
         expr = new StringBuilder(expr.substring(0, expr.length() - 3));
         invalidDict = truthTableParse(logicParse(expr.toString()), expr.toString());

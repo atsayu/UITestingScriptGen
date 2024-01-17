@@ -52,7 +52,7 @@ public class InputText implements Expression {
     }
 
     @Override
-    public String toString() {
+    public String exprToString() {
         return "Input Text   " + this.getLocator() + "   " + this.value;
     }
 }

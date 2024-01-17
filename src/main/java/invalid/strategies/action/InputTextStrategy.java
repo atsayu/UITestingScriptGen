@@ -10,7 +10,7 @@ public class InputTextStrategy implements Strategy {
     @Override
     public String exprEncode(String expr) {
         for (String key : inputTextMap.keySet()) {
-            expr = expr.replaceAll(inputTextMap.get(key).toString(), key);
+            expr = expr.replaceAll(inputTextMap.get(key).exprToString(), key);
         }
         return expr;
     }

@@ -11,7 +11,7 @@ public class PageShouldContainElementStrategy implements Strategy {
     @Override
     public String exprEncode(String expr) {
         for (String key : pageShouldContainElementMap.keySet()) {
-            expr = expr.replaceAll(pageShouldContainElementMap.get(key).toString(), key);
+            expr = expr.replaceAll(pageShouldContainElementMap.get(key).exprToString(), key);
         }
 
         return expr;

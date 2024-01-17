@@ -35,7 +35,7 @@ public class ClickElement implements Expression {
     }
 
     @Override
-    public String toString() {
+    public String exprToString() {
         return "Click Element   " + this.getLocator();
     }
 }

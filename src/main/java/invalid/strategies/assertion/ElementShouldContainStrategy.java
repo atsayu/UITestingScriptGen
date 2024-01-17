@@ -10,7 +10,7 @@ public class ElementShouldContainStrategy implements Strategy {
     @Override
     public String exprEncode(String expr) {
         for (String key : elementShouldContainMap.keySet()) {
-            expr = expr.replaceAll(elementShouldContainMap.get(key).toString(), key);
+            expr = expr.replaceAll(elementShouldContainMap.get(key).exprToString(), key);
         }
 
         return expr;
