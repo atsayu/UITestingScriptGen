@@ -1,7 +1,9 @@
-valid_password & valid_username,421 & 123
-valid_password,421
-valid_username,123
-valid_password & valid_username & expected_url,421 & 123 & validlink1
-password,xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']
-login_button,xpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
-username,xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']
+valid_username,14,142412
+valid_password,124,12421
+valid_password & valid_username,124 & 14,12421 & 142412
+valid_password,124,12421
+valid_username,14,142412
+valid_password & valid_username & expected_url,124 & 14 & 1214124,12421 & 142412 & gasdfads
+password,//input[@class='input_error form_input' and @placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password' and @autocorrect='off' and @autocapitalize='none' and @value='']
+username,//input[@class='input_error form_input' and @placeholder='Username' and @type='text' and @data-test='username' and @id='user-name' and @name='user-name' and @autocorrect='off' and @autocapitalize='none' and @value='']
+login,//input[@type='submit' and @class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']

@@ -2,8 +2,8 @@ package invalid;
 
 import com.opencsv.CSVReader;
 import invalid.strategies.Context;
-import objects.ClickElement;
-import objects.InputText;
+import objects2.ClickElement;
+import objects2.InputText;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

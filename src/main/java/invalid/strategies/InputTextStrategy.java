@@ -1,7 +1,7 @@
 package invalid.strategies;
 
 
-import objects.InputText;
+import objects2.InputText;
 
 import static invalid.DataPreprocessing.inputTextMap;
 

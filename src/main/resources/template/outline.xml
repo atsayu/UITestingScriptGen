@@ -17,7 +17,7 @@
 		</LogicExpressionOfActions>
 		<LogicExpressionOfActions>
 			<type>Click Element</type>
-			<locator>login_button</locator>
+			<locator>login</locator>
 		</LogicExpressionOfActions>
 		<LogicExpressionOfActions>
 			<type>Verify URL</type>

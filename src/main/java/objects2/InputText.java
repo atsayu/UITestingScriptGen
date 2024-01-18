@@ -1,4 +1,4 @@
-package objects;
+package objects2;
 
 public class InputText extends Expression{
     private String text;

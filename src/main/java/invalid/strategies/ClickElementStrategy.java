@@ -1,7 +1,7 @@
 package invalid.strategies;
 
 
-import objects.ClickElement;
+import objects2.ClickElement;
 
 import static invalid.DataPreprocessing.clickElementMap;
 

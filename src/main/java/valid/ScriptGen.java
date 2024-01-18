@@ -8,13 +8,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import mockpage.newSolve;
+
+import mockpage.*;
 import invalid.DataPreprocessing;
 import invalid.PythonTruthTableServer;
-import objects.ClickElement;
-import objects.Expression;
-import objects.InputText;
-import org.springframework.web.socket.server.HandshakeHandler;
+import objects2.Expression;
+import objects2.InputText;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -44,19 +43,134 @@ public class ScriptGen {
                     testCaseElements.add((Element) testcase);
             }
             //This list will be passed to the finding locator API
+            List<String> locatorsInput = new ArrayList<>();
             List<String> locators = new ArrayList<>();
-            locators.add(url);
+//            locators.add(url);
+            List<String> locatorsClickElement = new ArrayList<>();
+            Map<String, List<String>> radioButton = new HashMap<>();
+            Map<String, List<String>> checkbox = new HashMap<>();
+            Map<String, List<String>> dropdown = new HashMap<>();
+            List<Element> expressionActionElements = new ArrayList<>();
+            for (int i = 0; i < testcases.getLength(); i++) {
+                searchLogicExpressionOfActions(testcases.item(i), expressionActionElements);
+            }
+            for (Element expressionActionElement: expressionActionElements) {
+                String type = expressionActionElement.getElementsByTagName("type").item(0).getTextContent();
+                System.out.println(type);
+                if (!type.equals("and") && !type.equals("or")) {
+                    if (type.equals("Input Text")) {
+                        String locator = expressionActionElement.getElementsByTagName("locator").item(0).getTextContent();
+                        if (!locatorsInput.contains(locator))
+                            locatorsInput.add(locator);
+                        if (expressionActionElement.getElementsByTagName("text").getLength() > 0) {
+                            String text = expressionActionElement.getElementsByTagName("text").item(0).getTextContent();
+                            if (content.indexOf(text) == -1)
+                                content.append(text).append("\n");
+                        }
+                    }
+                    if (type.equals("Click Element")) {
+                        String locator = expressionActionElement.getElementsByTagName("locator").item(0).getTextContent();
+                        if (!locatorsClickElement.contains(locator)) {
+                            locatorsClickElement.add(locator);
+                        }
+                    }
+                    if (type.equals("Radio Button")) {
+                        String choice = expressionActionElement.getElementsByTagName("choice").item(0).getTextContent();
+                        String question = expressionActionElement.getElementsByTagName("question").item(0).getTextContent();
+                        if (radioButton.containsKey(question)) {
+                            if (!radioButton.get(question).contains(choice)) {
+                                radioButton.get(question).add(choice);
+                            }
+                        } else {
+                            List<String> choices = new ArrayList<>();
+                            choices.add(choice);
+                            radioButton.put(question, choices);
+                        }
+                    }
+                    if (type.equals("Select List")) {
+                        String value = expressionActionElement.getElementsByTagName("value").item(0).getTextContent();
+                        String list = expressionActionElement.getElementsByTagName("list").item(0).getTextContent();
+                        if (dropdown.containsKey(list)) {
+                            if (!dropdown.get(list).contains(value)) {
+                                dropdown.get(list).add(value);
+                            }
+                        } else {
+                            List<String> values = new ArrayList<>();
+                            values.add(value);
+                            dropdown.put(list, values);
+                        }
+                    }
+                    if (type.equals("Select Checkbox")) {
+                        String answer = expressionActionElement.getElementsByTagName("answer").item(0).getTextContent();
+                        String question = expressionActionElement.getElementsByTagName("question").item(0).getTextContent();
+                        if (checkbox.containsKey(question)) {
+                            if (!checkbox.get(question).contains(answer)) {
+                                checkbox.get(question).add(answer);
+                            }
+                        } else {
+                            List<String> answers = new ArrayList<>();
+                            answers.add(answer);
+                            checkbox.put(question, answers);
+                        }
+                    }
+
+
+                }
+            }
+
+            Vector<String> vec_locatorsInput = new Vector<>(locatorsInput);
+            Vector<String> vec_locatorsClickElement = new Vector<>(locatorsClickElement);
+            Input ip = new Input();
+            Vector<String> res_locatorsInput = ip.processDetectInputElement(vec_locatorsInput, url);
+            Map<String, String> map_locatorsInput = new HashMap<>();  //map lưu locator_variable và locator_value(xpath) của các phần tử input
+            for (int i = 0; i < vec_locatorsInput.size(); i++) {
+                map_locatorsInput.put(vec_locatorsInput.get(i), res_locatorsInput.get(i));
+            }
+            System.out.println("Detect input " + res_locatorsInput);
+            ClickableElement cl = new ClickableElement();
+            Vector<String> res_locatorsClickElement = cl.processDetectClickableElement(vec_locatorsClickElement, url);
+            Map<String, String> map_locatorsClickElement = new HashMap<>();  //map lưu locator_variable và locator_value(xpath) của các phần tử click element
+            for (int i = 0; i < vec_locatorsClickElement.size(); i++) {
+                map_locatorsClickElement.put(vec_locatorsClickElement.get(i), res_locatorsClickElement.get(i));
+            }
+            System.out.println("Detect click " + res_locatorsClickElement);
+            RadioButton rb = new RadioButton();
+            Map<Pair<String, String>, Pair<String, String>> res_radioButton = rb.processDetectRadioButtonElement(radioButton, url);  // map lưu pair[question, choice] và pair[group name, value] của radio button
+            System.out.print("Detect radio button ");
+            for (Map.Entry<Pair<String, String>, Pair<String, String>> entry : res_radioButton.entrySet()) {
+                Pair<String, String> pair1 = entry.getKey();
+                Pair<String, String> pair2 = entry.getValue();
+                System.out.println(pair1.getFirst() + " " + pair1.getSecond() + " " + pair2.getFirst() + " " + pair2.getSecond());
+            }
+
+            DropDownList ddl = new DropDownList();
+            Map<Pair<String, String>, Pair<String, String>> res_dropdown = ddl.processDetectDropdownList(dropdown, url); // map lưu pair[list, value] và pair[locator của select, value của option]
+            System.out.println("Detect dropdown ");
+            for (Map.Entry<Pair<String, String>, Pair<String, String>> entry : res_dropdown.entrySet()) {
+                Pair<String, String> pair1 = entry.getKey();
+                Pair<String, String> pair2 = entry.getValue();
+                System.out.println(pair1.getFirst() + " " + pair1.getSecond() + " " + pair2.getFirst() + " " + pair2.getSecond());
+            }
+
+            Checkbox cb = new Checkbox();
+            Map<Pair<String, String>, String> res_checkbox = cb.processDetectCheckboxElement(checkbox, url); // map lưu pair[question, answer] và locator(xpath) của checkbox
+            System.out.print("Detect checkbox ");
+            for (Map.Entry<Pair<String, String>, String> entry : res_checkbox.entrySet()) {
+                Pair<String, String> pair1 = entry.getKey();
+                String xpath = entry.getValue();
+                System.out.println(pair1.getFirst() + " " + pair1.getSecond() + " " + xpath);
+            }
             for (Element testcaseElement: testCaseElements) {
                 NodeList testCaseChildNodes = testcaseElement.getChildNodes();
-                List<Element> expressionActionElements = new ArrayList<>();
+                List<Element> expressionActionElements2 = new ArrayList<>();
                 for (int i = 0; i < testCaseChildNodes.getLength(); i++) {
                     Node childNode = testCaseChildNodes.item(i);
                     if (childNode.getNodeType() == Node.ELEMENT_NODE && ((Element) childNode).getTagName().equals("LogicExpressionOfActions"))
-                        expressionActionElements.add((Element) childNode);
+                        expressionActionElements2.add((Element) childNode);
                 }
                 List<List<String>> beforeAssertActions = new ArrayList<>();
                 Stack<String> assertionStack = new Stack<>();
-                for (Element expressionActionElement: expressionActionElements) {
+                for (Element expressionActionElement: expressionActionElements2) {
 
                     String type = expressionActionElement.getElementsByTagName("type").item(0).getTextContent();
                     if (type.equals("Verify URL")) {
@@ -159,20 +273,86 @@ public class ScriptGen {
                 }
 
             }
-            String[] test = new String[locators.size()];
-            Vector<String> dataOfLocator = newSolve.getLocator(locators.toArray(test));
-            for (String s: dataOfLocator) {
-                int separator = s.indexOf(":");
-                String locator = s.substring(0, separator);
-                String xpath = s.substring(separator + 2);
-                content.append(locator).append(",").append(xpath);
+//            String[] test = new String[locators.size()];
+//            Vector<String> dataOfLocator = newSolve.getLocator(locators.toArray(test));
+//            for (String s: dataOfLocator) {
+//                int separator = s.indexOf(":");
+//                String locator = s.substring(0, separator);
+//                String xpath = s.substring(separator + 2);
+//                content.append(locator).append(",").append(xpath);
+//            }
+            for (Map.Entry<String, String> entry: map_locatorsInput.entrySet()) {
+                content.append(entry.getKey()).append(",").append(entry.getValue()).append("\n");
+            }
+            for (Map.Entry<String, String> entry: map_locatorsClickElement.entrySet()) {
+                content.append(entry.getKey()).append(",").append(entry.getValue()).append("\n");
             }
             bufferedWriter.append(content);
             bufferedWriter.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
+
+
+    public static void searchLogicExpressionOfActions(Node testcase, List<Element> expressionActionElements) {
+        if (testcase.getNodeType() == Node.ELEMENT_NODE && ((Element) testcase).getTagName().equals("LogicExpressionOfActions")) {
+            expressionActionElements.add((Element) testcase);
+        }
+        for (int i = 0; i < testcase.getChildNodes().getLength(); i++) {
+            searchLogicExpressionOfActions(testcase.getChildNodes().item(i), expressionActionElements);
+        }
+    }
+
+
+    public static String contentAction(Element expressionActionElement, Vector<String> allValueVariable, Vector<String> valueVariableNotAssert,  Map<String, String> mapLocatorVariableAndValueVariable, Vector<String> input) {
+        String type = expressionActionElement.getElementsByTagName("type").item(0).getTextContent();
+        System.out.println(type);
+        if (!type.equals("and") && !type.equals("or")) {
+            if (type.equals("Input Text")) {
+                String locator = expressionActionElement.getElementsByTagName("locator").item(0).getTextContent();
+                input.add(locator);
+                String text = "";
+                if (expressionActionElement.getElementsByTagName("text").getLength() > 0) {
+                    text = expressionActionElement.getElementsByTagName("text").item(0).getTextContent();
+                }
+                if (!mapLocatorVariableAndValueVariable.containsKey(locator)) {
+                    mapLocatorVariableAndValueVariable.put(locator, text);
+                }
+                allValueVariable.add(text);
+                valueVariableNotAssert.add(text);
+                return "Input " + text + " to " + locator;
+            }
+            if (type.equals("Click Element")) {
+                String locator = expressionActionElement.getElementsByTagName("locator").item(0).getTextContent();
+                return "Click " + locator;
+            }
+            if (type.equals("Radio Button")) {
+                String choice = expressionActionElement.getElementsByTagName("choice").item(0).getTextContent();
+                String question = expressionActionElement.getElementsByTagName("question").item(0).getTextContent();
+                return "Choose " + choice + " for " + question;
+            }
+            if (type.equals("Select List")) {
+                String value = expressionActionElement.getElementsByTagName("value").item(0).getTextContent();
+                String list = expressionActionElement.getElementsByTagName("list").item(0).getTextContent();
+                return "Select " + value + " for " + list;
+            }
+            if (type.equals("Select Checkbox")) {
+                String answer = expressionActionElement.getElementsByTagName("answer").item(0).getTextContent();
+                String question = expressionActionElement.getElementsByTagName("question").item(0).getTextContent();
+                return "Select " + answer + " for " + question;
+            }
+            if (type.equals("Verify URL")) {
+                String url = expressionActionElement.getElementsByTagName("url").item(0).getTextContent();
+                allValueVariable.add(url);
+                return "Assert URL" +  "<input class='assert_url' type='text' value=''>";
+            }
+        }
+        return null;
+    }
+
+
 
     public static void addActionAndAssert(List<List<String>> actionTextList, List<String> output, int n, StringBuilder andActions) {
         if (n >= actionTextList.size()) {

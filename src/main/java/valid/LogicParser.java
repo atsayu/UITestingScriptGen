@@ -7,11 +7,10 @@ import com.bpodgursky.jbool_expressions.Variable;
 
 import com.bpodgursky.jbool_expressions.rules.RuleSet;
 
-import com.google.errorprone.annotations.Var;
-import objects.ClickElement;
-import objects.InputText;
-import objects.SelectCheckbox;
-import objects.SelectRadioButton;
+import objects2.ClickElement;
+import objects2.InputText;
+import objects2.SelectCheckbox;
+import objects2.SelectRadioButton;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -69,7 +68,7 @@ public class LogicParser {
         System.out.println("Wrong type of logic expression!");
         return null;
     }
-    public static Expression<objects.Expression> createAction(Element element) {
+    public static Expression<objects2.Expression> createAction(Element element) {
         String type = element.getElementsByTagName("type").item(0).getTextContent();
         if (!type.equals("and") && !type.equals("or")) {
             switch (type) {
@@ -142,12 +141,12 @@ public class LogicParser {
     }
 
 
-    public static List<List<objects.Expression>> createDNFList(Expression expr) {
+    public static List<List<objects2.Expression>> createDNFList(Expression expr) {
         expr = RuleSet.toDNF(expr);
-        List<List<objects.Expression>> list = new ArrayList<>();
+        List<List<objects2.Expression>> list = new ArrayList<>();
         if (expr.getExprType().equals("and")) {
-            List<objects.Expression > childOfAnd = expr.getAllK().stream().toList();
-            ArrayList<objects.Expression> sortable = new ArrayList<>(childOfAnd);
+            List<objects2.Expression > childOfAnd = expr.getAllK().stream().toList();
+            ArrayList<objects2.Expression> sortable = new ArrayList<>(childOfAnd);
             Collections.sort(sortable);
             list.add(sortable);
             return list;
@@ -156,12 +155,12 @@ public class LogicParser {
         List<Expression> expressionList = expr.getChildren();
         for (Expression expression : expressionList) {
             List<Expression> andExpressions = expression.getChildren();
-            List<objects.Expression> andOfActions = new ArrayList<>();
+            List<objects2.Expression> andOfActions = new ArrayList<>();
             for (Expression e : andExpressions) {
-                andOfActions.add((objects.Expression) e.getAllK().stream().toList().get(0));
+                andOfActions.add((objects2.Expression) e.getAllK().stream().toList().get(0));
             }
             if (expression.getExprType().equals("variable"))
-                andOfActions.add((objects.Expression) expression.getAllK().stream().toList().get(0));
+                andOfActions.add((objects2.Expression) expression.getAllK().stream().toList().get(0));
             list.add(andOfActions);
         }
         return list;
