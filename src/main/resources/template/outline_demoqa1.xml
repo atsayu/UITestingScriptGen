@@ -3,28 +3,17 @@
     <TestCase>
         <Scenario>login</Scenario>
         <LogicExpressionOfActions>
-            <type>Input Text</type>
-            <locator>loc_a</locator>
-            <text>a</text>
+            <type>Select Checkbox</type>
+            <locator>loc_b</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Select Radio Button</type>
+            <groupName>loc_a</groupName>
+            <value>a</value>
         </LogicExpressionOfActions>
         <LogicExpressionOfActions>
             <type>Verify URL</type>
-            <url>test_url</url>
-        </LogicExpressionOfActions>
-        <LogicExpressionOfActions>
-            <type>Input Text</type>
-            <locator>loc_c</locator>
-            <text>c</text>
-        </LogicExpressionOfActions>
-        <LogicExpressionOfActions>
-            <type>Input Text</type>
-            <locator>loc_d</locator>
-            <text>d</text>
-        </LogicExpressionOfActions>
-        <LogicExpressionOfActions>
-            <type>Verify Element Text</type>
-            <locator>loc_e</locator>
-            <text>e</text>
+            <url>e</url>
         </LogicExpressionOfActions>
     </TestCase>
 </TestSuite>

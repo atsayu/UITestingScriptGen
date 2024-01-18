@@ -55,6 +55,10 @@ public class AssertTestGen {
                     LocationShouldBe validVal = new LocationShouldBe(locationShouldBeMap.get(lineVal.get(1)));
                     validVal.setUrl(searchValidValue(lineVal.get(1)));
                     binaryTemp.set(i, "   " + validVal.exprToString());
+                } else if (lineVal.get(1).contains("ce")) {
+                    ClickElement validVal = new ClickElement(clickElementMap.get(lineVal.get(1)));
+                    validVal.setLocator(searchValidValue(lineVal.get(1)));
+                    binaryTemp.set(i, "   " + validVal.exprToString());
                 }
             }
         }
@@ -102,10 +106,6 @@ public class AssertTestGen {
                                     InputText validVal = new InputText(inputTextMap.get(headers.get(i)));
                                     validVal.setLocator(dataMap.get(validVal.getLocator()).get(0));
                                     validVal.setValue(dataVec.get(dataHeaderVec.indexOf(validVal.getValue())));
-                                    validTemp.set(j, "   " + validVal.exprToString());
-                                } else if (headers.get(i).contains("ce")) {
-                                    ClickElement validVal = new ClickElement(clickElementMap.get(headers.get(i)));
-                                    validVal.setLocator(dataMap.get(validVal.getLocator()).get(0));
                                     validTemp.set(j, "   " + validVal.exprToString());
                                 } else if (headers.get(i).contains("lsb")) {
                                     LocationShouldBe validVal = new LocationShouldBe(locationShouldBeMap.get(headers.get(i)));

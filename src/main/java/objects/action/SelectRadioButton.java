@@ -3,18 +3,15 @@ package objects.action;
 import objects.Expression;
 
 public class SelectRadioButton implements Expression {
-    private String locator;
     private String groupName;
     private String value;
 
     public SelectRadioButton(String locator, String groupName, String value) {
-        this.locator = locator;
         this.groupName = groupName;
         this.value = value;
     }
 
     public SelectRadioButton(SelectRadioButton selectRadioButton) {
-        this.locator = selectRadioButton.locator;
         this.groupName = selectRadioButton.groupName;
         this.value = selectRadioButton.value;
     }
