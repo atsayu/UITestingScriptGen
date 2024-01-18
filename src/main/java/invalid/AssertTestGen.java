@@ -31,7 +31,7 @@ public class AssertTestGen {
     }
 
     private static Vector<String> binaryAssertTrace(Vector<String> firstTemp, Vector<Vector<String>> assertVal) {
-        Vector<String> binaryTemp = new Vector<>();
+        Vector<String> binaryTemp;
         Vector<String> invalidTemp = new Vector<>(firstTemp);
         System.out.println(assertVal);
         for (String invalidLine : assertVal.get(1)) {
@@ -42,6 +42,21 @@ public class AssertTestGen {
             binaryTemp = validLineAssertTrace(invalidTemp, assertVal.get(2), assertVal.get(0));
         } else {
             binaryTemp = invalidTemp;
+        }
+        for (int i = 0; i < binaryTemp.size(); i++) {
+            if (binaryTemp.get(i).contains("LINE")) {
+                Vector<String> lineVal = arrToVec(binaryTemp.get(i).split(" {3}"));
+                if (lineVal.get(1).contains("esc")) {
+                    ElementShouldContain validVal = new ElementShouldContain(elementShouldContainMap.get(lineVal.get(1)));
+                    validVal.setLocator(dataMap.get(validVal.getLocator()).get(0));
+                    validVal.setExpected(searchValidValue(lineVal.get(1)));
+                    binaryTemp.set(i, "   " + validVal.exprToString());
+                } else if (lineVal.get(1).contains("lsb")) {
+                    LocationShouldBe validVal = new LocationShouldBe(locationShouldBeMap.get(lineVal.get(1)));
+                    validVal.setUrl(searchValidValue(lineVal.get(1)));
+                    binaryTemp.set(i, "   " + validVal.exprToString());
+                }
+            }
         }
         return binaryTemp;
     }

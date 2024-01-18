@@ -23,8 +23,8 @@
         </LogicExpressionOfActions>
         <LogicExpressionOfActions>
             <type>Verify Element Text</type>
-            <locator>locator</locator>
-            <text>text</text>
+            <locator>loc_e</locator>
+            <text>e</text>
         </LogicExpressionOfActions>
     </TestCase>
 </TestSuite>

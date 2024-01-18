@@ -44,6 +44,10 @@ public class Context {
             this.setStrategy(new InputTextStrategy());
         } else if (expr.contains("ce")) {
             this.setStrategy(new ClickElementStrategy());
+        } else if (expr.contains("esc")) {
+            this.setStrategy(new ElementShouldContainStrategy());
+        } else if (expr.contains("lsb")) {
+            this.setStrategy(new LocationShouldBeStrategy());
         }
         return strategy.searchValidValue(expr);
     }
