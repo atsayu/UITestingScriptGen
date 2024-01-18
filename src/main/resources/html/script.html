@@ -104,7 +104,8 @@
 <!--   <input class="button hidden" type="button" id="download-log-btn" value="Download Log" disabled>-->
    <script>
        document.querySelector('#download-btn').addEventListener('click', function() {
-           let script = document.querySelector('pre').innerHTML;
+           let script = document.querySelector('pre > code').innerText;
+           console.log(script);
            let blob = new Blob([script], {type: 'text/plain'});
            let url =URL.createObjectURL(blob);
            let download = document.createElement('a');

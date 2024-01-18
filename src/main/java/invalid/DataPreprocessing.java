@@ -84,7 +84,7 @@ public class DataPreprocessing {
             Node tempNode = nodeList.item(count);
             if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
                 if (tempNode.getNodeName().equals("url")) {
-                    temp.add("   Open Browser   " + tempNode.getTextContent() + "   Edge");
+                    temp.add("   Open Browser   " + tempNode.getTextContent() + "   Chrome");
                 } else if (tempNode.getNodeName().equals("TestCase")) {
                     parseTest(tempNode.getChildNodes());
                     initInvalidDict();
@@ -98,7 +98,7 @@ public class DataPreprocessing {
             Node tempNode = nodeList.item(count);
             if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
                 switch (tempNode.getNodeName()) {
-                    case "Scenario" -> temp.add(0, "Test-" + tempNode.getTextContent());
+                    case "Scenario" -> temp.add(0, "Invalid-Test-" + tempNode.getTextContent());
                     case "LogicExpressionOfActions" -> {
                         exprToMap(logicExpr(tempNode.getChildNodes(), false));
 //                        String rs = exprString.replaceAll("\\d", " $0 ").replaceAll("\\s+", " ").trim();

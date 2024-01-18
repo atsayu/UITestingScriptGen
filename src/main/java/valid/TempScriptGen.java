@@ -454,7 +454,7 @@ public class TempScriptGen {
         return "Assert URL" +  "<input class='assert_url' type='text' value=''>";
       }
     }
-      return null;
+      return "";
   }
 
 

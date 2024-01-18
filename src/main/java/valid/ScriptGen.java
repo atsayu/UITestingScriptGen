@@ -396,7 +396,7 @@ public class ScriptGen {
 
     public static void createTestCase(int n, Map<Integer, List<StringBuilder>> lines, StringBuilder testScript, StringBuilder content, StringBuilder validations, String testName, AtomicInteger testCount) {
         if (n >= lines.size()) {
-            content.append("Test ").append(testName).append(" ").append(testCount).append("\n").append(testScript).append(validations);
+            content.append("Valid-Test-").append(testName).append("-").append(testCount).append("\n").append(testScript).append(validations);
             testCount.incrementAndGet();
             return;
         }

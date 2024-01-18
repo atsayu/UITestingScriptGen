@@ -1,9 +1,17 @@
-valid_username
-valid_password
-valid_password & valid_username
-valid_password
-valid_username
-valid_password & valid_username & expected_url
-password,//input[@class='input_error form_input' and @placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password' and @autocorrect='off' and @autocapitalize='none' and @value='']
-username,//input[@class='input_error form_input' and @placeholder='Username' and @type='text' and @data-test='username' and @id='user-name' and @name='user-name' and @autocorrect='off' and @autocapitalize='none' and @value='']
-login,//input[@type='submit' and @class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
+valid_firstName
+valid_middleName
+valid_lastName
+valid_mobilenumber
+valid_workNumber
+valid_company
+valid_additionalComments
+valid_firstName & valid_middleName & valid_lastName & valid_mobilenumber & valid_workNumber & valid_company & valid_additionalComments & expected_url
+last Name,//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @value='']
+middle Name,//input[@type='text' and @id='middle_4' and @name='q4_studentName[middle]' and @class='form-textbox' and @data-defaultvalue='' and @autocomplete='section-input_4 additional-name' and @size='10' and @data-component='middle' and @aria-labelledby='label_4 sublabel_4_middle' and @value='']
+mobile number,//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']
+first Name,//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @value='']
+company,//input[@type='text' and @id='input_14' and @name='q14_company' and @data-type='input-textbox' and @class='form-textbox' and @data-defaultvalue='' and @style='width:310px' and @size='310' and @placeholder=' ' and @data-component='textbox' and @aria-labelledby='label_14' and @value='']
+work Number,//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']
+additional Comments,//textarea[@id='input_45' and @class='form-textarea' and @name='q45_clickTo45' and @style='width:648px;height:163px' and @data-component='textarea' and @aria-labelledby='label_45']
+submit,//button[@id='input_52' and @type='submit' and @class='form-submit-button form-submit-button-navy-700 submit-button jf-form-buttons jsTest-submitField' and @data-component='button' and @data-content='' and @aria-live='polite' and normalize-space()='Submit']
+reading,//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']

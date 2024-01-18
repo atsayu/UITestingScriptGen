@@ -102,6 +102,8 @@ public class Input extends ProcessDetectElement {
     Vector<String> valueVariableNotAssert = new Vector<>();
     String contentActions = "";
     for (int i = 0; i < expressionActionElements.size(); i++) {
+      String type = expressionActionElements.get(i).getElementsByTagName("type").item(0).getTextContent();
+      if (type.equals("and") || type.equals("or")) continue;
       contentActions += contentAction(expressionActionElements.get(i), allValueVariable, valueVariableNotAssert,mapLocatorVariableAndValueVariable, input);
       if (i < expressionActionElements.size() - 1) {
         contentActions += "<br>";

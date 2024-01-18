@@ -24,7 +24,7 @@ public class InvalidTestGen {
         }
         int count = 1;
         for (int i = 0; i < finalTest.size(); i++) {
-            if (finalTest.get(i).contains("Test-")) {
+            if (!finalTest.get(i).contains("   ")) {
                 finalTest.set(i, finalTest.get(i) + "-" + count);
                 count++;
             }
