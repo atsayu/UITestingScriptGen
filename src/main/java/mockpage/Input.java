@@ -164,6 +164,12 @@ public class Input extends ProcessDetectElement {
     BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(mockWebContent));
     bufferedWriter.append(domTree.body().html());
     bufferedWriter.close();
+
+    File headOfMockWeb = new File("src/main/resources/html/head.html");
+    headOfMockWeb.createNewFile();
+    BufferedWriter headWritter = new BufferedWriter(new FileWriter(headOfMockWeb));
+    headWritter.append(domTree.head().html());
+    headWritter.close();
   }
 
   @Override

@@ -25,6 +25,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import valid.ScriptGen;
 
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -258,6 +259,9 @@ public class HomeController {
         StringBuilder mockWebContent = new StringBuilder();
         File mockWebFile = new File("src/main/resources/html/mockweb.html");
         BufferedReader bufferedReader = new BufferedReader(new FileReader(mockWebFile));
+        File headContent = new File("src/main/resources/html/head.html");
+        BufferedReader headReader = new BufferedReader(new FileReader(headContent));
+        StringBuilder headString = new StringBuilder();
 
         String line = bufferedReader.readLine();
         while (line != null) {
@@ -265,7 +269,16 @@ public class HomeController {
             line = bufferedReader.readLine();
         }
         bufferedReader.close();
+
+        String headLine = headReader.readLine();
+        while (headLine != null) {
+            headString.append(headLine).append("\n");
+            headLine = headReader.readLine();
+        }
+        headReader.close();
         model.addAttribute("webContent", mockWebContent.toString());
+        System.out.println(headReader.toString());
+        model.addAttribute("headContent", headString.toString());
         return "test";
     }
 

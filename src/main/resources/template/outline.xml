@@ -3,19 +3,17 @@
 	<TestCase>
 		<Scenario>jotform</Scenario>
 		<LogicExpressionOfActions>
-			<type>Input Text</type>
-			<locator>first Name</locator>
-			<text>valid_firstName</text>
-		</LogicExpressionOfActions>
-		<LogicExpressionOfActions>
-			<type>Input Text</type>
-			<locator>middle Name</locator>
-			<text>valid_middleName</text>
-		</LogicExpressionOfActions>
-		<LogicExpressionOfActions>
-			<type>Input Text</type>
-			<locator>last Name</locator>
-			<text>valid_lastName</text>
+			<type>and</type>
+			<LogicExpressionOfActions>
+				<type>Input Text</type>
+				<locator>first name</locator>
+				<text>valid_firstname</text>
+			</LogicExpressionOfActions>
+			<LogicExpressionOfActions>
+				<type>Input Text</type>
+				<locator>last name</locator>
+				<text>valid_lastname</text>
+			</LogicExpressionOfActions>
 		</LogicExpressionOfActions>
 		<LogicExpressionOfActions>
 			<type>Input Text</type>
@@ -24,13 +22,8 @@
 		</LogicExpressionOfActions>
 		<LogicExpressionOfActions>
 			<type>Input Text</type>
-			<locator>work Number</locator>
-			<text>valid_workNumber</text>
-		</LogicExpressionOfActions>
-		<LogicExpressionOfActions>
-			<type>Input Text</type>
-			<locator>company</locator>
-			<text>valid_company</text>
+			<locator>work number</locator>
+			<text>valid_worknumber</text>
 		</LogicExpressionOfActions>
 		<LogicExpressionOfActions>
 			<type>Click Element</type>
