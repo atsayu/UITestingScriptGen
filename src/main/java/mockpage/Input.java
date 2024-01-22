@@ -262,6 +262,9 @@ public class Input extends ProcessDetectElement {
   }
 
   public boolean isInputElement(Element e) {
+    if (e == null) {
+      return false;
+    }
     if (e.tagName().equals("input")) {
       if (e.hasAttr("type") && (e.attr("type").equals("submit") || e.attr("type").equals("hidden"))) {
         return false;
