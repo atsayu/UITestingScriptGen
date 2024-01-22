@@ -3,14 +3,14 @@ package objects.normalAction;
 import mockpage.Input;
 import objects.Expression;
 
-public class InputText extends DynamicAction {
+public class InputText extends NormalAction {
 
     public InputText(String elementLocator, String value, boolean dynamic, boolean required) {
-        super(elementLocator, dynamic, required, value);
+        super(elementLocator, value, dynamic, required);
     }
 
     public InputText(InputText inputText) {
-        super(inputText.getElementLocator(), inputText.isDynamic(), inputText.isRequired(), inputText.getValue());
+        super(inputText.getElementLocator(),inputText.getValue(), inputText.isDynamic(), inputText.isRequired());
     }
 
     @Override

@@ -1,55 +1,27 @@
 <TestSuite>
-    <url>https://form.jotform.com/240141541020435</url>
+    <url>https://www.saucedemo.com/</url>
     <TestCase>
-        <Scenario>
-        </Scenario>
+        <Scenario>login</Scenario>
         <LogicExpressionOfActions>
+            <type>and</type>
             <required>true</required>
-            <type>or</type>
             <LogicExpressionOfActions>
-                <required>true</required>
                 <type>Input Text</type>
-                <locator>mobile number</locator>
-                <text>valid_mobileNumber</text>
+                <required>true</required>
+                <locator>username</locator>
+                <text>valid_username</text>
             </LogicExpressionOfActions>
             <LogicExpressionOfActions>
-                <required>true</required>
                 <type>Input Text</type>
-                <locator>work number</locator>
-                <text>valid_worknumber</text>
-            </LogicExpressionOfActions>
-            <LogicExpressionOfActions>
-                <type>and</type>
                 <required>true</required>
-                <LogicExpressionOfActions>
-                    <type>Input Text</type>
-                    <required>true</required>
-                    <locator>first name</locator>
-                    <text>valid_firstname</text>
-                </LogicExpressionOfActions>
-                <LogicExpressionOfActions>
-                    <type>Input Text</type>
-                    <required>true</required>
-                    <locator>last name</locator>
-                    <text>valid_lastname</text>
-                </LogicExpressionOfActions>
+                <locator>password</locator>
+                <text>valid_password</text>
             </LogicExpressionOfActions>
         </LogicExpressionOfActions>
         <LogicExpressionOfActions>
             <type>Click Element</type>
             <required>true</required>
-            <locator>reading</locator>
-        </LogicExpressionOfActions>
-        <LogicExpressionOfActions>
-            <type>Input Text</type>
-            <required>true</required>
-            <locator>additional Comments</locator>
-            <text>valid_additionalComments</text>
-        </LogicExpressionOfActions>
-        <LogicExpressionOfActions>
-            <type>Click Element</type>
-            <required>true</required>
-            <locator>submit</locator>
+            <locator>login</locator>
         </LogicExpressionOfActions>
         <LogicExpressionOfActions>
             <type>Verify URL</type>

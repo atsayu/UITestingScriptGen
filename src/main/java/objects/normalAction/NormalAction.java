@@ -4,13 +4,16 @@ import objects.Expression;
 
 public abstract class NormalAction implements Expression {
     private String elementLocator;
+    private String value;
+
     private boolean dynamic;
     private boolean required;
 
-    public NormalAction(String elementLocator, boolean dynamic, boolean required) {
+    public NormalAction(String elementLocator, String value, boolean dynamic, boolean required) {
         this.elementLocator = elementLocator;
         this.dynamic = dynamic;
         this.required = required;
+        this.value = value;
     }
 
     public String getElementLocator() {
@@ -35,6 +38,13 @@ public abstract class NormalAction implements Expression {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public abstract boolean isExprEquals(Object obj);

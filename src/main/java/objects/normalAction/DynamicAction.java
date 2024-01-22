@@ -4,7 +4,7 @@ public abstract class DynamicAction extends NormalAction {
     private String value;
 
     public DynamicAction(String elementLocator, boolean dynamic, boolean required, String value) {
-        super(elementLocator, dynamic, required);
+        super(elementLocator,value, dynamic, required);
         this.value = value;
     }
 

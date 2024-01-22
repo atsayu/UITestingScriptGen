@@ -9,10 +9,10 @@ public class ClickElement extends NormalAction {
     }
 
     public ClickElement(String elementLocator, boolean dynamic, boolean required) {
-        super(elementLocator, dynamic, required);
+        super(elementLocator,null, dynamic, required);
     }
     public ClickElement(ClickElement clickElement) {
-        super(clickElement.getElementLocator(), clickElement.isDynamic(), clickElement.isRequired());
+        super(clickElement.getElementLocator(),null, clickElement.isDynamic(), clickElement.isRequired());
     }
     @Override
     public boolean isExprEquals(Object obj) {

@@ -19,7 +19,6 @@ import mockpage.DropDownList;
 import mockpage.Input;
 import mockpage.RadioButton;
 import mockpage.Pair;
-import objects.normalAction.DynamicAction;
 import objects.normalAction.NormalAction;
 import objects2.Expression;
 import objects2.InputText;
@@ -139,8 +138,9 @@ public class TempScriptGen {
                 String elementLocator = ((NormalAction)action).getElementLocator();
                 if (!locatorsInput.contains(elementLocator))
                   locatorsInput.add(elementLocator);
-                if (action instanceof DynamicAction)
-                  textList.add(((DynamicAction) action).getValue());
+                String value = ((NormalAction) action).getValue();
+                if (value != null)
+                  textList.add(value);
               }
               texts.add(new ArrayList<>(textList));
             }

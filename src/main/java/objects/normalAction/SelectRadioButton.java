@@ -2,7 +2,7 @@ package objects.normalAction;
 
 import objects.Expression;
 
-public class SelectRadioButton extends DynamicAction {
+public class SelectRadioButton extends NormalAction {
     // groupName = elementLocator
 
     public String getType() {
@@ -12,11 +12,11 @@ public class SelectRadioButton extends DynamicAction {
 
 
     public SelectRadioButton(String elementLocator, String value, boolean dynamic, boolean required) {
-        super(elementLocator, dynamic, required, value);
+        super(elementLocator, value, dynamic, required);
     }
 
     public SelectRadioButton(SelectRadioButton selectRadioButton) {
-        super(selectRadioButton.getElementLocator(), selectRadioButton.isDynamic(), selectRadioButton.isDynamic(), selectRadioButton.getValue());
+        super(selectRadioButton.getElementLocator(), selectRadioButton.getValue(), selectRadioButton.isDynamic(), selectRadioButton.isDynamic());
     }
 
     public boolean isExprEquals(Object obj) {
