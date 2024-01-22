@@ -19,6 +19,8 @@ import mockpage.DropDownList;
 import mockpage.Input;
 import mockpage.RadioButton;
 import mockpage.Pair;
+import objects.normalAction.DynamicAction;
+import objects.normalAction.NormalAction;
 import objects2.Expression;
 import objects2.InputText;
 import org.w3c.dom.Document;
@@ -129,16 +131,16 @@ public class TempScriptGen {
 
 
           } else {
-            List<List<Expression>> dnfList = LogicParser.createDNFList(LogicParser.createAction(expressionActionElement));
+            List<List<objects.Expression>> dnfList = LogicParser.createDNFList(LogicParser.createAction(expressionActionElement));
             List<List<String>> texts = new ArrayList<>();
-            for (List<Expression> actionList : dnfList) {
+            for (List<objects.Expression> actionList : dnfList) {
               List<String> textList = new ArrayList<>();
-              for (Expression action : actionList) {
-                String locator = action.getLocator();
-                if (!locatorsInput.contains(locator))
-                  locatorsInput.add(locator);
-                if (action instanceof InputText && ((InputText)action).getValue() != null)
-                  textList.add(((InputText) action).getValue());
+              for (objects.Expression action : actionList) {
+                String elementLocator = ((NormalAction)action).getElementLocator();
+                if (!locatorsInput.contains(elementLocator))
+                  locatorsInput.add(elementLocator);
+                if (action instanceof DynamicAction)
+                  textList.add(((DynamicAction) action).getValue());
               }
               texts.add(new ArrayList<>(textList));
             }

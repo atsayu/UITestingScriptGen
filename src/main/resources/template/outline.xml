@@ -1,29 +1,33 @@
 <TestSuite>
 	<url>https://form.jotform.com/240141541020435</url>
 	<TestCase>
-		<Scenario>jotform</Scenario>
+		<Scenario>
+		</Scenario>
 		<LogicExpressionOfActions>
-			<type>and</type>
+			<type>or</type>
 			<LogicExpressionOfActions>
 				<type>Input Text</type>
-				<locator>first name</locator>
-				<text>valid_firstname</text>
+				<locator>mobile number</locator>
+				<text>valid_mobileNumber</text>
 			</LogicExpressionOfActions>
 			<LogicExpressionOfActions>
 				<type>Input Text</type>
-				<locator>last name</locator>
-				<text>valid_lastname</text>
+				<locator>work number</locator>
+				<text>valid_worknumber</text>
 			</LogicExpressionOfActions>
-		</LogicExpressionOfActions>
-		<LogicExpressionOfActions>
-			<type>Input Text</type>
-			<locator>mobile number</locator>
-			<text>valid_mobilenumber</text>
-		</LogicExpressionOfActions>
-		<LogicExpressionOfActions>
-			<type>Input Text</type>
-			<locator>work number</locator>
-			<text>valid_worknumber</text>
+			<LogicExpressionOfActions>
+				<type>and</type>
+				<LogicExpressionOfActions>
+					<type>Input Text</type>
+					<locator>first name</locator>
+					<text>valid_firstname</text>
+				</LogicExpressionOfActions>
+				<LogicExpressionOfActions>
+					<type>Input Text</type>
+					<locator>last name</locator>
+					<text>valid_lastname</text>
+				</LogicExpressionOfActions>
+			</LogicExpressionOfActions>
 		</LogicExpressionOfActions>
 		<LogicExpressionOfActions>
 			<type>Click Element</type>
