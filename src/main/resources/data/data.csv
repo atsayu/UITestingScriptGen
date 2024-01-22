@@ -1,0 +1,12 @@
+valid_username,123
+valid_password,412
+valid_password & valid_username,412 & 123
+valid_password,412
+valid_username,123
+valid_password & valid_username & expected_url,412 & 123 & fadsf
+password,//input[@class='input_error form_input' and @placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password' and @autocorrect='off' and @autocapitalize='none' and @value='']
+username,//input[@class='input_error form_input' and @placeholder='Username' and @type='text' and @data-test='username' and @id='user-name' and @name='user-name' and @autocorrect='off' and @autocapitalize='none' and @value='']
+login,//input[@type='submit' and @class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
+url1,urldata
+loc_a,locdata
+a,a1

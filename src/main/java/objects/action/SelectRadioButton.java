@@ -6,7 +6,7 @@ public class SelectRadioButton implements Expression {
     private String groupName;
     private String value;
 
-    public SelectRadioButton(String locator, String groupName, String value) {
+    public SelectRadioButton(String groupName, String value) {
         this.groupName = groupName;
         this.value = value;
     }

@@ -1,10 +1,10 @@
 package invalid;
 
-import objects.action.ClickElement;
-import objects.action.InputText;
+import objects.action.*;
 import objects.assertion.ElementShouldContain;
 import objects.assertion.LocationShouldBe;
 
+import java.util.Collections;
 import java.util.Vector;
 
 import static invalid.DataPreprocessing.*;
@@ -19,11 +19,11 @@ public class AssertTestGen {
         for (Vector<String> assertVal : assertVec) {
             assertDictParse(assertVal);
         }
+        Collections.swap(assertMap.get(assertMap.size() - 1), 1, 2);
         System.out.println("assertMap: " + assertMap);
         for (Vector<Vector<String>> assertVal : assertMap) {
             Vector<String> firstTemp = new Vector<>(temp);
             firstTemp = binaryAssertTrace(firstTemp, assertVal);
-            System.out.println("firsttemp: " + firstTemp);
             finalTest.addAll(firstTemp);
         }
         System.out.println("final: " + finalTest);
@@ -33,13 +33,11 @@ public class AssertTestGen {
     private static Vector<String> binaryAssertTrace(Vector<String> firstTemp, Vector<Vector<String>> assertVal) {
         Vector<String> binaryTemp;
         Vector<String> invalidTemp = new Vector<>(firstTemp);
-        System.out.println(assertVal);
-        for (String invalidLine : assertVal.get(1)) {
+        for (String invalidLine : assertVal.get(2)) {
             invalidTemp = invalidLineAssertTrace(invalidTemp, invalidLine);
-            System.out.println(invalidTemp);
         }
-        if (!validLineAssertTrace(invalidTemp, assertVal.get(2), assertVal.get(0)).isEmpty()) {
-            binaryTemp = validLineAssertTrace(invalidTemp, assertVal.get(2), assertVal.get(0));
+        if (!assertVal.get(1).isEmpty()) {
+            binaryTemp = validLineAssertTrace(invalidTemp, assertVal.get(1), assertVal.get(0));
         } else {
             binaryTemp = invalidTemp;
         }
@@ -57,7 +55,21 @@ public class AssertTestGen {
                     binaryTemp.set(i, "   " + validVal.exprToString());
                 } else if (lineVal.get(1).contains("ce")) {
                     ClickElement validVal = new ClickElement(clickElementMap.get(lineVal.get(1)));
-                    validVal.setLocator(searchValidValue(lineVal.get(1)));
+                    validVal.setLocator(dataMap.get(validVal.getLocator()).get(0));
+                    binaryTemp.set(i, "   " + validVal.exprToString());
+                } else if (lineVal.get(1).contains("sc")) {
+                    SelectCheckbox validVal = new SelectCheckbox(selectCheckboxMap.get(lineVal.get(1)));
+                    validVal.setLocator(dataMap.get(validVal.getLocator()).get(0));
+                    binaryTemp.set(i, "   " + validVal.exprToString());
+                } else if (lineVal.get(1).contains("srb")) {
+                    SelectRadioButton validVal = new SelectRadioButton(selectRadioButtonMap.get(lineVal.get(1)));
+                    validVal.setGroupName(dataMap.get(validVal.getGroupName()).get(0));
+                    validVal.setValue(dataMap.get(validVal.getValue()).get(0));
+                    binaryTemp.set(i, "   " + validVal.exprToString());
+                } else if (lineVal.get(1).contains("sflbv")) {
+                    SelectFromListByValue validVal = new SelectFromListByValue(selectFromListByValueMap.get(lineVal.get(1)));
+                    validVal.setLocator(dataMap.get(validVal.getLocator()).get(0));
+                    validVal.setValue(dataMap.get(validVal.getValue()).get(0));
                     binaryTemp.set(i, "   " + validVal.exprToString());
                 }
             }
@@ -71,11 +83,20 @@ public class AssertTestGen {
             for (int i = 0; i < lineTemp.size(); i++) {
                 if (lineTemp.get(i).contains(invalidLine) && lineTemp.get(i).contains(expr)) {
                     if (expr.contains("it")) {
-                        InputText multiInvalidIt = new InputText(dataMap.get(inputTextMap.get(expr).getLocator()).get(0), "NOT" + searchValidValue(expr));
-                        lineTemp.set(i, "   " + multiInvalidIt.exprToString());
-                    } else {
-                        ClickElement multiInvalidCe = new ClickElement("NOT" + searchValidValue(expr));
-                        lineTemp.set(i, "   " + multiInvalidCe.exprToString());
+                        InputText multiInvalidVal = new InputText(dataMap.get(inputTextMap.get(expr).getLocator()).get(0), "NOT" + searchValidValue(expr));
+                        lineTemp.set(i, "   " + multiInvalidVal.exprToString());
+                    } else if (expr.contains("ce")) {
+                        ClickElement multiInvalidVal = new ClickElement("NOT" + searchValidValue(expr));
+                        lineTemp.set(i, "   " + multiInvalidVal.exprToString());
+                    } else if (expr.contains("sc")) {
+                        SelectCheckbox multiInvalidVal = new SelectCheckbox("NOT" + searchValidValue(expr));
+                        lineTemp.set(i, "   " + multiInvalidVal.exprToString());
+                    } else if (expr.contains("srb")) {
+                        SelectRadioButton multiInvalidVal = new SelectRadioButton(dataMap.get(selectRadioButtonMap.get(expr).getGroupName()).get(0), "NOT" + searchValidValue(expr));
+                        lineTemp.set(i, "   " + multiInvalidVal.exprToString());
+                    } else if (expr.contains("sflbv")) {
+                        SelectFromListByValue multiInvalidVal = new SelectFromListByValue(dataMap.get(selectFromListByValueMap.get(expr).getLocator()).get(0), "NOT" + searchValidValue(expr));
+                        lineTemp.set(i, "   " + multiInvalidVal.exprToString());
                     }
                 }
             }
@@ -90,6 +111,7 @@ public class AssertTestGen {
             headers.addAll(lineDict.get(line).get(0));
         }
         headers.add(assertActionVal.get(1));
+        System.out.println(headers);
         Vector<String> headersLine = new Vector<>(validLines);
         headersLine.add(assertActionVal.get(0));
         String dataHeader = getMultiValidKey(headers);

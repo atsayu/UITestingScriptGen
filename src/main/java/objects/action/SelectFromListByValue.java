@@ -2,19 +2,18 @@ package objects.action;
 
 import objects.Expression;
 
-public class InputText implements Expression {
-    private String value;
+public class SelectFromListByValue implements Expression {
     private String locator;
+    private String value;
 
-
-    public InputText(String locator, String value) {
+    public SelectFromListByValue(String locator, String value) {
         this.locator = locator;
         this.value = value;
     }
 
-    public InputText(InputText inputText) {
-        this.locator = inputText.locator;
-        this.value = inputText.value;
+    public SelectFromListByValue(SelectFromListByValue selectFromListByValue) {
+        this.locator = selectFromListByValue.locator;
+        this.value = selectFromListByValue.value;
     }
 
     public String getLocator() {
@@ -39,15 +38,15 @@ public class InputText implements Expression {
             return true;
         }
 
-        if (!(obj instanceof InputText it)) {
+        if (!(obj instanceof SelectFromListByValue sflbv)) {
             return false;
         }
 
-        return (this.getLocator().equals(it.getLocator()) && this.getValue().equals(it.getValue()));
+        return (this.getLocator().equals(sflbv.getLocator()) && this.getValue().equals(sflbv.getValue()));
     }
 
     @Override
     public String exprToString() {
-        return "Input Text   " + this.getLocator() + "   " + this.value;
+        return "Select From List By Value   " + this.locator + "   " + this.value;
     }
 }

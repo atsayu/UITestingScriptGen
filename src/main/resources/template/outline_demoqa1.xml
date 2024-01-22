@@ -13,6 +13,15 @@
         </LogicExpressionOfActions>
         <LogicExpressionOfActions>
             <type>Verify URL</type>
+            <url>c</url>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Select From List By Value</type>
+            <locator>loc_d</locator>
+            <value>d</value>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
             <url>e</url>
         </LogicExpressionOfActions>
     </TestCase>

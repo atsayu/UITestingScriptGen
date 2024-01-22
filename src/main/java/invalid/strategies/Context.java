@@ -1,7 +1,6 @@
 package invalid.strategies;
 
-import invalid.strategies.action.ClickElementStrategy;
-import invalid.strategies.action.InputTextStrategy;
+import invalid.strategies.action.*;
 import invalid.strategies.assertion.ElementShouldContainStrategy;
 import invalid.strategies.assertion.LocationShouldBeStrategy;
 
@@ -23,6 +22,12 @@ public class Context {
         expr = strategy.exprEncode(expr);
         this.setStrategy(new ElementShouldContainStrategy());
         expr = strategy.exprEncode(expr);
+        this.setStrategy(new SelectCheckboxStrategy());
+        expr = strategy.exprEncode(expr);
+        this.setStrategy(new SelectRadioButtonStrategy());
+        expr = strategy.exprEncode(expr);
+        this.setStrategy(new SelectFromListByValueStrategy());
+        expr = strategy.exprEncode(expr);
         return expr;
     }
 
@@ -35,6 +40,12 @@ public class Context {
             this.setStrategy(new LocationShouldBeStrategy());
         } else if (expr.contains("Element Should Contain")) {
             this.setStrategy(new ElementShouldContainStrategy());
+        } else if (expr.contains("Select Checkbox")) {
+            this.setStrategy(new SelectCheckboxStrategy());
+        } else if (expr.contains("Select Radio Button")) {
+            this.setStrategy(new SelectRadioButtonStrategy());
+        } else if (expr.contains("Select From List By Value")) {
+            this.setStrategy(new SelectFromListByValueStrategy());
         }
         strategy.exprToMap(expr);
     }
@@ -48,6 +59,12 @@ public class Context {
             this.setStrategy(new ElementShouldContainStrategy());
         } else if (expr.contains("lsb")) {
             this.setStrategy(new LocationShouldBeStrategy());
+        } else if (expr.contains("sc")) {
+            this.setStrategy(new SelectCheckboxStrategy());
+        } else if (expr.contains("srb")) {
+            this.setStrategy(new SelectRadioButtonStrategy());
+        } else if (expr.contains("sflbv")) {
+            this.setStrategy(new SelectFromListByValueStrategy());
         }
         return strategy.searchValidValue(expr);
     }
@@ -63,6 +80,12 @@ public class Context {
                 this.strategy = new LocationShouldBeStrategy();
             } else if (expr.contains("esc")) {
                 this.strategy = new ElementShouldContainStrategy();
+            } else if (expr.contains("sc")) {
+                this.strategy = new SelectCheckboxStrategy();
+            } else if (expr.contains("srb")) {
+                this.strategy = new SelectRadioButtonStrategy();
+            } else if (expr.contains("sflbv")) {
+                this.strategy = new SelectFromListByValueStrategy();
             }
             if (!headerKey.contains(strategy.searchValidValue(expr))) {
                 headerKey.add(strategy.searchValidValue(expr));

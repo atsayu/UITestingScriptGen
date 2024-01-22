@@ -18,7 +18,7 @@ public class SelectRadioButtonStrategy implements Strategy {
     @Override
     public void exprToMap(String expr) {
         String[] component = expr.split(" {3}");
-        SelectRadioButton it = new SelectRadioButton(component[1], component[2], component[3]);
+        SelectRadioButton it = new SelectRadioButton(component[1], component[2]);
         if (!selectRadioButtonMap.containsValue(it)) {
             selectRadioButtonMap.put("srb" + (selectRadioButtonMap.keySet().size() + 1), it);
         }
