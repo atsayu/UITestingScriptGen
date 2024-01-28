@@ -33,7 +33,7 @@ public class DataPreprocessing {
     static Map<String, List<String>> dataMap = new HashMap<>();
 
     public static void main(String[] args) {
-        initInvalidDataParse("code", "src/main/resources/template/outline_demoqa1.xml", "src/main/resources/robot_test_file/final_test.robot");
+        initInvalidDataParse("src/main/resources/data/data_saucedemo.csv", "src/main/resources/template/outline_saucedemo.xml", "src/main/resources/robot_test_file/final_test.robot");
     }
 
     public static void initInvalidDataParse(String csvPath, String xmlPath, String robotPath) {
@@ -101,16 +101,29 @@ public class DataPreprocessing {
                     case "Scenario" -> temp.add(0, "Invalid-Test-" + tempNode.getTextContent());
                     case "LogicExpressionOfActions" -> {
                         exprToMap(logicExpr(tempNode.getChildNodes(), false));
-//                        String rs = exprString.replaceAll("\\d", " $0 ").replaceAll("\\s+", " ").trim();
-                        Vector<Vector<String>> tb = truthTableParse(logicParse(exprEncode(logicExpr(tempNode.getChildNodes(), false))), exprEncode(logicExpr(tempNode.getChildNodes(), false)));
-                        lineDict.put("LINE" + count, tb);
+                        String encodedExpr = exprEncode(logicExpr(tempNode.getChildNodes(), false));
+                        Vector<Vector<String>> tb = truthTableParse(logicParse(encodedExpr), encodedExpr);
+                        lineDictGen(count, tb, encodedExpr);
                         templateGen(tb, count);
                     }
                     case "Validation" -> parseValidation(tempNode.getChildNodes());
                 }
             }
         }
-//        System.out.println(lineDict);
+    }
+
+    public static void lineDictGen(int count, Vector<Vector<String>> tb, String encodedExpr) {
+        if(encodedExpr.contains("%26")) {
+            Vector<String> requiredTrue = new Vector<>();
+            requiredTrue.add("1");
+            tb.add(requiredTrue);
+            lineDict.put("LINE" + count, tb);
+        } else {
+            Vector<String> requiredFalse = new Vector<>();
+            requiredFalse.add("0");
+            tb.add(requiredFalse);
+            lineDict.put("LINE" + count, tb);
+        }
     }
 
     public static void templateGen(Vector<Vector<String>> truthTable, int count) {
@@ -209,10 +222,6 @@ public class DataPreprocessing {
         String[] splitted = encodeExpr.split("\\||%26|%28|%29");
         String[] cleanSplitted = Arrays.stream(splitted).filter(split -> !split.isEmpty()).toArray(String[]::new);
         tb.add(arrToVec(cleanSplitted));
-        for (String split: splitted) {
-
-            System.out.println(split);
-        }
         for (String header : tb.get(0)) {
             tbString = tbString.replaceAll(header, "");
         }
