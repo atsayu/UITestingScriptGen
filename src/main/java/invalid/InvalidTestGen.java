@@ -2,8 +2,8 @@ package invalid;
 
 
 import invalid.strategies.Context;
-import objects2.ClickElement;
-import objects2.InputText;
+import objects.normalAction.ClickElement;
+import objects.normalAction.InputText;
 
 import java.util.Collections;
 import java.util.Vector;
@@ -85,7 +85,7 @@ public class InvalidTestGen {
                     for (String invalidExpr : expr) {
                         if (multiInvalidTemp.get(i).contains(line) && multiInvalidTemp.get(i).contains(invalidExpr)) {
                             if (invalidExpr.contains("it")) {
-                                InputText multiInvalidIt = new InputText(dataMap.get(inputTextMap.get(invalidExpr).getLocator()).get(0), "NOT" + searchValidValue(invalidExpr));
+                                InputText multiInvalidIt = new InputText(dataMap.get(inputTextMap.get(invalidExpr).getElementLocator()).get(0), "NOT" + searchValidValue(invalidExpr));
                                 multiInvalidTemp.set(i, "   " + multiInvalidIt);
                             } else {
                                 ClickElement multiInvalidCe = new ClickElement("NOT" + searchValidValue(invalidExpr));
@@ -98,7 +98,7 @@ public class InvalidTestGen {
                     for (String validExpr : header) {
                         if (multiInvalidTemp.get(i).contains(line) && multiInvalidTemp.get(i).contains(validExpr)) {
                             if (validExpr.contains("it")) {
-                                InputText multiInvalidIt = new InputText(dataMap.get(inputTextMap.get(validExpr).getLocator()).get(0), searchValidValue(validExpr));
+                                InputText multiInvalidIt = new InputText(dataMap.get(inputTextMap.get(validExpr).getElementLocator()).get(0), searchValidValue(validExpr));
                                 multiInvalidTemp.set(i, "   " + multiInvalidIt);
                             } else {
                                 ClickElement multiInvalidCe = new ClickElement(searchValidValue(validExpr));
@@ -114,7 +114,7 @@ public class InvalidTestGen {
                 for (int i = 0; i < singleInvalidTemp.size(); i++) {
                     if (singleInvalidTemp.get(i).contains(line) && singleInvalidTemp.get(i).contains(expr.get(0))) {
                         if (expr.get(0).contains("it")) {
-                            InputText singleInvalidIt = new InputText(dataMap.get(inputTextMap.get(expr.get(0)).getLocator()).get(0), "NOT" + searchValidValue(expr.get(0)));
+                            InputText singleInvalidIt = new InputText(dataMap.get(inputTextMap.get(expr.get(0)).getElementLocator()).get(0), "NOT" + searchValidValue(expr.get(0)));
                             singleInvalidTemp.set(i, "   " + singleInvalidIt);
                         } else {
                             ClickElement singleInvalidCe = new ClickElement("NOT" + searchValidValue(expr.get(0)));
@@ -132,7 +132,7 @@ public class InvalidTestGen {
                     for (String invalidExpr : expr) {
                         if (multiValidTemp.get(i).contains(line) && multiValidTemp.get(i).contains(invalidExpr)) {
                             if (invalidExpr.contains("it")) {
-                                InputText invalidIt = new InputText(dataMap.get(inputTextMap.get(invalidExpr).getLocator()).get(0), "NOT" + searchValidValue(invalidExpr));
+                                InputText invalidIt = new InputText(dataMap.get(inputTextMap.get(invalidExpr).getElementLocator()).get(0), "NOT" + searchValidValue(invalidExpr));
                                 multiValidTemp.set(i, "   " + invalidIt);
                             } else if (invalidExpr.contains("ce")) {
                                 ClickElement invalidCe = new ClickElement("NOT" + searchValidValue(invalidExpr));
@@ -156,7 +156,7 @@ public class InvalidTestGen {
                 for (String keyVal : keyVec) {
                     boolean isLoc = false;
                     for (String ceKey : clickElementMap.keySet()) {
-                        if (clickElementMap.get(ceKey).getLocator().equals(keyVal)) {
+                        if (clickElementMap.get(ceKey).getElementLocator().equals(keyVal)) {
                             isLoc = true;
                             break;
                         }
@@ -169,7 +169,7 @@ public class InvalidTestGen {
                 for (int i = 0; i < multiValidTemp.size(); i++) {
                     for (String locExpr : headerLocVec) {
                         if (multiValidTemp.get(i).contains(line) && multiValidTemp.get(i).contains(locExpr)) {
-                            ClickElement validCe = new ClickElement(dataMap.get(clickElementMap.get(locExpr).getLocator()).get(0));
+                            ClickElement validCe = new ClickElement(dataMap.get(clickElementMap.get(locExpr).getElementLocator()).get(0));
                             multiValidTemp.set(i, "   " + validCe);
                         }
                     }
@@ -182,7 +182,7 @@ public class InvalidTestGen {
                         for (int i = 0; i < multiValidTempClone.size(); i++) {
                             for (String valExpr : headerValVec) {
                                 if (multiValidTempClone.get(i).contains(line) && multiValidTempClone.get(i).contains(valExpr)) {
-                                    InputText validIt = new InputText(dataMap.get(inputTextMap.get(valExpr).getLocator()).get(0), validValVec.get(keyValVec.indexOf(inputTextMap.get(valExpr).getValue())));
+                                    InputText validIt = new InputText(dataMap.get(inputTextMap.get(valExpr).getElementLocator()).get(0), validValVec.get(keyValVec.indexOf(inputTextMap.get(valExpr).getValue())));
                                     multiValidTempClone.set(i, "   " + validIt);
                                 }
                             }
@@ -195,7 +195,7 @@ public class InvalidTestGen {
                 if (expr.get(0).contains("it")) {
                     for (String data : dataMap.get(inputTextMap.get(expr.get(0)).getValue())) {
                         if (!data.isEmpty()) {
-                            InputText singleValidIt = new InputText(dataMap.get(inputTextMap.get(expr.get(0)).getLocator()).get(0), data);
+                            InputText singleValidIt = new InputText(dataMap.get(inputTextMap.get(expr.get(0)).getElementLocator()).get(0), data);
                             Vector<String> singleValidTemp = new Vector<>(exprTemp);
                             for (int i = 0; i < singleValidTemp.size(); i++) {
                                 if (singleValidTemp.get(i).contains(line) && singleValidTemp.get(i).contains(expr.get(0))) {
@@ -206,7 +206,7 @@ public class InvalidTestGen {
                         }
                     }
                 } else {
-                    ClickElement singleValidCe = new ClickElement(dataMap.get(clickElementMap.get(expr.get(0)).getLocator()).get(0));
+                    ClickElement singleValidCe = new ClickElement(dataMap.get(clickElementMap.get(expr.get(0)).getElementLocator()).get(0));
                     Vector<String> singleValidTemp = new Vector<>(exprTemp);
                     for (int i = 0; i < singleValidTemp.size(); i++) {
                         if (singleValidTemp.get(i).contains(line) && singleValidTemp.get(i).contains(expr.get(0))) {
@@ -240,7 +240,7 @@ public class InvalidTestGen {
 
 
     //TODO refactor: DONE
-    private static String getMultiValidKey(Vector<String> header) {
+    static String getMultiValidKey(Vector<String> header) {
         String keyVal = null;
         Context getMultiValidKeyContext = new Context();
         Vector<String> headerKey = getMultiValidKeyContext.getMultiValid(header);

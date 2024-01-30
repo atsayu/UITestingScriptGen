@@ -1,7 +1,7 @@
 package objects.normalAction;
 
 import objects.Expression;
-import org.checkerframework.common.returnsreceiver.qual.BottomThis;
+import objects.NormalAction;
 
 public class ClickElement extends NormalAction {
     public String getType() {
@@ -10,6 +10,10 @@ public class ClickElement extends NormalAction {
 
     public ClickElement(String elementLocator, boolean dynamic, boolean required) {
         super(elementLocator,null, dynamic, required);
+    }
+
+    public ClickElement(String elementLocator) {
+        super(elementLocator,null, false, false);
     }
     public ClickElement(ClickElement clickElement) {
         super(clickElement.getElementLocator(),null, clickElement.isDynamic(), clickElement.isRequired());
