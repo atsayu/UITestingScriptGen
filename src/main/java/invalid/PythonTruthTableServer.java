@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Vector;
+
+import static invalid.DataPreprocessing.arrToVec;
+import static invalid.DataPreprocessing.truthTableParse;
 
 public class PythonTruthTableServer {
     public static String logicParse(String expr) {
@@ -87,7 +91,7 @@ public class PythonTruthTableServer {
         return response.toString();
     }
 
-    public static String dnfParse(String expr) {
+    public static Vector<Vector<Vector<String>>> dnfParse(String expr) {
         StringBuilder response = new StringBuilder();
         try {
             // Define the server URL with the parameter
@@ -124,7 +128,15 @@ public class PythonTruthTableServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return response.toString();
+        Vector<Vector<Vector<String>>> lineTable = new Vector<>();
+        if (response.toString().contains("Or")) {
+            String dnf = response.substring(3, response.length() - 2);
+            Vector<String> dnfVec = arrToVec(dnf.split("\\),"));
+            dnfVec.forEach(s -> lineTable.add(truthTableParse(logicParse(s.trim().substring(4).replace(", ", "%26")), s.trim().substring(4).replace(", ", "%26"))));
+        } else {
+            lineTable.add(truthTableParse(response.toString(), response.toString()));
+        }
+        return lineTable;
     }
 }
 

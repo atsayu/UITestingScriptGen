@@ -21,13 +21,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-import static invalid.FileWriteModule.writeStringsToFile;
-import static invalid.InvalidTestGen.invalidTestCaseGen;
+//import static invalid.FileWriteModule.writeStringsToFile;
+//import static invalid.InvalidTestGen.invalidTestCaseGen;
+import static invalid.PythonTruthTableServer.dnfParse;
 import static invalid.PythonTruthTableServer.logicParse;
 
 
 public class DataPreprocessing {
-    public static Dictionary<String, Vector<Vector<String>>> lineDict = new Hashtable<>();
+    public static Dictionary<String, Vector<Vector<Vector<String>>>> lineDict = new Hashtable<>();
     static Vector<Vector<String>> invalidDict = new Vector<>();
     public static Vector<String> temp = new Vector<>();
 
@@ -39,7 +40,7 @@ public class DataPreprocessing {
     static Map<String, List<String>> dataMap = new HashMap<>();
 
     public static void main(String[] args) {
-        initInvalidDataParse("src/main/resources/data/data_saucedemo.csv", "src/main/resources/template/outline_saucedemo.xml", "src/main/resources/robot_test_file/final_test.robot");
+        initInvalidDataParse("src/main/resources/data/data_thinktester.csv", "src/main/resources/template/outline_demoqa.xml", "src/main/resources/robot_test_file/final_test.robot");
     }
 
     public static void initInvalidDataParse(String csvPath, String xmlPath, String robotPath) {
@@ -64,8 +65,8 @@ public class DataPreprocessing {
                 System.out.println(lineDict);
                 System.out.println(inputTextMap);
                 System.out.println(locationShouldBeMap);
-                Vector<String> finalTest = invalidTestCaseGen();
-                writeStringsToFile(finalTest, robotPath);
+//                Vector<String> finalTest = invalidTestCaseGen();
+//                writeStringsToFile(finalTest, robotPath);
             }
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
@@ -100,6 +101,7 @@ public class DataPreprocessing {
     }
 
     public static void parseTest(NodeList nodeList) {
+        int line = 1;
         for (int count = 0; count < nodeList.getLength(); count++) {
             Node tempNode = nodeList.item(count);
             if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -108,35 +110,33 @@ public class DataPreprocessing {
                     case "LogicExpressionOfActions" -> {
                         exprToMap(logicExpr(tempNode.getChildNodes(), false));
                         String encodedExpr = exprEncode(logicExpr(tempNode.getChildNodes(), false));
-                        System.out.println(encodedExpr);
-                        Vector<Vector<String>> tb = truthTableParse(logicParse(encodedExpr), encodedExpr);
-                        lineDictGen(count, tb, encodedExpr);
-                        templateGen(tb, count);
+                        lineDict.put("LINE" + line, dnfParse(encodedExpr));
+                        line++;
                     }
-                    case "Validation" -> parseValidation(tempNode.getChildNodes());
                 }
             }
         }
+        templateGen();
     }
 
-    public static void lineDictGen(int count, Vector<Vector<String>> tb, String encodedExpr) {
-        if(encodedExpr.contains("%26")) {
-            Vector<String> requiredTrue = new Vector<>();
-            requiredTrue.add("1");
-            tb.add(requiredTrue);
-            lineDict.put("LINE" + count, tb);
-        } else {
-            Vector<String> requiredFalse = new Vector<>();
-            requiredFalse.add("0");
-            tb.add(requiredFalse);
-            lineDict.put("LINE" + count, tb);
+    public static void templateGen() {
+        int i = 1;
+        while (lineDict.get("LINE" + i) != null) {
+            Vector<String> headerVec = new Vector<>();
+            for (int j = 0; j < lineDict.get("LINE" + i).size(); j++) {
+                for (int k = 0; k < lineDict.get("LINE" + i).get(j).get(0).size(); k++) {
+                    String header = lineDict.get("LINE" + i).get(j).get(0).get(k);
+                    if (!headerVec.contains(header)) {
+                        headerVec.add(header);
+                    }
+                }
+            }
+            for (String s : headerVec) {
+                temp.add("LINE" + i + "\t" + s);
+            }
+            i++;
         }
-    }
-
-    public static void templateGen(Vector<Vector<String>> truthTable, int count) {
-        for (String expr : truthTable.get(0)) {
-            temp.add("#LINE" + count + "\t" + expr);
-        }
+        temp.add("\tClose Browser");
     }
 
 
