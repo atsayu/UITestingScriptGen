@@ -23,7 +23,10 @@
                 </LogicExpressionOfActions>
             </LogicExpressionOfActions>
         </LogicExpressionOfActions>
-
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>valid_url</url>
+        </LogicExpressionOfActions>
         <LogicExpressionOfActions>
             <type>Click Element</type>
             <locator>loc_b</locator>
@@ -33,6 +36,9 @@
             <locator>loc_a</locator>
             <text>a</text>
         </LogicExpressionOfActions>
-
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>valid_url1</url>
+        </LogicExpressionOfActions>
     </TestCase>
 </TestSuite>

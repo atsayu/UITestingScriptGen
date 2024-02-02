@@ -63,8 +63,6 @@ public class DataPreprocessing {
                 System.out.println(temp);
                 System.out.println(invalidDict);
                 System.out.println(lineDict);
-                System.out.println(inputTextMap);
-                System.out.println(locationShouldBeMap);
 //                Vector<String> finalTest = invalidTestCaseGen();
 //                writeStringsToFile(finalTest, robotPath);
             }
@@ -157,17 +155,6 @@ public class DataPreprocessing {
         Context exprToMapContext = new Context();
         for (String s : value) {
             exprToMapContext.exprToMap(s);
-        }
-    }
-
-    public static void parseValidation(NodeList nodeList) {
-        for (int count = 0; count < nodeList.getLength(); count++) {
-            Node tempNode = nodeList.item(count);
-            if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
-                if (tempNode.getNodeName().equals("url")) {
-                    temp.add("\tShould Go To\t" + tempNode.getTextContent());
-                }
-            }
         }
     }
 
