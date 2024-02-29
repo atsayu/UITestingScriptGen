@@ -1,7 +1,10 @@
 package detect;
 
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+
 
 public class HandleSelect {
     public static Element searchSelectElementInSubtree(String text, Element e) {
@@ -28,4 +31,51 @@ public class HandleSelect {
         }
         return select;
     }
+
+    public static String getTextForSelect(Element e) {
+        String res = "";
+        if (e.hasAttr("id") && !e.attr("id").isEmpty()) {
+            res = HandleElement.getAssociatedLabel(e.attr("id"), e);
+            if (!res.isEmpty()) {
+                return res;
+            }
+        }
+        res = getTextForSelectElementInSubtree(e.parent());
+        return res;
+    }
+
+
+
+    public static String getTextForSelectElementInSubtree(Element e) {
+        Elements elements = HandleElement.selectInteractableElementsInSubtree(e);
+        if (elements.size() > 1) {
+            return "";
+        }
+        Elements elems = e.select("*");
+        String text = e.selectFirst("select").text();
+        int cnt = 0;
+        String tmp = "";
+        for (Element ele : elems) {
+            String tag = ele.tagName();
+            if (!tag.equals("select") && !tag.equals("option")) {
+                String t = ele.ownText();
+                if (!t.isEmpty()) {
+                    cnt++;
+                    tmp = t;
+                    if (cnt > 1 || text.contains(t)) {
+                        return "";
+                    }
+                }
+            }
+        }
+        if (cnt == 1) {
+            return tmp;
+        }
+        return getTextForSelectElementInSubtree(e.parent());
+    }
+
+    public static Elements getSelectElements(Document document) {
+        return document.getElementsByTag("select");
+    }
+
 }
