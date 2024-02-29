@@ -1,17 +1,8 @@
-valid_first
-valid_middle
-valid_last
-valid_mobile
-valid_work
-valid_company
-valid_Additional
-submit,xpath=//input[@id='submitSource' and @name='submitSource']
-work number,xpath=//input[@name='q26_workNumber[full]']
-mobile number,xpath=//input[@name='q27_mobileNumber[full]']
-company,xpath=//input[@name='q14_company']
-reading,xpath=//input[@value='Reading']
-submit,xpath=//input[@name='timeToSubmit']
-mobile number,xpath=//input[@name='q27_mobileNumber[full]']
-work number,xpath=//input[@name='q26_workNumber[full]']
-company,xpath=//input[@name='q14_company']
-reading,xpath=//input[@value='Reading']
+valid_username
+valid_pass
+pass,xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']
+login,xpath=//input[@data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
+username,xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']
+pass,xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']
+username,xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']
+login,xpath=//input[@data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']

@@ -632,7 +632,7 @@ public class Input extends ProcessDetectElement {
       return false;
     }
     if (e.tagName().equals("input")) {
-      if (e.hasAttr("type") && (e.attr("type").equals("submit") || e.attr("type").equals("hidden"))) {
+      if (e.hasAttr("type") && (e.attr("type").equals("submit") || e.attr("type").equals("checkbox") || e.attr("type").equals("radio")) ||  e.attr("hidden").equals("true")) {
         return false;
       }
       return true;
