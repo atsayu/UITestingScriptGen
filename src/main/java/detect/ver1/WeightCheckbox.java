@@ -28,7 +28,6 @@ public class WeightCheckbox implements Comparable<WeightCheckbox> {
         full = 0;
         weight = 0;
         this.choices = choices;
-
     }
 
     public Map<String, Element> findCheckboxCorrespondingToText() {

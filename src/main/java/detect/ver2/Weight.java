@@ -51,7 +51,7 @@ public class Weight implements Comparable<Weight> {
         Set<String> visitedWord = new HashSet<>();
         List<String> wordsInSource = HandleString.separateWordsInString(source);
         HandleString.lowercaseWordsInList(wordsInSource);
-        Set<String> distinctWordsInSource = new HashSet<>(wordsInSource);
+        List<String> distinctWordsInSource = HandleString.distinctWordsInString(wordsInSource);
         if (!text.isEmpty()) {
             Calculator.calculatePercentBetweenTwoStrings(source, text, visitedWord);
         }

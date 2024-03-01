@@ -4,7 +4,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.print.Doc;
+
 
 public class HandleInput {
     public static Element searchInputElementInSubtree(String text, Element e) {
