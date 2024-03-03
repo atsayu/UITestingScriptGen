@@ -825,7 +825,7 @@ function parse(element) {
             </LogicExpressionOfActions>`;
     } else if (element.getAttribute('type') === 'verify-element') {
         return `<LogicExpressionOfActions>
-            <type>Verify URL</type>
+            <type>Page Element Assertion</type>
              <url>${element.querySelector("input[placeholder = 'element']").value}</url>       
             </LogicExpressionOfActions>`;
     }
@@ -985,7 +985,7 @@ function addAssertVisibleElement(element) {
 }
 function createAssertVisibleElement(locator) {
     let clickElement =  `<li>
-                    <div class="action" type="verify-text">
+                    <div class="action" type="verify-element">
                         <div class="label-button">
                             <input type="checkbox" name="select" onclick="selecting(this.parentNode)">
                             <button type="button" class="up">Assert Visible Element ... </button>
@@ -1101,8 +1101,6 @@ function createTextAssertElement(text) {
 
 function createTestTemplate() {
     let xml = `<TestSuite>`;
-
-
     let url = document.querySelector('#url');
     if (url.value === '') {
         window.alert("Empty website!");
@@ -1113,10 +1111,12 @@ function createTestTemplate() {
     console.log(validTestCase.length);
     validTestCase.forEach((element) => {
         xml = xml.concat('<TestCase>');
+        let haveAssert = false;
         xml = xml.concat(`<Scenario>${element.querySelector('.test-case-name').value}</Scenario>`)
         let children = element.querySelector('.actions').children;
         Array.from(children).forEach(function (child) {
             console.log(child);
+            if (child.firstElementChild.getAttribute('type').includes('verify')) haveAssert = true;
            xml = xml.concat(parse(child.firstElementChild));
         });
         // let actions = element.querySelectorAll('.actions .action');
@@ -1128,6 +1128,8 @@ function createTestTemplate() {
         responses.forEach(function (response) {
             xml = xml.concat(parseResponse(response));
         });
+        xml = xml.concat(`<assert>${haveAssert}</assert>`);
+
         xml = xml.concat('</TestCase>');
     });
     xml = xml.concat('</TestSuite>');

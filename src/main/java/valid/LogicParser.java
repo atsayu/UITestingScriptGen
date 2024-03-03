@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class LogicParser {
+
     public static Expression<String> createTextExpression(Element element) {
         String type = element.getElementsByTagName("type").item(0).getTextContent();
         if (!type.equals("and") && !type.equals("or")) {
@@ -67,7 +68,8 @@ public class LogicParser {
     }
     public static Expression<objects.Expression> createAction(Element element) {
         String type = element.getElementsByTagName("type").item(0).getTextContent();
-        boolean required = Boolean.parseBoolean(element.getElementsByTagName("required").item(0).getTextContent());
+//        boolean required = Boolean.parseBoolean(element.getElementsByTagName("required").item(0).getTextContent());
+        boolean required = false;
         if (!type.equals("and") && !type.equals("or")) {
             switch (type) {
                 case "Input Text": {
@@ -89,6 +91,14 @@ public class LogicParser {
                     String value = element.getElementsByTagName("choice").item(0).getTextContent();
                     return Variable.of(new SelectRadioButton(groupName, value, true, required));
                 }
+                case "Select List":
+                    String elementLocator = element.getElementsByTagName("list").item(0).getTextContent();
+                    String value = element.getElementsByTagName("value").item(0).getTextContent();
+                    System.out.println("Create Select list");
+                    return Variable.of(new SelectList(elementLocator, value, true, required));
+                case "Verify URL":
+                    String urlVariable = element.getElementsByTagName("url").item(0).getTextContent();
+                    return Variable.of(new LocationAssertion(urlVariable));
             }
 //            String text;
 //
