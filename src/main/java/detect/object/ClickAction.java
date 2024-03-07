@@ -3,10 +3,10 @@ package detect.object;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class Click extends Action {
+public class ClickAction extends Action {
     String text_locator;
     String dom_locator;
-    public Click(String text_locator) {
+    public ClickAction(String text_locator) {
         this.text_locator = text_locator;
         this.dom_locator = "";
     }

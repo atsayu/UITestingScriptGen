@@ -3,12 +3,12 @@ package detect.object;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class Input extends Action {
+public class InputAction extends Action {
 
     String value;
     String text_locator;
     String dom_locator;
-    public Input(String value, String text_locator) {
+    public InputAction(String value, String text_locator) {
         this.value = value;
         this.text_locator = text_locator;
         this.dom_locator = "";

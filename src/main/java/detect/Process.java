@@ -4,12 +4,13 @@ import detect.object.Action;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 
 import detect.object.AssertURL;
-import detect.object.Click;
-import detect.object.Input;
+import detect.object.ClickAction;
+import detect.object.InputAction;
+import detect.ver2.Click;
+import detect.ver2.InputElement;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 import org.jsoup.Jsoup;
@@ -20,7 +21,7 @@ import org.jsoup.nodes.Element;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.util.List;
+import javax.print.Doc;
 
 public class Process {
     public static Pair<String, List<Action>> parseJson(String pathToJson) {
@@ -34,7 +35,6 @@ public class Process {
             JSONObject jsonObject =  (JSONObject) obj;
 
             url = (String) jsonObject.get("url");
-//            System.out.println(url);
 
             JSONArray actions = (JSONArray) jsonObject.get("actions");
             for (Object o : actions) {
@@ -43,12 +43,12 @@ public class Process {
                 if (type.equals("input")) {
                     String value = (String) action.get("value");
                     String locator = (String) action.get("locator");
-                    Action act = new Input(value, locator);
+                    Action act = new InputAction(value, locator);
                     list.add(act);
                 }
                 if (type.equals("click")) {
                     String locator = (String) action.get("locator");
-                    Action act = new Click(locator);
+                    Action act = new ClickAction(locator);
                     list.add(act);
                 }
                 if (type.equals("assertUrl")) {
@@ -69,6 +69,95 @@ public class Process {
         return new Pair<>(url, list);
     }
 
+    public static List<Action> detectLocators(List<Action> list, String url) {
+        String htmlContent = getHtmlContent(url);
+        Document document = getDomTree(htmlContent);
+        List<Action> visited = new ArrayList<>();
+        Map<String, List<Action>> map = new HashMap<>(); //saves actions that needed to  be currently detected
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) instanceof AssertURL) {
+                if (map.containsKey("Input")) {
+                    List<Action> inputActions = map.get("Input");
+                    List<String> text_locators = new ArrayList<>();
+                    for (Action action : inputActions) {
+                        text_locators.add(action.getText_locator());
+                    }
+                    Map<String, String> res = InputElement.detectInputElement(text_locators, document);
+                    for (Action action : inputActions) {
+                        action.setDom_locator(res.get(action.getText_locator()));
+                    }
+                }
+                if (map.containsKey("Click")) {
+                    List<Action> clickActions = map.get("Click");
+                    List<String> text_locators = new ArrayList<>();
+                    for (Action action : clickActions) {
+                        text_locators.add(action.getText_locator());
+                    }
+                    Map<String, String> res = Click.detectClickElement(text_locators, document);
+                    for (Action action : clickActions) {
+                        action.setDom_locator(res.get(action.getText_locator()));
+                    }
+                }
+                if (i != list.size() - 1) {
+                    WebDriver driver = new ChromeDriver();
+                    driver.get(url);
+                    Action.runActions(visited, driver);
+                    String pageSource = driver.getPageSource();
+                    document = getDomTree(pageSource);
+                    driver.quit();
+                }
+                visited.add(list.get(i));
+                map.clear();
+
+            } else {
+                visited.add(list.get(i));
+                if (list.get(i) instanceof InputAction) {
+                    if (!map.containsKey("Input")) {
+                        List<Action> inputActions = new ArrayList<>();
+                        inputActions.add(list.get(i));
+                        map.put("Input", inputActions);
+                    } else {
+                        map.get("Input").add(list.get(i));
+                    }
+                }
+                if (list.get(i) instanceof ClickAction) {
+                    if (!map.containsKey("Click")) {
+                        List<Action> clickActions = new ArrayList<>();
+                        clickActions.add(list.get(i));
+                        map.put("Click", clickActions);
+                    } else {
+                        map.get("Click").add(list.get(i));
+                    }
+                }
+                if (i == list.size() - 1) {
+                    if (map.containsKey("Input")) {
+                        List<Action> inputActions = map.get("Input");
+                        List<String> text_locators = new ArrayList<>();
+                        for (Action action : inputActions) {
+                            text_locators.add(action.getText_locator());
+                        }
+                        Map<String, String> res = InputElement.detectInputElement(text_locators, document);
+                        for (Action action : inputActions) {
+                            action.setDom_locator(res.get(action.getText_locator()));
+                        }
+                    }
+                    if (map.containsKey("Click")) {
+                        List<Action> clickActions = map.get("Click");
+                        List<String> text_locators = new ArrayList<>();
+                        for (Action action : clickActions) {
+                            text_locators.add(action.getText_locator());
+                        }
+                        Map<String, String> res = Click.detectClickElement(text_locators, document);
+                        for (Action action : clickActions) {
+                            action.setDom_locator(res.get(action.getText_locator()));
+                        }
+                    }
+                    map.clear();
+                }
+            }
+        }
+        return list;
+    }
     public static String getHtmlContent(String linkHtml) {
         WebDriver driver = new ChromeDriver();
         driver.get(linkHtml);
@@ -128,10 +217,12 @@ public class Process {
     public static void main(String[] args) {
         Pair<String, List<Action>> res = parseJson("C:\\Users\\admin\\Desktop\\sample_saucedemo.json");
         String url = res.getFirst();
-        System.out.println(url);
         List<Action> actions = res.getSecond();
-        for (Action act : actions) {
-            System.out.println(act.getText_locator());
+        List<Action> result = detectLocators(actions, url);
+        for (Action action : result) {
+            System.out.println(action.getDom_locator());
         }
     }
+
+
 }
