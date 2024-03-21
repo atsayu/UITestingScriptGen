@@ -1,27 +1,40 @@
 <TestSuite>
-	<url>https://www.saucedemo.com/</url>
+	<url>https://form.jotform.com/233591762291461</url>
 	<TestCase>
-		<Scenario>Login</Scenario>
+		<Scenario>Fill Form</Scenario>
 		<LogicExpressionOfActions>
-			<type>Input Text</type>
-			<locator>username</locator>
-			<text>valid_username</text>
+			<type>and</type>
+			<LogicExpressionOfActions>
+				<type>Input Text</type>
+				<locator>first name</locator>
+				<text>fname</text>
+			</LogicExpressionOfActions>
+			<LogicExpressionOfActions>
+				<type>or</type>
+				<LogicExpressionOfActions>
+					<type>Input Text</type>
+					<locator>last name</locator>
+					<text>lname</text>
+				</LogicExpressionOfActions>
+				<LogicExpressionOfActions>
+					<type>Select List</type>
+					<list>What is your gender?</list>
+					<value>Male</value>
+				</LogicExpressionOfActions>
+			</LogicExpressionOfActions>
 		</LogicExpressionOfActions>
 		<LogicExpressionOfActions>
-			<type>Input Text</type>
-			<locator>pass</locator>
-			<text>valid_pass</text>
+			<type>Select Checkbox</type>
+			<question>Check the conditions that apply to you or any member of your immediate relatives:</question>
+			<answer>Cancer</answer>
 		</LogicExpressionOfActions>
 		<LogicExpressionOfActions>
 			<type>Click Element</type>
-			<locator>login</locator>
+			<locator>Submit</locator>
+		</LogicExpressionOfActions>
+		<LogicExpressionOfActions>
+			<type>Verify URL</type>
+			<url>url</url>
 		</LogicExpressionOfActions>
 	</TestCase>
 </TestSuite>
-
-
-
-
-
-
-

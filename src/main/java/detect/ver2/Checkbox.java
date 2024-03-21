@@ -38,8 +38,8 @@ public class Checkbox {
     }
 
 
-    public static Map<Pair<String, String>, String> detectCheckboxElement(Map<String, List<String>> map, Document document) {
-        Map<Pair<String, String>, String> res = new HashMap<>();
+    public static Map<Pair<String, String>, Element> detectCheckboxElement(Map<String, List<String>> map, Document document) {
+        Map<Pair<String, String>, Element> res = new HashMap<>();
         Element body = document.body();
         Map<String, List<Element>> textAndElement = new HashMap<>();
         List<String> listText = new ArrayList<>();
@@ -50,7 +50,6 @@ public class Checkbox {
         if (map.containsKey("")) {
             choicesHasNoCorrespondingQuestion = map.get("");
         }
-        System.out.println(choicesHasNoCorrespondingQuestion.size());
         for (Map.Entry<String, List<String>> entry : map.entrySet()) {
             String question = entry.getKey();
             if (question.isEmpty()) {
@@ -80,7 +79,7 @@ public class Checkbox {
                     for (String choice : choices) {
                         Element checkbox = mp.get(choice);
                         visitedCheckbox.add(checkbox);
-                        res.put(new Pair<>(question, choice), Process.getXpath(checkbox));
+                        res.put(new Pair<>(question, choice), checkbox);
                     }
                 }
             }
@@ -93,7 +92,7 @@ public class Checkbox {
                 if (!visitedCheckbox.contains(checkbox)) {
                     String text = HandleCheckbox.getTextForCheckbox(checkbox);
                     if (!visitedChoices.contains(text) && choicesHasNoCorrespondingQuestion.contains(text)) {
-                        res.put(new Pair<>("", text), Process.getXpath(checkbox));
+                        res.put(new Pair<>("", text), checkbox);
                         visitedCheckbox.add(checkbox);
                         visitedChoices.add(text);
                     }
@@ -101,21 +100,5 @@ public class Checkbox {
             }
         }
         return res;
-    }
-
-    public static void main(String[] args) {
-        String linkHtml = "https://form.jotform.com/233591762291461";
-        String htmlContent = Process.getHtmlContent(linkHtml);
-        Document document = Process.getDomTree(htmlContent);
-        Map<String, List<String>> map = new HashMap<>();
-//        map.put("hobbies", Arrays.asList("Sports", "Music"));
-        map.put("check symptoms",  Arrays.asList("Chest pain", "Other"));
-        map.put("", Arrays.asList("Cancer", "Asthma"));
-        Map<Pair<String, String>, String> res = detectCheckboxElement(map, document);
-        for (Map.Entry<Pair<String, String>, String> entry : res.entrySet()) {
-            Pair<String, String> pair = entry.getKey();
-            String loc = entry.getValue();
-            System.out.println(pair.getFirst() + " " + pair.getSecond() + " " + loc);
-        }
     }
 }

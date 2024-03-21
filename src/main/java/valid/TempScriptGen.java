@@ -1,5 +1,7 @@
 package valid;
 
+import detect.Process;
+import detect.object.InputAction;
 import invalid.DataPreprocessing;
 import invalid.PythonTruthTableServer;
 import java.io.BufferedWriter;
@@ -27,7 +29,7 @@ import org.w3c.dom.NodeList;
 public class TempScriptGen {
 
   public static void main(String[] args) {
-    tempCreateDataSheetV2("E:\\LAB UI\\TestWebDemo\\SpringbootUITestingForm\\src\\main\\resources\\template\\outline.xml", "E:\\LAB UI\\TestWebDemo\\SpringbootUITestingForm\\src\\main\\resources\\data\\data.csv");
+
   }
   public static void createDataSheetV2(String outline, String datasheetPath) {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -342,8 +344,6 @@ public class TempScriptGen {
                 checkbox.put(question, answers);
               }
             }
-
-
           }
         }
 
@@ -398,6 +398,9 @@ public class TempScriptGen {
 
 
   }
+
+
+
 
   public static void searchLogicExpressionOfActions(Node testcase, List<Element> expressionActionElements) {
     if (testcase.getNodeType() == Node.ELEMENT_NODE && ((Element) testcase).getTagName().equals("LogicExpressionOfActions")) {
@@ -454,7 +457,6 @@ public class TempScriptGen {
     }
       return "";
   }
-
 
 
 }

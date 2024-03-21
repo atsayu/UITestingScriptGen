@@ -10,14 +10,20 @@ import java.time.Duration;
 
 public class ClickCheckboxAction extends Action{
     private String choice;
+    private String question;
     private String dom_locator;
-    public ClickCheckboxAction(String choice) {
+    public ClickCheckboxAction(String choice, String question) {
         this.choice = choice;
+        this.question = question;
         this.dom_locator = "";
     }
 
     public String getChoice() {
         return choice;
+    }
+
+    public String getQuestion() {
+        return question;
     }
 
     public String getDom_locator() {
