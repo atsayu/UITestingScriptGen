@@ -1,6 +1,7 @@
 package detect.ver2;
 
 import detect.Calculator;
+import detect.HandleCheckbox;
 import detect.HandleString;
 import detect.Setting;
 import org.jsoup.nodes.Attribute;
@@ -15,19 +16,35 @@ public class Weight implements Comparable<Weight> {
     public String source;
     public Element e;
     public String text;
+    public Boolean textIsAttribute;
     public double full;
     public int weight;
+
+    public Weight() {
+
+    }
+
     public Weight(String source, Element e, String text) {
         this.source = source;
         this.e = e;
         this.text = text;
         this.full = 0;
         this.weight = 0;
+        textIsAttribute = false;
+    }
+
+    public Weight(String source, Element e, String text, Boolean textIsAttribute) {
+        this.source = source;
+        this.e = e;
+        this.text = text;
+        this.full = 0;
+        this.weight = 0;
+        this.textIsAttribute = textIsAttribute;
     }
 
     public int getWeight() {
         int res = 0;
-        if (!text.isEmpty()) {
+        if (!text.isEmpty() && textIsAttribute.equals(false)) {
             res += Calculator.weightBetweenTwoString(source, text);
         }
         Attributes attributes = e.attributes();
@@ -52,7 +69,7 @@ public class Weight implements Comparable<Weight> {
         List<String> wordsInSource = HandleString.separateWordsInString(source);
         HandleString.lowercaseWordsInList(wordsInSource);
         List<String> distinctWordsInSource = HandleString.distinctWordsInString(wordsInSource);
-        if (!text.isEmpty()) {
+        if (!text.isEmpty() && textIsAttribute.equals(false)) {
             Calculator.calculatePercentBetweenTwoStrings(source, text, visitedWord);
         }
         if (e.attributesSize() > 0) {
@@ -73,20 +90,88 @@ public class Weight implements Comparable<Weight> {
         return res;
     }
 
-
+    public int compareBetweenSourceAndText() {
+        return Calculator.compareBetweenTwoString(source, text);
+    }
     public int compareTo(Weight o) {
         int w1 = getWeight();
         int w2 = o.getWeight();
         double f1 = getFull();
         double f2 = o.getFull();
+        int c1 = compareBetweenSourceAndText();
+        int c2 = o.compareBetweenSourceAndText();
         if (f1 > f2) {
             return 1;
         } else {
             if (f1 == f2) {
-                return w1 - w2;
-            } else {
-                return -1;
+                if (c1 < 1) {
+                    if (c2 < 1) {
+                        return w1 - w2;
+                    }
+                    if (c2 == 1) {
+                        return -1;
+                    }
+                    if (c2 > 1) {
+                        return 1;
+                    }
+                } else {
+                    if (c1 == 1) {
+                        if (c2 == 1) {
+                            return w1 - w2;
+                        } else {
+                            return 1;
+                        }
+                    } else {
+                        if (c2 > 1) {
+                            return w1 - w2;
+                        } else {
+                            return -1;
+                        }
+                    }
+                }
             }
+            return -1;
         }
     }
+
+    public int compareAfterActionHover(Weight o) {
+        double f1 = getFull();
+        double f2 = o.getFull();
+        int c1 = compareBetweenSourceAndText();
+        int c2 = o.compareBetweenSourceAndText();
+        if (f1 > f2) {
+            return 1;
+        } else {
+            if (f1 == f2) {
+                if (c1 < 1) {
+                    if (c2 < 1) {
+                        return 0;
+                    }
+                    if (c2 == 1) {
+                        return -1;
+                    }
+                    if (c2 > 1) {
+                        return 1;
+                    }
+                } else {
+                    if (c1 == 1) {
+                        if (c2 == 1) {
+                            return 0;
+                        } else {
+                            return 1;
+                        }
+                    } else {
+                        if (c2 > 1) {
+                            return 0;
+                        } else {
+                            return -1;
+                        }
+                    }
+                }
+            }
+            return -1;
+        }
+    }
+
+
 }

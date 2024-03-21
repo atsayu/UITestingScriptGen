@@ -8,23 +8,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class InputAction extends Action {
-
-    String value;
-    String text_locator;
-    String dom_locator;
-    public InputAction(String value, String text_locator) {
-        this.value = value;
-        this.text_locator = text_locator;
+public class ClickCheckboxAction extends Action{
+    private String choice;
+    private String dom_locator;
+    public ClickCheckboxAction(String choice) {
+        this.choice = choice;
         this.dom_locator = "";
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public String getText_locator() {
-        return text_locator;
+    public String getChoice() {
+        return choice;
     }
 
     public String getDom_locator() {
@@ -40,6 +33,6 @@ public class InputAction extends Action {
         WebElement element = driver.findElement(By.xpath(dom_locator));
         Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         wait.until(driver1 -> element.isEnabled() && element.isDisplayed());
-        element.sendKeys(value);
+        element.click();
     }
 }

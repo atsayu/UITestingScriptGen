@@ -1,26 +1,21 @@
 package detect.object;
 
+import org.jsoup.nodes.Element;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class InputAction extends Action {
-
-    String value;
+public class HoverAction extends Action{
     String text_locator;
     String dom_locator;
-    public InputAction(String value, String text_locator) {
-        this.value = value;
+    public HoverAction(String text_locator) {
         this.text_locator = text_locator;
         this.dom_locator = "";
-    }
-
-    public String getValue() {
-        return value;
     }
 
     public String getText_locator() {
@@ -40,6 +35,7 @@ public class InputAction extends Action {
         WebElement element = driver.findElement(By.xpath(dom_locator));
         Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         wait.until(driver1 -> element.isEnabled() && element.isDisplayed());
-        element.sendKeys(value);
+        Actions action = new Actions(driver);
+        action.moveToElement(element).perform();
     }
 }

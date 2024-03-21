@@ -1,103 +1,72 @@
 package detect.ver2;
 
-import detect.HandleInput;
+import detect.Calculator;
+import detect.HandleElement;
 import detect.HandleSelect;
+import detect.Pair;
 import detect.Process;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.*;
-
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SelectElement {
-
-    public static Map<String, String> detectSelectElement(List<String> input, Document document) {
-        Elements selectElements = HandleSelect.getSelectElements(document);
-        Map<String, String> result = new HashMap<>();
-        List<Element> visited = new ArrayList<>();
-        List<Weight> list = new ArrayList<>();
-        for (String s : input) {
+    public static Map<Pair<String, String>, Element> detectSelectElement(List<Pair<String, String>> list, Elements selectElements) {
+        Map<Pair<String, String>, Element> res = new HashMap<>();
+        for (Pair<String, String> pair : list) {
+            String question = pair.getFirst();
+            String choice = pair.getSecond();
+            Element tmp = null;
             int max_weight = -1;
             double max_full = -1;
-            Element res = null;
-            String tmp = "";
             for (Element e : selectElements) {
-                if (visited.contains(e)) {
-                    continue;
-                }
-                String text = HandleSelect.getTextForSelect(e);
-                Weight w = new Weight(s, e, text);
-                double full = w.getFull();
-                int weight = w.getWeight();
-                if (full > max_full) {
-                    res = e;
-                    max_full = full;
-                    max_weight = weight;
-                    tmp = text;
-                } else {
-                    if (full == max_full) {
-                        if (weight > max_weight) {
-                            res = e;
+                if (HandleSelect.hasOption(e, choice)) {
+                    if (question.isEmpty()) {
+                        tmp = e;
+                        break;
+                    } else {
+                        String t = HandleSelect.getTextForSelect(e);
+                        System.out.println(question + " " + t);
+                        Weight w = new Weight(question, e, t);
+                        double full = w.getFull();
+                        int weight = w.getWeight();
+                        if (Calculator.compareWeight(max_weight, max_full, weight, full) > 0) {
+                            tmp = e;
+                            max_full = full;
                             max_weight = weight;
-                            tmp = text;
                         }
                     }
                 }
-
-//                list.add(w);
             }
-            if (res != null) {
-                result.put(s, Process.getXpath(res));
-                System.out.println(s + " " + Process.getXpath(res) + max_full + " " + max_weight + " " + tmp);
+            if (tmp != null) {
+                res.put(pair, tmp);
+            } else {
+                System.out.println("Cant detect element with pair " + "question is " + question + " and choice is " + choice);
             }
-            visited.add(res);
 
         }
-//        Map<String, String> res = new HashMap<>();
-//        if (list.size() == 0) {
-//            Weight w = list.get(0);
-//            String source = w.source;
-//            Element e = w.e;
-//            System.out.println(source + " " + e + " " + w.getFull() + " " + w.getWeight());
-//            res.put(w.source, Process.getXpath(e));
-//        } else {
-//            Collections.sort(list);
-//            Map<String, Element> visited = new HashMap<>();
-//            List<String> visitedInput = new ArrayList<>();
-//            for (int i = list.size() - 1; i >= 0; i--) {
-//                String source = list.get(i).source;
-//                Element e = list.get(i).e;
-//                if (!visited.containsValue(e) && !visited.containsKey(source)) {
-//                    visited.put(source, e);
-//                    visitedInput.add(source);
-//                    res.put(source, Process.getXpath(e));
-//                    System.out.println(source + " " + Process.getXpath(e) + " " + list.get(i).text  + " " + list.get(i).getFull() + " " + list.get(i).getWeight());
-//                }
-//                if (visitedInput.size() == input.size()) {
-//                    break;
-//                }
-//            }
-//        }
-        return result;
+        return res;
     }
 
     public static void main(String[] args) {
-        String linkHtml = "https://demoqa.com/select-menu";
-//        String linkHtml = "https://form.jotform.com/233591551157458?fbclid=IwAR1ggczzG7OoN6Dgb2SDWtNyznCAAJNW-G8-_3gnejJwPFunwwBuN_NCvh0";
+        String linkHtml = "https://form.jotform.com/233591551157458?fbclid=IwAR1ggczzG7OoN6Dgb2SDWtNyznCAAJNW-G8-_3gnejJwPFunwwBuN_NCvh0";
         String htmlContent = Process.getHtmlContent(linkHtml);
         Document document = Process.getDomTree(htmlContent);
-        List<String> input = new ArrayList<>();
-//        input.add("departing");
-//        input.add("Destination");
-//        input.add("airline");
-//        input.add("Fare");
-//        input.add("country in address");
-//        input.add("month");
-//        input.add("day");
-//        input.add("year");
-        input.add("Old Style Select Menu");
-        Map<String, String> res = detectSelectElement(input, document);
+        Elements selectElements = HandleSelect.getSelectElements(document);
+        List<Pair<String, String >> list = new ArrayList<>();
+        list.add(new Pair<>("", "Cong"));
+        list.add(new Pair<>("Country", "Aruba"));
+        list.add(new Pair<>("Happy", "One Way"));
+        list.add(new Pair<>("Airline", "Airline 1"));
+        Map<Pair<String, String>, Element> res = detectSelectElement(list, selectElements);
+        for (Map.Entry<Pair<String, String>, Element> entry : res.entrySet()) {
+            Pair<String, String> pair = entry.getKey();
+            Element e = entry.getValue();
+            System.out.println(pair.getFirst() + " " + pair.getSecond() + " " + Process.getXpath(e));
+        }
     }
 }

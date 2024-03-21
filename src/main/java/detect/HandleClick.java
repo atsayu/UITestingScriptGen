@@ -25,11 +25,24 @@ public class HandleClick {
         return res;
     }
 
-    public static String getTextForClickableElement (Element e) {
+    public static Pair<String, Boolean> getTextForClickableElement (Element e) {
         if (!TypeElement.isClickElementTagInput(e)) {
-            return e.text();
+            return new Pair<>(e.text(), false);
+        } else {
+            String text = e.attr("value");
+            if (!text.isEmpty()) {
+                return new Pair<>(text, true);
+            } else {
+                if (e.attr("type").equals("submit")) {
+                    return new Pair<>("Submit", true);
+                }
+                if (e.attr("type").equals("reset")) {
+                    return new Pair<>("Reset", true);
+                }
+                return new Pair<>("", true);
+            }
         }
-        return "";
+
     }
 
 }

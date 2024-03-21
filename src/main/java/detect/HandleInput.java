@@ -30,19 +30,26 @@ public class HandleInput {
         return res;
     }
 
-    public static String getTextForInput(Element e) {
+    public static Pair<String, Boolean> getTextForInput(Element e) {
         if (!e.ownText().isEmpty()) {
-            return e.ownText();
+            return new Pair<>(e.ownText(), false);
         }
         String res = "";
         if (e.hasAttr("id") && !e.attr("id").isEmpty()) {
             res = HandleElement.getAssociatedLabel(e.attr("id"), e);
             if (!res.isEmpty()) {
-                return res;
+                return new Pair<>(res, false);
             }
         }
         res = getTextForInputInSubtree(e);
-        return res;
+        if (res.isEmpty()) {
+            if (e.hasAttr("placeholder") && !e.attr("placeholder").isEmpty()) {
+                return new Pair<>(e.attr("placeholder"), true);
+            } else {
+                return new Pair<>("", false);
+            }
+        }
+        return new Pair<>(res, false);
     }
 
     public static String getTextForInputInSubtree(Element e) {
@@ -66,5 +73,14 @@ public class HandleInput {
             return tmp;
         }
         return getTextForInputInSubtree(e.parent());
+    }
+
+    public static void main(String[] args) {
+        String linkHtml = "https://form.jotform.com/233591551157458";
+        String htmlContent = Process.getHtmlContent(linkHtml);
+        Document document = Process.getDomTree(htmlContent);
+        Element input = document.getElementById("last_3");
+        Pair<String, Boolean> pair = getTextForInput(input);
+        System.out.println(pair.getFirst() +" " + pair.getSecond());
     }
 }

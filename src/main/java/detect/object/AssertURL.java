@@ -10,8 +10,4 @@ public class AssertURL extends Action {
     public String getExpectedUrl() {
         return expectedUrl;
     }
-
-    public void setExpectedUrl(String expectedUrl) {
-        this.expectedUrl = expectedUrl;
-    }
 }

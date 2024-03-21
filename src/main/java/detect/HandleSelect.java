@@ -78,4 +78,14 @@ public class HandleSelect {
         return document.getElementsByTag("select");
     }
 
+    public static boolean hasOption(Element e, String choice) {
+        Elements optionElements = e.select("option");
+        for (Element option : optionElements) {
+            String text = option.ownText();
+            if (text.equals(choice)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
