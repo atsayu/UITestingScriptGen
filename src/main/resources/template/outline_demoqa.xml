@@ -3,11 +3,20 @@
     <TestCase>
         <Scenario>login</Scenario>
         <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <locator>loc_f</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
             <type>and</type>
             <LogicExpressionOfActions>
                 <type>Input Text</type>
                 <locator>loc_a</locator>
                 <text>a</text>
+            </LogicExpressionOfActions>
+            <LogicExpressionOfActions>
+                <type>Input Text</type>
+                <locator>loc_e</locator>
+                <text>e</text>
             </LogicExpressionOfActions>
             <LogicExpressionOfActions>
                 <type>or</type>

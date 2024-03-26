@@ -74,4 +74,8 @@ public class Context {
     public static boolean isAssertion(String expr) {
         return expr.contains("la") || expr.contains("pea");
     }
+
+    public static boolean isDynamic(String expr) {
+        return expr.contains("la") || expr.contains("it");
+    }
 }

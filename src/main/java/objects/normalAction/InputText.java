@@ -29,7 +29,7 @@ public class InputText extends NormalAction {
         return "Input Text";
     }
     public String exprToString() {
-        return "Input Text\t" + this.getElementLocator() + "\t" + this.getValue();
+        return "Input Text" + "\t" + this.getElementLocator() + "\t" + this.getValue();
     }
     @Override
     public int compareTo(Expression o) {

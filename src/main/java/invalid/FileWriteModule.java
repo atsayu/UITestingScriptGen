@@ -14,7 +14,7 @@ public class FileWriteModule {
             File file = new File(filePath);
 
             // Create a BufferedWriter for efficient writing
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
 
             // Iterate through the strings and write them to the file
             for (String str : strings) {

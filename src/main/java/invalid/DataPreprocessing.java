@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-//import static invalid.FileWriteModule.writeStringsToFile;
-//import static invalid.InvalidTestGen.invalidTestCaseGen;
+import static invalid.AssertTestGen.assertTestGenInit;
+import static invalid.FileWriteModule.writeStringsToFile;
 import static invalid.PythonTruthTableServer.dnfParse;
 import static invalid.PythonTruthTableServer.logicParse;
 
@@ -63,6 +63,7 @@ public class DataPreprocessing {
                 System.out.println(temp);
                 System.out.println(invalidDict);
                 System.out.println(lineDict);
+                writeStringsToFile(assertTestGenInit(), robotPath);
 //                Vector<String> finalTest = invalidTestCaseGen();
 //                writeStringsToFile(finalTest, robotPath);
             }
