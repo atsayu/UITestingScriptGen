@@ -136,6 +136,7 @@ public class PythonTruthTableServer {
         } else {
             lineTable.add(truthTableParse(response.toString(), response.toString()));
         }
+        System.out.println("lineTable " + lineTable);
         return lineTable;
     }
 }
