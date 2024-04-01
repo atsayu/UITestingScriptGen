@@ -249,7 +249,6 @@ public class DataPreprocessing {
         }
         tb.add(validVector);
         tb.add(invalidVector);
-        System.out.println("tb " + tb);
         return tb;
     }
 
