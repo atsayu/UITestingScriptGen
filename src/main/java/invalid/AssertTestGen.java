@@ -14,7 +14,11 @@ public class AssertTestGen {
 
     public static Vector<String> assertTestGenInit() {
         assertStructureMapInit();
-        System.out.println(assertStructureMap);
+        System.out.println("Assert Structure Map: \n");
+        for (String key : assertStructureMap.keySet()) {
+            System.out.println("Key: " + key);
+            System.out.println("Value: " + assertStructureMap.get(key));
+        }
         return invalidTestNumbering(invalidAssertTestGen());
     }
 
@@ -143,14 +147,8 @@ public class AssertTestGen {
     private static String findHeaderKey(Vector<String> header) {
         String headerKey = null;
         for (String key : dataMap.keySet()) {
-            boolean isKey = true;
-            for (String headerVal : header) {
-                if(!key.contains(headerVal)) {
-                    isKey = false;
-                    break;
-                }
-            }
-            if(isKey) {
+            Vector<String> keyVal = arrToVec(key.split(" & "));
+            if (sameElement(keyVal, header)) {
                 headerKey = key;
                 break;
             }

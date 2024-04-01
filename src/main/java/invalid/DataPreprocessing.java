@@ -45,7 +45,6 @@ public class DataPreprocessing {
 
     public static void initInvalidDataParse(String csvPath, String xmlPath, String robotPath) {
         dataMap = createDataMap(csvPath);
-        System.out.println(dataMap);
 
         // Instantiate the Factory
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -60,8 +59,6 @@ public class DataPreprocessing {
 
             if (doc.hasChildNodes()) {
                 parseTestSuite(doc.getChildNodes());
-                System.out.println(temp);
-                System.out.println(invalidDict);
                 System.out.println(lineDict);
                 writeStringsToFile(assertTestGenInit(), robotPath);
 //                Vector<String> finalTest = invalidTestCaseGen();
