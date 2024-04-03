@@ -1,0 +1,18 @@
+<TestSuite>
+    <url>link_url</url>
+    <TestCase>
+        <Scenario>Test Click</Scenario>
+        <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <locator>cl1</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <locator>cl2</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>expected_url</url>
+        </LogicExpressionOfActions>
+    </TestCase>
+</TestSuite>

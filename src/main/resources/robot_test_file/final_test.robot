@@ -1,14 +1,25 @@
-Invalid-Test-Login-1
-	Open Browser	https://www.saucedemo.com/	Chrome
-	Input Text	//input[@class='input_error form_input' and @placeholder='Username' and @type='text' and @data-test='username' and @id='user-name' and @name='user-name' and @autocorrect='off' and @autocapitalize='none' and @value='']	INVALID_DATA
-	Input Text	//input[@class='input_error form_input' and @placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password' and @autocorrect='off' and @autocapitalize='none' and @value='']	INVALID_DATA
-#	LINE2	ce1
-	Location Should Be	abc
+Invalid-Test-Test Click-1
+	Open Browser	link_url	Chrome
+#	LINE1	ce1
+#	LINE2	ce2
+	Location Should Be	url1
 	Close Browser
-Invalid-Test-Login-2
-	Open Browser	https://www.saucedemo.com/	Chrome
-	Input Text	//input[@class='input_error form_input' and @placeholder='Username' and @type='text' and @data-test='username' and @id='user-name' and @name='user-name' and @autocorrect='off' and @autocapitalize='none' and @value='']	INVALID_DATA
-	Input Text	//input[@class='input_error form_input' and @placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password' and @autocorrect='off' and @autocapitalize='none' and @value='']	INVALID_DATA
-#	LINE2	ce1
-	Location Should Be	abc
+Invalid-Test-Test Click-2
+	Open Browser	link_url	Chrome
+	Click Element	val_cl1
+	Click Element	val_cl2
+	Location Should Be	url1
+#	LINE4	ce3
+	Location Should Be	url2
+	Close Browser
+Invalid-Test-Test Click-3
+	Open Browser	link_url	Chrome
+	Click Element	val_cl1
+	Click Element	val_cl2
+	Location Should Be	url1
+	Click Element	val_cl3
+	Location Should Be	url2
+#	LINE6	ce4
+#	LINE7	ce5
+	Location Should Be	url3
 	Close Browser
