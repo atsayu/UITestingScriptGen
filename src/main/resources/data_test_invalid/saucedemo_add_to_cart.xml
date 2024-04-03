@@ -1,0 +1,32 @@
+<TestSuite>
+    <url>https://www.saucedemo.com/</url>
+    <TestCase>
+        <Scenario>Add to cart</Scenario>
+        <LogicExpressionOfActions>
+            <type>Input Text</type>
+            <locator>username</locator>
+            <text>valid_username</text>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Input Text</type>
+            <locator>password</locator>
+            <text>valid_password</text>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <locator>Login</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>expected_url1</url>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <locator>add to cart Sauce Labs Backpack</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>expected_url2</url>
+        </LogicExpressionOfActions>
+    </TestCase>
+</TestSuite>

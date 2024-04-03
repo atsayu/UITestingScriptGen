@@ -19,5 +19,9 @@
             <type>Click Element</type>
             <locator>Login</locator>
         </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>expected_url</url>
+        </LogicExpressionOfActions>
     </TestCase>
 </TestSuite>

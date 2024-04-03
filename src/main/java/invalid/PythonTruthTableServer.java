@@ -129,7 +129,7 @@ public class PythonTruthTableServer {
             e.printStackTrace();
         }
         Vector<Vector<Vector<String>>> lineTable = new Vector<>();
-        if (response.toString().contains("Or")) {
+        if (response.toString().contains("Or") && response.toString().contains("And")) {
             String dnf = response.substring(3, response.length() - 2);
             Vector<String> dnfVec = arrToVec(dnf.split("\\),"));
             dnfVec.forEach(s -> lineTable.add(truthTableParse(logicParse(s.trim().substring(4).replace(", ", "%26")), s.trim().substring(4).replace(", ", "%26"))));
@@ -137,6 +137,10 @@ public class PythonTruthTableServer {
             String and = response.substring(4, response.length() - 1);
             and = and.replace(", ", "%26");
             lineTable.add(truthTableParse(logicParse(and), and));
+        } else if (response.toString().contains("Or")) {
+            String dnf = response.substring(3, response.length() - 1);
+            Vector<String> dnfVec = arrToVec(dnf.split(", "));
+            dnfVec.forEach(s -> lineTable.add(truthTableParse(logicParse(s), s)));
         } else {
             lineTable.add(truthTableParse(response.toString(), response.toString()));
         }
