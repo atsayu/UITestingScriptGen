@@ -1,3 +1,4 @@
+
 Invalid-Test-Test Click-1
 	Open Browser	link_url	Chrome
 	Click Element	val_cl1

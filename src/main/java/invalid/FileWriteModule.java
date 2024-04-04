@@ -25,8 +25,6 @@ public class FileWriteModule {
             // Close the BufferedWriter to release resources
             writer.close();
 
-            System.out.println("Strings have been written to the file.");
-
         } catch (IOException e) {
             // Handle IO exceptions
             e.printStackTrace();
