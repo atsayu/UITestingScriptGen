@@ -14,11 +14,6 @@ public class AssertTestGen {
 
     public static Vector<String> assertTestGenInit() {
         assertStructureMapInit();
-        System.out.println("Assert Structure Map: \n");
-        for (String key : assertStructureMap.keySet()) {
-            System.out.println("Key: " + key);
-            System.out.println("Value: " + assertStructureMap.get(key));
-        }
         return invalidTestNumbering(invalidAssertTestGen());
     }
 
@@ -81,13 +76,15 @@ public class AssertTestGen {
         Vector<String> finalTest = new Vector<>();
         initHeaders(headers, validLineVec);
         for (Vector<String> header : headers) {
-            String headerKey = findHeaderKey(header);
-            Vector<String> headerKeyVec = arrToVec(headerKey.split(" & "));
-            headerKeyVec.replaceAll(String::trim);
-            for (String validVal : dataMap.get(headerKey)) {
-                if (!validVal.isBlank()) {
-                    Vector<String> assertTempWithData = new Vector<>(assertTemp);
-                    finalTest.addAll(assertValidDataFill(assertTempWithData, validVal, validLineVec, headerKeyVec));
+            Vector<String> headerKeys = findHeaderKey(header);
+            for (String headerKey : headerKeys) {
+                Vector<String> headerKeyVec = arrToVec(headerKey.split(" & "));
+                headerKeyVec.replaceAll(String::trim);
+                for (String validVal : dataMap.get(headerKey)) {
+                    if (!validVal.isBlank()) {
+                        Vector<String> assertTempWithData = new Vector<>(assertTemp);
+                        finalTest.addAll(assertValidDataFill(assertTempWithData, validVal, validLineVec, headerKeyVec));
+                    }
                 }
             }
         }
@@ -144,16 +141,24 @@ public class AssertTestGen {
         return validTemp;
     }
 
-    private static String findHeaderKey(Vector<String> header) {
-        String headerKey = null;
+    private static Vector<String> findHeaderKey(Vector<String> header) {
+        Vector<String> headerKey = new Vector<>();
         for (String key : dataMap.keySet()) {
             Vector<String> keyVal = arrToVec(key.split(" & "));
-            if (sameElement(keyVal, header)) {
-                headerKey = key;
-                break;
+            if (containsVector(keyVal, header)) {
+                headerKey.add(key);
             }
         }
         return headerKey;
+    }
+
+    public static boolean containsVector(Vector<String> vector1, Vector<String> vector2) {
+        for (String str : vector2) {
+            if (!vector1.contains(str)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static void initHeaders(Vector<Vector<String>> headers, Vector<String> validLineVec) {
