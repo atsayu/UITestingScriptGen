@@ -1,0 +1,66 @@
+<TestSuite>
+    <url>link_url</url>
+    <TestCase>
+        <Scenario>Test Click</Scenario>
+        <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <locator>cl1</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <locator>cl2</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>expected_url1</url>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <locator>cl3</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>expected_url2</url>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <locator>cl4</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <locator>cl5</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>expected_url3</url>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <locator>cl6</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>expected_url4</url>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <locator>cl7</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>expected_url5</url>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <locator>cl8</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <locator>cl9</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>expected_url6</url>
+        </LogicExpressionOfActions>
+    </TestCase>
+</TestSuite>
