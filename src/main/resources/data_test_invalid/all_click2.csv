@@ -3,6 +3,4 @@ cl2,val_cl2
 cl3,val_cl3
 cl4,val_cl4
 cl5,val_cl5
-expected_url1,url1
-expected_url1 & expected_url2,url1 & url2
 expected_url1 & expected_url2 & expected_url3,url1 & url2 & url3

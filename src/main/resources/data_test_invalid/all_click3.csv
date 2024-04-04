@@ -7,9 +7,4 @@ cl6,val_cl6
 cl7,val_cl7
 cl8,val_cl8
 cl9,val_cl9
-expected_url1,url1
-expected_url1 & expected_url2,url1 & url2
-expected_url1 & expected_url2 & expected_url3,url1 & url2 & url3
-expected_url1 & expected_url2 & expected_url3 & expected_url4,url1 & url2 & url3 & url4
-expected_url1 & expected_url2 & expected_url3 & expected_url4 & expected_url5,url1 & url2 & url3 & url4 & url5
 expected_url1 & expected_url2 & expected_url3 & expected_url4 & expected_url5 & expected_url6,url1 & url2 & url3 & url4 & url5 & url6

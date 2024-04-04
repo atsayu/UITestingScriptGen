@@ -1,0 +1,38 @@
+<TestSuite>
+    <url>link_url</url>
+    <TestCase>
+        <Scenario>Login</Scenario>
+            <LogicExpressionOfActions>
+                <type>Input Text</type>
+                <locator>ip1</locator>
+                <text>val_ip1</text>
+            </LogicExpressionOfActions>
+            <LogicExpressionOfActions>
+                <type>Input Text</type>Z
+                <locator>ip2</locator>
+                <text>val_ip2</text>
+            </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>expected_url1</url>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Input Text</type>Z
+            <locator>ip3</locator>
+            <text>val_ip3</text>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>expected_url2</url>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Input Text</type>Z
+            <locator>ip4</locator>
+            <text>val_ip4</text>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <url>expected_url3</url>
+        </LogicExpressionOfActions>
+    </TestCase>
+</TestSuite>
