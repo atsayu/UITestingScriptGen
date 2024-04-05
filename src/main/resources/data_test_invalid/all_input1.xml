@@ -10,7 +10,7 @@
                 <text>val_ip1</text>
             </LogicExpressionOfActions>
             <LogicExpressionOfActions>
-                <type>Input Text</type>Z
+                <type>Input Text</type>
                 <locator>ip2</locator>
                 <text>val_ip2</text>
             </LogicExpressionOfActions>
