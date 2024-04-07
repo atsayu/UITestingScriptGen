@@ -40,7 +40,7 @@ public class DataPreprocessing {
     static Map<String, List<String>> dataMap = new HashMap<>();
 
     public static void main(String[] args) {
-        initInvalidDataParse("src/main/resources/data_test_invalid/saucedemo_add_to_cart.csv", "src/main/resources/data_test_invalid/saucedemo_add_to_cart.xml", "src/main/resources/robot_test_file/final_test.robot");
+        initInvalidDataParse("src/main/resources/data_test_invalid/all_only_and4.csv", "src/main/resources/data_test_invalid/all_only_and4.xml", "src/main/resources/robot_test_file/final_test.robot");
     }
 
     public static void initInvalidDataParse(String csvPath, String xmlPath, String robotPath) {

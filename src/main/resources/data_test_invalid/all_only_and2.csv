@@ -1,0 +1,9 @@
+ip1,loc_ip1
+ip2,loc_ip2
+ip3,loc_ip3
+ip4,loc_ip4
+ip5,loc_ip5
+ip6,loc_ip6
+cl1,loc_cl1
+cl2,loc_cl2
+val_ip1 & val_ip2 & val_ip3 & val_ip4 & expected_url1 & val_ip5 & val_ip6 & expected_url2,data_ip1 & data_ip2 & data_ip3 & data_ip4 & url1 & data_ip5 & data_ip6 & url2,data_ip1_2 & data_ip2 & data_ip3 & data_ip4 & url1_2 & data_ip5 & data_ip6_2 & url2_2,data_ip1_3 & data_ip2_3 & data_ip3_3 & data_ip4_3 & url1_3 & data_ip5_3 & data_ip6_3 & url2_3
