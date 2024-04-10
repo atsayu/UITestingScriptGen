@@ -1,50 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <TestSuite>
-	<url>https://form.jotform.com/240141541020435</url>
-	<TestCase>
-		<Scenario>
-		</Scenario>
-		<LogicExpressionOfActions>
-			<type>or</type>
-			<LogicExpressionOfActions>
-				<type>Input Text</type>
-				<locator>mobile number</locator>
-				<text>valid_mobileNumber</text>
-			</LogicExpressionOfActions>
-			<LogicExpressionOfActions>
-				<type>Input Text</type>
-				<locator>work number</locator>
-				<text>valid_worknumber</text>
-			</LogicExpressionOfActions>
-			<LogicExpressionOfActions>
-				<type>and</type>
-				<LogicExpressionOfActions>
-					<type>Input Text</type>
-					<locator>first name</locator>
-					<text>valid_firstname</text>
-				</LogicExpressionOfActions>
-				<LogicExpressionOfActions>
-					<type>Input Text</type>
-					<locator>last name</locator>
-					<text>valid_lastname</text>
-				</LogicExpressionOfActions>
-			</LogicExpressionOfActions>
-		</LogicExpressionOfActions>
-		<LogicExpressionOfActions>
-			<type>Click Element</type>
-			<locator>reading</locator>
-		</LogicExpressionOfActions>
-		<LogicExpressionOfActions>
-			<type>Input Text</type>
-			<locator>additional Comments</locator>
-			<text>valid_additionalComments</text>
-		</LogicExpressionOfActions>
-		<LogicExpressionOfActions>
-			<type>Click Element</type>
-			<locator>submit</locator>
-		</LogicExpressionOfActions>
-		<LogicExpressionOfActions>
-			<type>Verify URL</type>
-			<url>expected_url</url>
-		</LogicExpressionOfActions>
-	</TestCase>
+  <url>https://www.saucedemo.com/</url>
+  <Testcase>
+    <Scenario>login</Scenario>
+    <LogicExpressionOfActions>
+      <type>and</type>
+      <LogicExpressionOfActions>
+        <locator>username</locator>
+        <type>Input Text</type>
+        <text>valid_username</text>
+      </LogicExpressionOfActions>
+      <LogicExpressionOfActions>
+        <locator>password</locator>
+        <type>Input Text</type>
+        <text>valid_password</text>
+      </LogicExpressionOfActions>
+    </LogicExpressionOfActions>
+    <LogicExpressionOfActions>
+      <locator>login_button</locator>
+      <type>Click Element</type>
+    </LogicExpressionOfActions>
+    <Validation>
+      <type>URLValidation</type>
+      <url>newUrl</url>
+    </Validation>
+  </Testcase>
 </TestSuite>

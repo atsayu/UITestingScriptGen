@@ -1,0 +1,57 @@
+{
+  "url": "https://www.saucedemo.com/",
+  "testcases": [
+    {
+      "actions": [
+        {
+          "type": "and",
+          "actions": [
+            {
+              "describedLocator": "username",
+              "type": "input",
+              "value": "valid_username"
+            },
+            {
+              "describedLocator": "password",
+              "type": "input",
+              "value": "valid_password"
+            }
+          ]
+        },
+        {
+          "describedLocator": "login_button",
+          "type": "click"
+        }
+      ],
+      "scenario": "login",
+      "haveAssert": false
+    },
+    {
+      "actions": [
+        {
+          "type": "or",
+          "actions": [
+            {
+              "describedLocator": "into phone_numer",
+              "type": "input",
+              "value": "good"
+            },
+            {
+              "describedLocator": "address",
+              "type": "input",
+              "value": "my_address"
+            }
+          ]
+        },
+        {
+          "describedLocator": "submit",
+          "type": "click"
+        }
+      ],
+      "scenario": "submit info",
+      "haveAssert": false
+    }
+  ],
+  "variables": [],
+  "data": []
+}
