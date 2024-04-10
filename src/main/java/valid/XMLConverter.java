@@ -27,7 +27,6 @@ import javax.xml.transform.stream.StreamResult;
 
 public class XMLConverter {
     public static void convertJSONToXML(String jsonPath, String xmlPath) {
-
         try {
             String jsonString = readFileAsString(jsonPath);
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -57,7 +56,16 @@ public class XMLConverter {
                 doc.renameNode(scenarios.item(i),null, "Scenario");
             }
             NodeList actions = doc.getElementsByTagName("actions");
+
             for (int j = 0; j < actions.getLength(); j++) {
+                NodeList list = actions.item(j).getChildNodes();
+                for (int k = 0; k < list.getLength(); k++) {
+                    if (list.item(k) instanceof Element) {
+                        Element root = (Element) list.item(k);
+                        System.out.println(root.getNodeName());
+                        break;
+                    }
+                }
                 doc.renameNode(actions.item(j),null, "LogicExpressionOfActions");
             }
             NodeList type = doc.getElementsByTagName("type");
@@ -69,8 +77,7 @@ public class XMLConverter {
                     type.item(i).setTextContent("Click Element");
                 }
                 if (type.item(i).getTextContent().equals("verifyURL")) {
-                    type.item(i).setTextContent("URLValidation");
-                    doc.renameNode(type.item(i).getParentNode(), null, "Validation");
+                    type.item(i).setTextContent("Verify URL");
                 }
             }
             NodeList describedLocator = doc.getElementsByTagName("describedLocator");
