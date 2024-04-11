@@ -1,12 +1,16 @@
 package objects.normalAction;
 
-import mockpage.Input;
 import objects.Expression;
+import objects.NormalAction;
 
 public class InputText extends NormalAction {
 
     public InputText(String elementLocator, String value, boolean dynamic, boolean required) {
         super(elementLocator, value, dynamic, required);
+    }
+
+    public InputText(String elementLocator, String value) {
+        super(elementLocator, value, true, true);
     }
 
     public InputText(InputText inputText) {
@@ -25,7 +29,7 @@ public class InputText extends NormalAction {
         return "Input Text";
     }
     public String exprToString() {
-        return "Input Text\t" + this.getElementLocator() + "\t" + this.getValue();
+        return "Input Text" + "\t" + this.getElementLocator() + "\t" + this.getValue();
     }
     @Override
     public int compareTo(Expression o) {

@@ -1,4 +1,6 @@
-package objects.normalAction;
+package objects;
+
+import objects.NormalAction;
 
 public abstract class DynamicAction extends NormalAction {
     private String value;

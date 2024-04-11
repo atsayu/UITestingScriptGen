@@ -1,4 +1,4 @@
-package objects.normalAction;
+package objects;
 
 import objects.Expression;
 

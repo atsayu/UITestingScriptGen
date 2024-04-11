@@ -2,8 +2,11 @@ package invalid;
 
 import com.opencsv.CSVReader;
 import invalid.strategies.Context;
-import objects2.ClickElement;
-import objects2.InputText;
+import objects.assertion.LocationAssertion;
+import objects.assertion.PageElementAssertion;
+import objects.normalAction.ClickElement;
+import objects.normalAction.InputText;
+import objects.normalAction.SelectRadioButton;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -18,27 +21,30 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+import static invalid.AssertTestGen.assertTestGenInit;
 import static invalid.FileWriteModule.writeStringsToFile;
-import static invalid.InvalidTestGen.invalidTestCaseGen;
+import static invalid.PythonTruthTableServer.dnfParse;
 import static invalid.PythonTruthTableServer.logicParse;
 
 
 public class DataPreprocessing {
-    public static Dictionary<String, Vector<Vector<String>>> lineDict = new Hashtable<>();
+    public static Dictionary<String, Vector<Vector<Vector<String>>>> lineDict = new Hashtable<>();
     static Vector<Vector<String>> invalidDict = new Vector<>();
     public static Vector<String> temp = new Vector<>();
 
     public static HashMap<String, InputText> inputTextMap = new HashMap<>();
     public static HashMap<String, ClickElement> clickElementMap = new HashMap<>();
+    public static HashMap<String, SelectRadioButton> selectRadioButtonMap = new HashMap<>();
+    public static HashMap<String, LocationAssertion> locationShouldBeMap = new HashMap<>();
+    public static HashMap<String, PageElementAssertion> pageShouldContainElementMap = new HashMap<>();
     static Map<String, List<String>> dataMap = new HashMap<>();
 
     public static void main(String[] args) {
-        initInvalidDataParse("code", "src/main/resources/template/outline_demoqa1.xml", "src/main/resources/robot_test_file/final_test.robot");
+        initInvalidDataParse("src/main/resources/data_test_invalid/saucedemo_login_xor.csv", "src/main/resources/data_test_invalid/saucedemo_login_xor.xml", "src/main/resources/robot_test_file/final_test.robot");
     }
 
     public static void initInvalidDataParse(String csvPath, String xmlPath, String robotPath) {
         dataMap = createDataMap(csvPath);
-        System.out.println(dataMap);
 
         // Instantiate the Factory
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -53,13 +59,10 @@ public class DataPreprocessing {
 
             if (doc.hasChildNodes()) {
                 parseTestSuite(doc.getChildNodes());
-                System.out.println(temp);
-                System.out.println(invalidDict);
                 System.out.println(lineDict);
-                System.out.println(inputTextMap);
-                System.out.println(clickElementMap);
-                Vector<String> finalTest = invalidTestCaseGen();
-                writeStringsToFile(finalTest, robotPath);
+                writeStringsToFile(assertTestGenInit(), robotPath);
+//                Vector<String> finalTest = invalidTestCaseGen();
+//                writeStringsToFile(finalTest, robotPath);
             }
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
@@ -84,7 +87,7 @@ public class DataPreprocessing {
             Node tempNode = nodeList.item(count);
             if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
                 if (tempNode.getNodeName().equals("url")) {
-                    temp.add("   Open Browser   " + tempNode.getTextContent() + "   Chrome");
+                    temp.add("\tOpen Browser\t" + tempNode.getTextContent() + "\tChrome");
                 } else if (tempNode.getNodeName().equals("TestCase")) {
                     parseTest(tempNode.getChildNodes());
                     initInvalidDict();
@@ -94,6 +97,7 @@ public class DataPreprocessing {
     }
 
     public static void parseTest(NodeList nodeList) {
+        int line = 1;
         for (int count = 0; count < nodeList.getLength(); count++) {
             Node tempNode = nodeList.item(count);
             if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -101,22 +105,34 @@ public class DataPreprocessing {
                     case "Scenario" -> temp.add(0, "Invalid-Test-" + tempNode.getTextContent());
                     case "LogicExpressionOfActions" -> {
                         exprToMap(logicExpr(tempNode.getChildNodes(), false));
-//                        String rs = exprString.replaceAll("\\d", " $0 ").replaceAll("\\s+", " ").trim();
-                        Vector<Vector<String>> tb = truthTableParse(logicParse(exprEncode(logicExpr(tempNode.getChildNodes(), false))), exprEncode(logicExpr(tempNode.getChildNodes(), false)));
-                        lineDict.put("LINE" + count, tb);
-                        templateGen(tb, count);
+                        String encodedExpr = exprEncode(logicExpr(tempNode.getChildNodes(), false));
+                        lineDict.put("LINE" + line, dnfParse(encodedExpr));
+                        line++;
                     }
-                    case "Validation" -> parseValidation(tempNode.getChildNodes());
                 }
             }
         }
-//        System.out.println(lineDict);
+        templateGen();
     }
 
-    public static void templateGen(Vector<Vector<String>> truthTable, int count) {
-        for (String expr : truthTable.get(0)) {
-            temp.add("#LINE" + count + "   " + expr);
+    public static void templateGen() {
+        int i = 1;
+        while (lineDict.get("LINE" + i) != null) {
+            Vector<String> headerVec = new Vector<>();
+            for (int j = 0; j < lineDict.get("LINE" + i).size(); j++) {
+                for (int k = 0; k < lineDict.get("LINE" + i).get(j).get(0).size(); k++) {
+                    String header = lineDict.get("LINE" + i).get(j).get(0).get(k);
+                    if (!headerVec.contains(header)) {
+                        headerVec.add(header);
+                    }
+                }
+            }
+            for (String s : headerVec) {
+                temp.add("LINE" + i + "\t" + s);
+            }
+            i++;
         }
+        temp.add("\tClose Browser");
     }
 
 
@@ -140,17 +156,6 @@ public class DataPreprocessing {
         }
     }
 
-    public static void parseValidation(NodeList nodeList) {
-        for (int count = 0; count < nodeList.getLength(); count++) {
-            Node tempNode = nodeList.item(count);
-            if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
-                if (tempNode.getNodeName().equals("url")) {
-                    temp.add("   Should Go To   " + tempNode.getTextContent());
-                }
-            }
-        }
-    }
-
     //TODO refactor
     public static String logicExpr(NodeList nodeList, boolean isChild) {
         String type = null;
@@ -164,6 +169,8 @@ public class DataPreprocessing {
                         case "or" -> "or";
                         case "Input Text" -> "Input Text";
                         case "Click Element" -> "Click Element";
+                        case "Verify URL" -> "Verify URL";
+                        case "Verify Element Text" -> "Verify Element Text";
                         default -> type;
                     };
                     case "LogicExpressionOfActions" -> {
@@ -181,14 +188,23 @@ public class DataPreprocessing {
                     }
                     case "locator" -> {
                         assert type != null;
-                        if (type.equals("Input Text")) {
-                            temp.append("Input Text   ").append(tempNode.getTextContent());
-                        } else if (type.equals("Click Element")) {
-                            return "Click Element   " + tempNode.getTextContent();
+                        switch (type) {
+                            case "Input Text" -> temp.append("Input Text\t").append(tempNode.getTextContent());
+                            case "Click Element" -> {
+                                return "Click Element\t" + tempNode.getTextContent();
+                            }
+                            case "Verify Element Text" ->
+                                    temp.append("Element Should Contain\t").append(tempNode.getTextContent());
                         }
                     }
                     case "text" -> {
-                        return temp + "   " + tempNode.getTextContent();
+                        return temp + "\t" + tempNode.getTextContent();
+                    }
+                    case "url" -> {
+                        assert type != null;
+                        if (type.equals("Verify URL")) {
+                            return "Location Should Be\t" + tempNode.getTextContent();
+                        }
                     }
                 }
             }
@@ -200,6 +216,7 @@ public class DataPreprocessing {
         }
     }
 
+
     public static Vector<Vector<String>> truthTableParse(String tbString, String encodeExpr) {
         if (!tbString.contains(" : ")) {
             tbString += " 1 : 1 0 : 0";
@@ -209,10 +226,6 @@ public class DataPreprocessing {
         String[] splitted = encodeExpr.split("\\||%26|%28|%29");
         String[] cleanSplitted = Arrays.stream(splitted).filter(split -> !split.isEmpty()).toArray(String[]::new);
         tb.add(arrToVec(cleanSplitted));
-        for (String split: splitted) {
-
-            System.out.println(split);
-        }
         for (String header : tb.get(0)) {
             tbString = tbString.replaceAll(header, "");
         }

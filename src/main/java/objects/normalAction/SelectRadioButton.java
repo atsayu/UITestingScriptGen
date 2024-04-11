@@ -1,6 +1,7 @@
 package objects.normalAction;
 
 import objects.Expression;
+import objects.NormalAction;
 
 public class SelectRadioButton extends NormalAction {
     // groupName = elementLocator
@@ -9,7 +10,9 @@ public class SelectRadioButton extends NormalAction {
         return "Select Radio Button";
     }
 
-
+    public SelectRadioButton(String elementLocator, String value) {
+        super(elementLocator, value, true, false);
+    }
 
     public SelectRadioButton(String elementLocator, String value, boolean dynamic, boolean required) {
         super(elementLocator, value, dynamic, required);

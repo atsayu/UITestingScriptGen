@@ -32,7 +32,7 @@ public class LocationAssertion implements Expression {
     }
 
     public String exprToString() {
-        return "Location should be\t" + this.url;
+        return "Location Should Be\t" + this.url;
     }
     @Override
     public int compareTo(Expression o) {
