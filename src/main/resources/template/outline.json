@@ -1,1 +1,50 @@
-{"testcases":[{"actions":[{"type":"open","url":"websiteurl"},{"type":"and","actions":[{"describedLocator":"username","type":"input","value":"valid_username"},{"describedLocator":"password","type":"input","value":"valid_password"}]},{"describedLocator":"login_button","type":"click"},{"type":"verifyURL","url":"homepage"}],"scenario":"login","haveAssert":true}],"variables":["websiteurl","valid_username & valid_password","homepage"],"data":[],"storedData":[{"websiteurl":"https://www.saucedemo.com/","valid_username & valid_password":"standard_user & secret_sauce","homepage":"https://www.saucedemo.com/inventory.html"}]}
+{
+  "testcases": [
+    {
+      "actions": [
+        {
+          "type": "open",
+          "url": "websiteurl"
+        },
+        {
+          "type": "and",
+          "actions": [
+            {
+              "describedLocator": "username",
+              "type": "input",
+              "value": "valid_username"
+            },
+            {
+              "describedLocator": "password",
+              "type": "input",
+              "value": "valid_password"
+            }
+          ]
+        },
+        {
+          "describedLocator": "login_button",
+          "type": "click"
+        },
+        {
+          "type": "verifyURL",
+          "url": "homepage"
+        }
+      ],
+      "scenario": "login",
+      "haveAssert": true
+    }
+  ],
+  "variables": [
+    "websiteurl",
+    "valid_username & valid_password",
+    "homepage"
+  ],
+  "data": [],
+  "storedData": [
+    {
+      "websiteurl": "https://www.saucedemo.com/",
+      "valid_username & valid_password": "standard_user & secret_sauce",
+      "homepage": "https://www.saucedemo.com/inventory.html"
+    }
+  ]
+}

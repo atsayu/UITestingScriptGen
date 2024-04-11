@@ -1,8 +1,9 @@
 package objects.normalAction;
 
 import objects.Expression;
+import objects.NormalAction;
 
-public class SelectList extends NormalAction{
+public class SelectList extends NormalAction {
 
     public String getType() {
         return "Select List";

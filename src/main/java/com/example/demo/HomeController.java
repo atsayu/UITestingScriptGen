@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import mockpage.Input;
+//import mockpage.Input;
 import org.apache.tomcat.util.json.JSONParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -84,7 +84,10 @@ public class HomeController {
 //                "src/main/resources/data/data_sheet.csv");
         ScriptGen.createScriptV3("src/main/resources/template/outline.json",
                 "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
-        BufferedReader scriptReader = new BufferedReader(new FileReader(new File("test_saucedemo.robot")));
+
+
+
+
         String script = Files.readString(Paths.get("test_saucedemo.robot"));
         System.out.println(script);
         return new ResponseEntity<>(script, HttpStatus.OK);
@@ -359,94 +362,94 @@ public class HomeController {
     }
 
 
-    @PostMapping("/testtemplate")
-    public ResponseEntity<String> template(@RequestBody Map<String, String> data) throws IOException, ParserConfigurationException, SAXException {
-        String xml = data.get("template");
-        System.out.println(xml);
-
-
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        InputStream inputStream = new ByteArrayInputStream(xml.getBytes());
-        Document document = builder.parse(inputStream);
-        Map<String, String> map = new HashMap<>();
-        String url = document.getElementsByTagName("url").item(0).getTextContent();
-        List<String> locators = new ArrayList<>();
-//        locators.add(url);
-        NodeList actions = document.getElementsByTagName("LogicExpressionOfActions");
-        for (int i = 0; i < actions.getLength(); i++) {
-            if (actions.item(i).getNodeType() != Node.ELEMENT_NODE) continue;
-            Element action = (Element) actions.item(i);
-            String type = action.getElementsByTagName("type").item(0).getTextContent();
-            if (action.getElementsByTagName("locator").getLength() != 0) {
-                String locator = action.getElementsByTagName("locator").item(0).getTextContent();
-                if (!locators.contains(locator) && type.equals("Input Text")) locators.add(locator);
-                if (type.equals("Input Text")) {
-                    String text = action.getElementsByTagName("text").item(0).getTextContent();
-                    if (!map.containsKey(locator)) map.put(locator, text);
-                }
-            }
-
-        }
-        String[] locatorsInput = new String[locators.size()];
-        locatorsInput = locators.toArray(locatorsInput);
-        System.out.println(locatorsInput);
-        System.out.println(map);
-        File template = new File ("src/main/resources/template/outline.xml");
-        if (template.createNewFile()) {
-            System.out.println("Created template file");
-        } else {
-            System.out.println("File existed");
-        }
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(template));
-        bufferedWriter.append(xml);
-        bufferedWriter.close();
-//        try {
-//            newSolve.changDomAndCreateMockPage(urlAndLocators, map);
-//        } catch (Exception e) {
-//            e.printStackTrace();
+//    @PostMapping("/testtemplate")
+//    public ResponseEntity<String> template(@RequestBody Map<String, String> data) throws IOException, ParserConfigurationException, SAXException {
+//        String xml = data.get("template");
+//        System.out.println(xml);
+//
+//
+//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//        DocumentBuilder builder = factory.newDocumentBuilder();
+//        InputStream inputStream = new ByteArrayInputStream(xml.getBytes());
+//        Document document = builder.parse(inputStream);
+//        Map<String, String> map = new HashMap<>();
+//        String url = document.getElementsByTagName("url").item(0).getTextContent();
+//        List<String> locators = new ArrayList<>();
+////        locators.add(url);
+//        NodeList actions = document.getElementsByTagName("LogicExpressionOfActions");
+//        for (int i = 0; i < actions.getLength(); i++) {
+//            if (actions.item(i).getNodeType() != Node.ELEMENT_NODE) continue;
+//            Element action = (Element) actions.item(i);
+//            String type = action.getElementsByTagName("type").item(0).getTextContent();
+//            if (action.getElementsByTagName("locator").getLength() != 0) {
+//                String locator = action.getElementsByTagName("locator").item(0).getTextContent();
+//                if (!locators.contains(locator) && type.equals("Input Text")) locators.add(locator);
+//                if (type.equals("Input Text")) {
+//                    String text = action.getElementsByTagName("text").item(0).getTextContent();
+//                    if (!map.containsKey(locator)) map.put(locator, text);
+//                }
+//            }
+//
 //        }
-        Input ip = new Input();
-        ip.changeDomAndCreateMockPageVersion2("src/main/resources/template/outline.xml");
+//        String[] locatorsInput = new String[locators.size()];
+//        locatorsInput = locators.toArray(locatorsInput);
+//        System.out.println(locatorsInput);
+//        System.out.println(map);
+//        File template = new File ("src/main/resources/template/outline.xml");
+//        if (template.createNewFile()) {
+//            System.out.println("Created template file");
+//        } else {
+//            System.out.println("File existed");
+//        }
+//        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(template));
+//        bufferedWriter.append(xml);
+//        bufferedWriter.close();
+////        try {
+////            newSolve.changDomAndCreateMockPage(urlAndLocators, map);
+////        } catch (Exception e) {
+////            e.printStackTrace();
+////        }
+//        Input ip = new Input();
+//        ip.changeDomAndCreateMockPageVersion2("src/main/resources/template/outline.xml");
+//
+//
+//        /* Sửa lại như sau: mapLocatorVariableAndValueVariable là map ngay trên,chỉ lấy locatorsInput do chỉ nhập data ở các phần tử input
+//        Input ip = new Input();
+//        try {
+//          ip.changeDomAndCreateMockPage(locatorsInput, url, mapLocatorVariableAndValueVariable);
+//        } catch (IOException e) {
+//          e.printStackTrace();
+//        }
+//         */
+//
+//
+//
+//
+//        ScriptGen.createDataSheetV2("src/main/resources/template/outline.xml", "src/main/resources/data/datasheet.csv");
+//        return new ResponseEntity<>("Mocked the page", HttpStatus.OK);
+//    }
 
-
-        /* Sửa lại như sau: mapLocatorVariableAndValueVariable là map ngay trên,chỉ lấy locatorsInput do chỉ nhập data ở các phần tử input
-        Input ip = new Input();
-        try {
-          ip.changeDomAndCreateMockPage(locatorsInput, url, mapLocatorVariableAndValueVariable);
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-         */
-
-
-
-
-        ScriptGen.createDataSheetV2("src/main/resources/template/outline.xml", "src/main/resources/data/datasheet.csv");
-        return new ResponseEntity<>("Mocked the page", HttpStatus.OK);
-    }
-
-    @PostMapping("/createtest")
-    public ResponseEntity<String> createScript(@RequestBody Map<String, String> body) throws IOException {
-
-        String csvData = body.get("values");
-        File data = new File ("src/main/resources/data/data.csv");
-        if (data.createNewFile()) {
-            System.out.println("Created template file");
-        } else {
-            System.out.println("File existed");
-        }
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(data));
-        bufferedWriter.append(csvData);
-        bufferedWriter.close();
-
-        newSolve.fillInCSV("src/main/resources/data/datasheet.csv","src/main/resources/data/data.csv", newSolve.getDataFromCSV("src/main/resources/data/data.csv"));
-
-        ScriptGen.createScriptV2("src/main/resources/template/outline.xml", "src/main/resources/data/data.csv", "src/main/resources/robot_test_file/final_test.robot");
-
-
-        return new ResponseEntity<>("Create Script", HttpStatus.OK);
-    }
+//    @PostMapping("/createtest")
+//    public ResponseEntity<String> createScript(@RequestBody Map<String, String> body) throws IOException {
+//
+//        String csvData = body.get("values");
+//        File data = new File ("src/main/resources/data/data.csv");
+//        if (data.createNewFile()) {
+//            System.out.println("Created template file");
+//        } else {
+//            System.out.println("File existed");
+//        }
+//        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(data));
+//        bufferedWriter.append(csvData);
+//        bufferedWriter.close();
+//
+//        newSolve.fillInCSV("src/main/resources/data/datasheet.csv","src/main/resources/data/data.csv", newSolve.getDataFromCSV("src/main/resources/data/data.csv"));
+//
+//        ScriptGen.createScriptV2("src/main/resources/template/outline.xml", "src/main/resources/data/data.csv", "src/main/resources/robot_test_file/final_test.robot");
+//
+//
+//        return new ResponseEntity<>("Create Script", HttpStatus.OK);
+//    }
 
     public void createScriptHtml() throws IOException {
         File robotFile = new File("src/main/resources/testscript/script.robot");

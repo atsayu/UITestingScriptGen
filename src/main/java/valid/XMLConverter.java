@@ -6,9 +6,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
-import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.w3c.dom.Document;
@@ -30,8 +30,13 @@ public class XMLConverter {
         try {
             String jsonString = readFileAsString(jsonPath);
             JSONObject jsonObject = new JSONObject(jsonString);
-            String url = (String) jsonObject.get("url");
-            jsonObject.remove("url");
+            JSONArray testcase = (JSONArray) jsonObject.get("testcases");
+            JSONObject firstTest = (JSONObject) testcase.get(0);
+            JSONArray jsonactions = (JSONArray) firstTest.get("actions");
+            JSONObject openAction = (JSONObject) jsonactions.get(0);
+            String url = (String) openAction.get("url");
+//            String url = (String) jsonObject.get("url");
+//            jsonObject.remove("url");
             jsonObject.remove("variables");
             jsonObject.remove("data");
             String xmlString = XML.toString(jsonObject);
