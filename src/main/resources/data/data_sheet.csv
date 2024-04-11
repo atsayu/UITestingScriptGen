@@ -1,7 +1,5 @@
-valid_username
-valid_password
-valid_password & valid_username
-valid_password & valid_username & expected_url
-password,//input[@class='input_error form_input' and @placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password' and @autocorrect='off' and @autocapitalize='none' and @value='']
-username,//input[@class='input_error form_input' and @placeholder='Username' and @type='text' and @data-test='username' and @id='user-name' and @name='user-name' and @autocorrect='off' and @autocapitalize='none' and @value='']
-login,//input[@type='submit' and @class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
+password,//input[@id='password']
+login_button,//input[@id='login-button']
+username,//input[@id='user-name']
+sauce labs backpack,//a[@id='item_4_title_link']
+valid_password & valid_username & homepage & backpack_url,secret_sauce & standard_user & homepage_1 & backpack_1,secret_sauce & visual_user & homepage_ 2 & backpack_2

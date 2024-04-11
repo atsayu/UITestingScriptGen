@@ -40,14 +40,88 @@ public class ScriptGen {
         JSONArray actions = (JSONArray) testcase.get("actions");
 
         List<List<String>> backtrackVariableList = new ArrayList<>();
-        int lastVerifyIndex = -1;
         for (Object action: actions) {
             JSONObject actionJSON = (JSONObject) action;
+            String type = actionJSON.get("type").toString();
+            if (type.equals("verifyURL")) {
+                String url = actionJSON.get("url").toString();
+                List<String> urlList = new ArrayList<>();
+                urlList.add(url);
+                backtrackVariableList.add(urlList);
+                continue;
+            }
+            if (type.equals("click") || type.equals("open")) continue;
             List<String> stringList = new ArrayList<>();
             Expression<String> exprString =  LogicParser.createTextExpression(actionJSON);
+            String[] andString = exprString.toLexicographicString().split(" \\| ");
+            for (int i = 0; i < andString.length; i++) {
+                String s = andString[i];
+                if (s.charAt(0) == '(') {
+                    andString[i] = s.substring(1, s.length() - 1);
+                }
+            }
+            List<String> combinationVariable = new ArrayList<>(List.of(andString));
+            backtrackVariableList.add(combinationVariable);
+        }
+        List<String> dataSheetVariables = new ArrayList<>();
+        backTrackVariable(backtrackVariableList, new StringBuilder(), 0, dataSheetVariables);
+        System.out.println(dataSheetVariables);
+        JSONArray storedData = (JSONArray) outlineJSON.get("storedData");
+        List<StringBuilder> csvLines = new ArrayList<>();
+        for (int i = 0; i < dataSheetVariables.size(); i++) {
+            StringBuilder init = new StringBuilder(dataSheetVariables.get(i));
+            csvLines.add(init);
+        }
+        JSONArray variables = (JSONArray) outlineJSON.get("variables");
+        String[] variableString = new String[variables.size()];
+        for (int i = 0; i < variableString.length; i++) {
+            variableString[i] = variables.get(i).toString();
         }
 
+        for (Object userData: storedData) {
+            JSONObject jsonUserData = (JSONObject) userData;
+            Map<String, String> dataMap = new HashMap<>();
+            for (String s: variableString) {
+                String realdata = jsonUserData.get(s).toString();
+                String[] singleData = realdata.split("\\s*&\\s*|\\s*\\|\\s*");
+                String[] singleVariable = s.split("\\s*&\\s*|\\s*\\|\\s*");
+                for (int j = 0; j < singleVariable.length; j++) {
+                    dataMap.put(singleVariable[j], singleData[j]);
+                }
+            }
+
+            for (int i = 0; i < dataSheetVariables.size(); i++) {
+                String[] variables2 = dataSheetVariables.get(i).split(" & ");
+                StringBuilder newData = new StringBuilder(dataSheetVariables.get(i));
+                for (String s: variables2) {
+                    replace(s, dataMap.get(s).toString(), newData);
+                }
+                csvLines.get(i).append(",").append(newData);
+            }
+        }
+
+//        System.out.println(csvLines);
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(datasheetPath, true));
+        for (StringBuilder line: csvLines) {
+            bufferedWriter.append(line.toString());
+        }
+        bufferedWriter.close();
+
     }
+    public static void backTrackVariable(List<List<String>> linesOfCombination,StringBuilder curVariable,  int n, List<String> dataSheetVariable) {
+        if (n >= linesOfCombination.size()) {
+            dataSheetVariable.add(curVariable.toString());
+            return;
+        } else {
+            for (String combination: linesOfCombination.get(n)) {
+                StringBuilder cur = new StringBuilder(curVariable);
+                if (!cur.isEmpty()) cur.append(" & ").append(combination);
+                else cur.append(combination);
+                backTrackVariable(linesOfCombination, new StringBuilder(cur), n + 1, dataSheetVariable);
+            }
+        }
+    }
+
     public static String getStringFromJSON(JSONObject action, JSONObject locatorMap) {
         StringBuilder s = new StringBuilder();
         switch (action.get("type").toString()) {
@@ -139,7 +213,15 @@ public class ScriptGen {
         }
         System.out.println(testSuite);
         JSONObject locatorMap =  sendRequestToLocatorDetector(testSuite);
-
+        StringBuilder csvLocatr = new StringBuilder();
+        for (Object key: locatorMap.keySet()) {
+            String keyString = (String) key;
+            String realLocator = locatorMap.get(keyString).toString();
+            csvLocatr.append(keyString).append(",").append(realLocator).append("\n");
+        }
+        BufferedWriter csvWriter = new BufferedWriter(new FileWriter(dataSheetPath));
+        csvWriter.append(csvLocatr);
+        csvWriter.close();
         String robotScript = convertJSONToTestScript(testSuite, locatorMap);
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(robotFilePath)));
         bufferedWriter.append(robotScript);
@@ -200,7 +282,7 @@ public class ScriptGen {
         String variable = "";
         switch (action.get("type").toString()) {
             case "open":
-                actionHaveData.put("url", dataMap.get(actionHaveData.get("url").toString()));
+
                 return actionHaveData;
             case "click":
                 return actionHaveData;
@@ -912,7 +994,8 @@ public class ScriptGen {
 
     public static void main(String[] args) throws IOException, ParseException {
 //        sendRequestToLocatorDetector();
-        createScriptV3("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
+        createDataSheetForInvalid("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
+//        createScriptV3("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
 //        createDataSheetV3("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
 //        createDataSheetV2("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
 //        createScriptV2("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");

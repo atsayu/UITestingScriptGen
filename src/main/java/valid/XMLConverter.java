@@ -30,18 +30,21 @@ public class XMLConverter {
         try {
             String jsonString = readFileAsString(jsonPath);
             JSONObject jsonObject = new JSONObject(jsonString);
-            JSONArray testcase = (JSONArray) jsonObject.get("testcases");
-            JSONObject firstTest = (JSONObject) testcase.get(0);
-            JSONArray jsonactions = (JSONArray) firstTest.get("actions");
-            JSONObject openAction = (JSONObject) jsonactions.get(0);
-            String url = (String) openAction.get("url");
-//            String url = (String) jsonObject.get("url");
-//            jsonObject.remove("url");
+//            JSONArray testcase = (JSONArray) jsonObject.get("testcases");
+//            JSONObject firstTest = (JSONObject) testcase.get(0);
+//            JSONArray jsonactions = (JSONArray) firstTest.get("actions");
+//            JSONObject openAction = (JSONObject) jsonactions.get(0);
+//            String url = (String) openAction.get("url");
+            String url = (String) jsonObject.get("url");
+            jsonObject.remove("url");
             jsonObject.remove("variables");
             jsonObject.remove("data");
+            jsonObject.remove("storedData");
             String xmlString = XML.toString(jsonObject);
             xmlString = "<TestSuite><url>" + url + "</url>" + xmlString + "</TestSuite>";
-            String prettyXmlString = prettyPrintByTransformer(xmlString, 2, true);
+//            xmlString = "<TestSuite>" + xmlString + "</TestSuite>";
+            String prettyXmlString = prettyPrintByTransformer(xmlString, 2,
+                    true);
             try {
                 FileWriter writer = new FileWriter(xmlPath);
                 writer.write(prettyXmlString);
@@ -53,8 +56,9 @@ public class XMLConverter {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(new File(xmlPath));
             NodeList testcases = doc.getElementsByTagName("testcases");
+
             for (int i = 0; i < testcases.getLength(); i++) {
-                doc.renameNode(testcases.item(i),null, "Testcase");
+                doc.renameNode(testcases.item(i),null, "TestCase");
             }
             NodeList scenarios = doc.getElementsByTagName("scenario");
             for (int i = 0; i < scenarios.getLength(); i++) {
@@ -98,7 +102,42 @@ public class XMLConverter {
                 haveAssert.item(i).getParentNode().removeChild(haveAssert.item(i));
                 i--;
             }
-
+            NodeList actionList = doc.getElementsByTagName("LogicExpressionOfActions");
+            for (int i = 0; i < actionList.getLength(); i++) {
+                Node cur = actionList.item(i);
+                if (cur.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) cur;
+                    if (element.getElementsByTagName("type").item(0).getTextContent().equals("open")) {
+                        cur.getParentNode().removeChild(cur);
+                        break;
+                    }
+                }
+            }
+            NodeList listAction = doc.getElementsByTagName("LogicExpressionOfActions");
+            for (int i = 0; i < listAction.getLength(); i++) {
+                Node cur = listAction.item(i);
+                if (cur.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) cur;
+                    if (element.getElementsByTagName("type").item(0).getTextContent().equals("Input Text")) {
+                        Node typeNode = element.getElementsByTagName("type").item(0);
+                        Node locatorNode = element.getElementsByTagName("locator").item(0);
+                        Node textNode = element.getElementsByTagName("text").item(0);
+                        element.removeChild(typeNode);
+                        element.removeChild(locatorNode);
+                        element.removeChild(textNode);
+                        element.appendChild(typeNode);
+                        element.appendChild(locatorNode);
+                        element.appendChild(textNode);
+                    } else if (element.getElementsByTagName("type").item(0).getTextContent().equals("Click Element")) {
+                        Node typeNode = element.getElementsByTagName("type").item(0);
+                        Node locatorNode = element.getElementsByTagName("locator").item(0);
+                        element.removeChild(typeNode);
+                        element.removeChild(locatorNode);
+                        element.appendChild(typeNode);
+                        element.appendChild(locatorNode);
+                    }
+                }
+            }
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             StringWriter stringWriter = new StringWriter();
@@ -144,6 +183,6 @@ public class XMLConverter {
     }
 
     public static void main(String[] args) {
-            convertJSONToXML("src/main/resources/template/sample.json", "src/main/resources/template/outline.xml");
+            convertJSONToXML("src/main/resources/template/outline.json", "src/main/resources/template/outline.xml");
     }
 }

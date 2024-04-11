@@ -23,9 +23,11 @@ public class LogicParser {
 
     public static Expression<String> createTextExpression(JSONObject actionJSON) {
         String type = actionJSON.get("type").toString();
-        if (!type.equals("and") && !type.equals("or")) {
+        if (!type.equals("and") && !type.equals("or") && !type.equals("open")) {
             String text = null;
-            if (type.equals("input")) text = actionJSON.get("value").toString();
+            if (type.equals("input")) {
+                text = actionJSON.get("value").toString();
+            }
             return Variable.of(text);
         }
         if (type.equals("and")) {

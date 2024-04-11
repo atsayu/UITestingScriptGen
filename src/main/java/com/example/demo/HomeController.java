@@ -1,6 +1,7 @@
 package com.example.demo;
 
 //import mockpage.Input;
+import invalid.DataPreprocessing;
 import org.apache.tomcat.util.json.JSONParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -84,7 +85,14 @@ public class HomeController {
 //                "src/main/resources/data/data_sheet.csv");
         ScriptGen.createScriptV3("src/main/resources/template/outline.json",
                 "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
-
+        ScriptGen.createDataSheetForInvalid("src/main/resources/template/outline.json",
+                "src/main/resources/data/data_sheet.csv");
+        try {
+            DataPreprocessing.initInvalidDataParse("src/main/resources/data/data_sheet.csv",
+                    "src/main/resources/template/outline.xml", "test_saucedemo.robot");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
 
@@ -144,7 +152,6 @@ public class HomeController {
             Expression<String> newExpression = postProcessing(e, arr);
             System.out.println("String after: " + newExpression.toString());
             list.add(newExpression);
-
 
         }
         JSONArray actions = convertExprListToJSON(list);
