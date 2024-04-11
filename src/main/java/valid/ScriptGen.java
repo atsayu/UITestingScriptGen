@@ -75,7 +75,7 @@ public class ScriptGen {
             variableString[i] = variablesJSON.get(i).toString();
         }
 
-        String testUrl = outlineObject.get("url").toString();
+//        String testUrl = outlineObject.get("url").toString();
         JSONArray actions = (JSONArray) testcase.get("actions");
         JSONArray testSuite = new JSONArray();
         for (int i = 0; i < storedData.size(); i++) {
@@ -96,13 +96,13 @@ public class ScriptGen {
 
             List<List<List<JSONObject>>> backTrackList = new ArrayList<>();
             List<JSONObject> listForOpenAction = new ArrayList<>();
-            JSONObject openAction = new JSONObject();
-            openAction.put("type", "open");
-            openAction.put("url", testUrl);
-            listForOpenAction.add(openAction);
-            List<List<JSONObject>> listForOpen = new ArrayList<>();
-            listForOpen.add(listForOpenAction);
-            backTrackList.add(listForOpen);
+//            JSONObject openAction = new JSONObject();
+//            openAction.put("type", "open");
+//            openAction.put("url", testUrl);
+//            listForOpenAction.add(openAction);
+//            List<List<JSONObject>> listForOpen = new ArrayList<>();
+//            listForOpen.add(listForOpenAction);
+//            backTrackList.add(listForOpen);
 
             for (int j = 0; j < actions.size(); j++) {
                 JSONObject action = (JSONObject) actions.get(j);
@@ -181,6 +181,9 @@ public class ScriptGen {
         JSONObject actionHaveData = new JSONObject(action);
         String variable = "";
         switch (action.get("type").toString()) {
+            case "open":
+                actionHaveData.put("url", dataMap.get(actionHaveData.get("url").toString()));
+                return actionHaveData;
             case "click":
                 return actionHaveData;
             case "input":

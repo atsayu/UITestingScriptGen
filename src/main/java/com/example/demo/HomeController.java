@@ -168,11 +168,15 @@ public class HomeController {
             System.out.println(words[0]);
             System.out.println(words[0] .equalsIgnoreCase("fill"));
             switch (words[0].toLowerCase()) {
+                case "open":
+                    jsonAction.put("type", "open");
+                    jsonAction.put("url", words[1]);
+                    break;
                 case "fill":
                     System.out.printf("input");
                     jsonAction.put("type", "input");
-                    jsonAction.put("describedLocator", String.join(" ", Arrays.copyOfRange(words, 3, words.length)));
-                    jsonAction.put("value", words[1]);
+                    jsonAction.put("describedLocator", words[1]);
+                    jsonAction.put("value", "valid_" + words[1]);
                     break;
                 case "click":
                     jsonAction.put("type", "click");
