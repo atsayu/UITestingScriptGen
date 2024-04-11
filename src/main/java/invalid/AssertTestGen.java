@@ -45,7 +45,7 @@ public class AssertTestGen {
                 finalTest = assertValidTestTrace(assertTemp, assertStructureMap.get(key).get(0));
             }
             finalTest = assertInvalidDataFill(finalTest, assertStructureMap.get(key).get(1));
-            assertStaticFill(assertTemp, assertStructureMap.get(key));
+            assertStaticFill(finalTest, assertStructureMap.get(key));
             finalScript.addAll(finalTest);
         }
         return finalScript;
@@ -95,7 +95,9 @@ public class AssertTestGen {
         String actionVal = searchValidValueContext.searchValidValue(lineVal.get(1));
         int actionValIndex = headerKeyVec.indexOf(actionVal);
         if(actionValIndex == -1) {
-            scriptTemp.set(i, "");
+            if (isDynamic(lineVal.get(1))) {
+                scriptTemp.set(i, "");
+            }
         } else {
             if(lineVal.get(1).contains("it")) {
                 InputText validAction = new InputText(inputTextMap.get(lineVal.get(1)));
@@ -219,7 +221,7 @@ public class AssertTestGen {
         if(lineVal.get(1).contains("it")) {
             InputText invalidAction = new InputText(inputTextMap.get(lineVal.get(1)));
             invalidAction.setElementLocator(dataMap.get(invalidAction.getElementLocator()).get(0));
-            invalidAction.setValue("NOT_" + searchValidValueContext.searchValidValue(lineVal.get(1)));
+            invalidAction.setValue("NOT_" + getValidValue(searchValidValueContext.searchValidValue(lineVal.get(1))));
             scriptTemp.set(i, "\t" + invalidAction.exprToString());
         } else if (lineVal.get(1).contains("ce")) {
             ClickElement validAction = new ClickElement(clickElementMap.get(lineVal.get(1)));
@@ -232,7 +234,7 @@ public class AssertTestGen {
         if(lineVal.get(1).contains("it")) {
             InputText validAction = new InputText(inputTextMap.get(lineVal.get(1)));
             validAction.setElementLocator(dataMap.get(validAction.getElementLocator()).get(0));
-            validAction.setValue(searchValidValueContext.searchValidValue(lineVal.get(1)));
+            validAction.setValue(getValidValue(searchValidValueContext.searchValidValue(lineVal.get(1))));
             scriptTemp.set(i, "\t" + validAction.exprToString());
         } else if (lineVal.get(1).contains("ce")) {
             ClickElement validAction = new ClickElement(clickElementMap.get(lineVal.get(1)));
@@ -299,5 +301,20 @@ public class AssertTestGen {
         tbVec.add(new Vector<>(headerVec));
         tbVec.add(new Vector<>(invalidVec));
         return tbVec;
+    }
+
+    public static String getValidValue(String value) {
+        String valueKey = null;
+        int index = 0;
+        for (String key : dataMap.keySet()) {
+            Vector<String> keyVec = arrToVec(key.split(" & "));
+            if (keyVec.contains(value)) {
+                valueKey = key;
+                index = keyVec.indexOf(value);
+                break;
+            }
+        }
+        Vector<String> valueVec = arrToVec(dataMap.get(valueKey).get(0).split(" & "));
+        return valueVec.get(index);
     }
 }

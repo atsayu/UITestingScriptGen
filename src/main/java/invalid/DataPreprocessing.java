@@ -37,11 +37,11 @@ public class DataPreprocessing {
     public static HashMap<String, SelectRadioButton> selectRadioButtonMap = new HashMap<>();
     public static HashMap<String, LocationAssertion> locationShouldBeMap = new HashMap<>();
     public static HashMap<String, PageElementAssertion> pageShouldContainElementMap = new HashMap<>();
-    static Map<String, List<String>> dataMap = new HashMap<>();
+    public static Map<String, List<String>> dataMap = new HashMap<>();
 
     public static void main(String[] args) {
-        initInvalidDataParse("src/main/resources/data_test_invalid/saucedemo_login_xor.csv"
-                , "src/main/resources/data_test_invalid/saucedemo_login_andxor1.xml"
+        initInvalidDataParse("src/main/resources/data/data_thinktester.csv"
+                , "src/main/resources/template/outline_demoqa.xml"
                 , "src/main/resources/robot_test_file/final_test.robot");
     }
 

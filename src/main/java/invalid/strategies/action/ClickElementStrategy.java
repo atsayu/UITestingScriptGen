@@ -5,6 +5,7 @@ import invalid.strategies.Strategy;
 import objects.normalAction.ClickElement;
 
 import static invalid.DataPreprocessing.clickElementMap;
+import static invalid.DataPreprocessing.dataMap;
 
 public class ClickElementStrategy implements Strategy {
     @Override
