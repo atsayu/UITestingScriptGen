@@ -3,22 +3,26 @@ package valid;
 import au.com.bytecode.opencsv.CSVReader;
 
 import java.io.*;
-import java.sql.Array;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import mockpage.*;
 import invalid.DataPreprocessing;
 import invalid.PythonTruthTableServer;
 import objects.Expression;
 import objects.assertion.LocationAssertion;
-import objects.assertion.PageElementAssertion;
 import objects.normalAction.NormalAction;
-import objects2.InputText;
-import org.openqa.selenium.devtools.v85.page.Page;
+import org.apache.tomcat.Jar;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -26,8 +30,223 @@ import org.w3c.dom.NodeList;
 
 
 public class ScriptGen {
-    public static void createDataSheetV2(String outline, String datasheetPath) {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    public static String getStringFromJSON(JSONObject action, JSONObject locatorMap) {
+        StringBuilder s = new StringBuilder();
+        switch (action.get("type").toString()) {
+            case "open":
+                s.append("\tOpen Browser\t").append(action.get("url").toString()).append("\tChrome").append("\n");
+                break;
+            case "click":
+                s.append("\tCLick Element\t").append(locatorMap.get(action.get("describedLocator").toString()).toString()).append("\n");
+                break;
+            case "input":
+                s.append("\tInput Text\t").append(locatorMap.get(action.get("describedLocator").toString()).toString()).append("\t").append(action.get("value").toString()).append("\n");
+                break;
+            case "verifyURL":
+                s.append("\tLocation should be\t").append(action.get("url").toString()).append("\n");
+                break;
+        }
+        return s.toString();
+    }
+    public static String convertJSONToTestScript(JSONArray testSuite, JSONObject locatorMap) {
+        StringBuilder script = new StringBuilder("*** Setting ***\nLibrary\tSeleniumLibrary\n\n*** Test Cases ***\n");
+        for (int i = 0; i < testSuite.size(); i++) {
+            script.append("Test ").append(i + 1).append("\n");
+            JSONObject jsonTestcase = (JSONObject) testSuite.get(i);
+            JSONArray actions = (JSONArray) jsonTestcase.get("actions");
+            for (Object action: actions) {
+                script.append(getStringFromJSON((JSONObject) action, locatorMap));
+            }
+        }
+        return script.toString();
+    }
+    public static void createScriptV3(String outlinePath, String dataSheetPath, String robotFilePath) throws IOException, ParseException {
+//        Map<String, List<String>> dataMap = createDataMap(dataSheetPath);
+
+        JSONObject outlineObject = (JSONObject) new JSONParser().parse(new FileReader(outlinePath));
+        JSONArray testcases = (JSONArray) outlineObject.get("testcases");
+        JSONObject testcase = (JSONObject) testcases.get(0);
+        StringBuilder script = new StringBuilder();
+        JSONArray storedData = (JSONArray) outlineObject.get("storedData");
+        JSONArray variablesJSON = (JSONArray) outlineObject.get("variables");
+        String[] variableString = new String[variablesJSON.size()];
+
+        for (int i = 0; i < variableString.length; i++) {
+            variableString[i] = variablesJSON.get(i).toString();
+        }
+
+        String testUrl = outlineObject.get("url").toString();
+        JSONArray actions = (JSONArray) testcase.get("actions");
+        JSONArray testSuite = new JSONArray();
+        for (int i = 0; i < storedData.size(); i++) {
+            JSONObject dataSet = (JSONObject) storedData.get(i);
+            Map<String, String> dataMap = new HashMap<>();
+
+            //Store data to map
+            for (String variable: variableString) {
+                String userData = dataSet.get(variable).toString();
+                String[] singleVariable = variable.split("\\s*&\\s*|\\s*\\|\\s*");
+                String[] singleData = userData.split("\\s*&\\s*|\\s*\\|\\s*");
+                for (int j = 0; j < singleVariable.length; j++) {
+                    dataMap.put(singleVariable[j], singleData[j]);
+                }
+            }
+
+            //Init List of List for backtracking
+
+            List<List<List<JSONObject>>> backTrackList = new ArrayList<>();
+            List<JSONObject> listForOpenAction = new ArrayList<>();
+            JSONObject openAction = new JSONObject();
+            openAction.put("type", "open");
+            openAction.put("url", testUrl);
+            listForOpenAction.add(openAction);
+            List<List<JSONObject>> listForOpen = new ArrayList<>();
+            listForOpen.add(listForOpenAction);
+            backTrackList.add(listForOpen);
+
+            for (int j = 0; j < actions.size(); j++) {
+                JSONObject action = (JSONObject) actions.get(j);
+                List<List<JSONObject>> listForCurAction = new ArrayList<>();
+                List<List<JSONObject>> DNFList = LogicParser.createDNFListV2(LogicParser.createActionV2(action));
+                for (List<JSONObject> andOfSingleActions: DNFList) {
+                    List<JSONObject> combination = new ArrayList<>();
+                    for (JSONObject singleAction: andOfSingleActions) {
+                        combination.add(createActionHaveData(singleAction, dataMap));
+                    }
+                    listForCurAction.add(combination);
+                }
+                backTrackList.add(listForCurAction);
+            }
+            backtrackV2(backTrackList, testSuite, new JSONArray(), 0);
+        }
+        System.out.println(testSuite);
+        JSONObject locatorMap =  sendRequestToLocatorDetector(testSuite);
+
+        String robotScript = convertJSONToTestScript(testSuite, locatorMap);
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(robotFilePath)));
+        bufferedWriter.append(robotScript);
+        bufferedWriter.close();
+
+
+//        JSONArray flatActionList = new JSONArray();
+//        script.append("\tOpen Browser\t").append(testUrl).append("\tChrome\n");
+//        JSONObject open = new JSONObject();
+//        open.put("type", "open");
+//        open.put("url", testUrl);
+//        flatActionList.add(open);
+////        map.for
+//        for (Object action: actions) {
+//            JSONObject jsonAction = (JSONObject) action;
+//            if (!jsonAction.get("type").equals("and")) {
+//                JSONObject actionClone = new JSONObject(jsonAction);
+//                switch (jsonAction.get("type").toString()) {
+//                    case "input":
+//                        if (jsonAction.get("type").equals("input")) actionClone.put("value", dataMap.get(jsonAction.get("value").toString()).get(0));
+//                        script.append("");
+//                }
+//
+//                if (jsonAction.get("type").equals("verifyURL")) actionClone.put("url", dataMap.get(jsonAction.get("url").toString()).get(0));
+//                flatActionList.add(actionClone);
+//
+//            } else {
+//                JSONArray children = (JSONArray) jsonAction.get("actions");
+//                for (Object child: children) {
+//                    JSONObject jsonChild = (JSONObject) child;
+//                    JSONObject actionClone = new JSONObject(jsonChild);
+//                    actionClone.put("value", dataMap.get(jsonChild.get("value").toString()).get(0));
+//                    flatActionList.add(actionClone);
+//                }
+//            }
+//        }
+    }
+
+    public static void backtrackV2 (List<List<List<JSONObject>>> actions, JSONArray testSuite, JSONArray actionInTestCase, int i) {
+        if (i >= actions.size()) {
+            JSONObject testcase = new JSONObject();
+            testcase.put("actions", actionInTestCase);
+            testSuite.add(testcase);
+            return;
+        } else {
+            List<List<JSONObject>> combinations = actions.get(i);
+            for (List<JSONObject> combination: combinations) {
+                JSONArray newActions = new JSONArray();
+                newActions.addAll(actionInTestCase);
+                newActions.addAll(combination);
+                backtrackV2(actions, testSuite, newActions, i + 1);
+            }
+        }
+    }
+
+    public static JSONObject createActionHaveData(JSONObject action, Map<String, String> dataMap) {
+        JSONObject actionHaveData = new JSONObject(action);
+        String variable = "";
+        switch (action.get("type").toString()) {
+            case "click":
+                return actionHaveData;
+            case "input":
+                variable = actionHaveData.get("value").toString();
+                actionHaveData.put("value", dataMap.get(variable));
+                return actionHaveData;
+            case "verifyURL":
+                variable = actionHaveData.get("url").toString();
+                actionHaveData.put("url", dataMap.get(variable));
+                return actionHaveData;
+        }
+        actionHaveData.put("error", "wrong type");
+        return actionHaveData;
+    }
+
+    public static void createDataSheetV3(String outlinePath, String datasheetPath) throws IOException, ParseException {
+        JSONObject outlineJSON = (JSONObject) new JSONParser().parse(new FileReader(outlinePath));
+        JSONArray variableAndData = (JSONArray) outlineJSON.get("data");
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(datasheetPath));
+        for (Object data: variableAndData) {
+            String dataLine = (String) data;
+            bufferedWriter.append(dataLine).append("\n");
+        }
+        bufferedWriter.close();
+    }
+
+    public static JSONObject sendRequestToLocatorDetector(JSONArray testsuite) {
+        RestTemplate restTemplate = new RestTemplate();
+        JSONArray testcases = new JSONArray();
+        JSONObject testcase = new JSONObject();
+
+        JSONArray jsonArray = new JSONArray();
+        JSONObject open = new JSONObject();
+        open.put("type", "open");
+        open.put("url", "https://www.saucedemo.com/");
+        jsonArray.add(open);
+        JSONObject user = new JSONObject();
+        user.put("type", "input");
+        user.put("describedLocator", "username");
+        user.put("value", "standard_user");
+        jsonArray.add(user);
+        JSONObject pass = new JSONObject();
+        pass.put("type", "input");
+        pass.put("describedLocator", "password");
+        pass.put("value", "secret_sauce");
+        jsonArray.add(pass);
+        JSONObject click = new JSONObject();
+        click.put("type", "click");
+        click.put("describedLocator", "login");
+        jsonArray.add(click);
+        JSONObject verify = new JSONObject();
+        verify.put("type", "verifyUrl");
+        verify.put("url", "https://www.saucedemo.com/inventory.html");
+        jsonArray.add(verify);
+
+        testcase.put("actions", jsonArray);
+        testcases.add(testcase);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<JSONArray> entity = new HttpEntity<>(testsuite,headers);
+        JSONObject res = restTemplate.postForObject("http://localhost:8080/locator", entity,JSONObject.class);
+        System.out.println(res.get("username"));
+        return res;
+    }
+    public static void createDataSheetV2(String outlinePath, String datasheetPath) {
         try{
             File newfile = new File(datasheetPath);
             if (newfile.createNewFile()) {
@@ -36,66 +255,91 @@ public class ScriptGen {
                 System.out.println("The file" + datasheetPath + "already exists!");
             }
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(datasheetPath));
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(new File(outline));
-            StringBuilder content = new StringBuilder();
-            String url = document.getElementsByTagName("url").item(0).getTextContent();
-            NodeList testcases = document.getElementsByTagName("TestCase");
-            List<Element> testCaseElements = new ArrayList<>();
-            for (int i = 0; i < testcases.getLength(); i++) {
-                Node testcase = testcases.item(i);
-                if (testcase.getNodeType() == Node.ELEMENT_NODE)
-                    testCaseElements.add((Element) testcase);
+            Object outlineObject = new JSONParser().parse(new FileReader(outlinePath));
+
+
+
+            JSONObject outlineJSON = (JSONObject) outlineObject;
+            JSONArray vars = (JSONArray) outlineJSON.get("variables");
+            String[] variableStrings = new String[vars.size()];
+            for (int i = 0; i < variableStrings.length; i++) {
+                variableStrings[i] = vars.get(i).toString();
             }
+
+            JSONArray data = (JSONArray) outlineJSON.get("data");
+            List<List<String>> dataString = new ArrayList<>();
+            for (int i = 0; i < data.size(); i++) {
+
+                List<String> dataList = new ArrayList<>(List.of(data.get(i).toString().split(",")));
+                dataString.add(dataList);
+            }
+            Map<String, List<String>> variableData = new HashMap<>();
+            for (int i = 0; i < dataString.size(); i++) {
+                variableData.put(variableStrings[i], dataString.get(i));
+            }
+            StringBuilder content = new StringBuilder();
+            String url = outlineJSON.get("url").toString();
+//            NodeList testcases = document.getElementsByTagName("TestCase");
+            JSONArray testcases = (JSONArray) outlineJSON.get("testcases");
+//            List<Element> testCaseElements = new ArrayList<>();
+//            for (int i = 0; i < testcases.getLength(); i++) {
+//                Node testcase = testcases.item(i);
+//                if (testcase.getNodeType() == Node.ELEMENT_NODE)
+//                    testCaseElements.add((Element) testcase);
+//            }
             //This list will be passed to the finding locator API
             List<String> locators = new ArrayList<>();
 //            locators.add(url);
-            for (Element testcaseElement: testCaseElements) {
-                boolean haveAssert = Boolean.parseBoolean(testcaseElement.getElementsByTagName("assert").item(0).getTextContent());
-                NodeList testCaseChildNodes = testcaseElement.getChildNodes();
-                List<Element> expressionActionElements2 = new ArrayList<>();
-                for (int i = 0; i < testCaseChildNodes.getLength(); i++) {
-                    Node childNode = testCaseChildNodes.item(i);
-                    if (childNode.getNodeType() == Node.ELEMENT_NODE && ((Element) childNode).getTagName().equals("LogicExpressionOfActions"))
-                        expressionActionElements2.add((Element) childNode);
-                }
+            for (Object testcase: testcases) {
+                JSONObject testcaseJSON = (JSONObject) testcase;
+//                boolean haveAssert = Boolean.parseBoolean(testcaseElement.getElementsByTagName("assert").item(0).getTextContent());
+                boolean haveAssert = (boolean) testcaseJSON.get("haveAssert");
+                JSONArray actions = (JSONArray) testcaseJSON.get("actions");
+//                NodeList testCaseChildNodes = testcaseElement.getChildNodes();
+//                List<Element> expressionActionElements2 = new ArrayList<>();
+//                for (int i = 0; i < testCaseChildNodes.getLength(); i++) {
+//                    Node childNode = testCaseChildNodes.item(i);
+//                    if (childNode.getNodeType() == Node.ELEMENT_NODE && ((Element) childNode).getTagName().equals("LogicExpressionOfActions"))
+//                        expressionActionElements2.add((Element) childNode);
+//                }
                 if (haveAssert) {
                     List<List<String>> beforeAssertActions = new ArrayList<>();
                     Stack<String> assertionStack = new Stack<>();
-                    for (Element expressionActionElement: expressionActionElements2) {
-                        String type = expressionActionElement.getElementsByTagName("type").item(0).getTextContent();
-                        if (type.contains("Verify")) {
+                    for (Object actionObj: actions) {
+                        JSONObject actionJSON = (JSONObject) actionObj;
+                        String type = actionJSON.get("type").toString();
+                        if (type.contains("verify")) {
                             switch (type) {
-                                case "Verify url":
-                                    System.out.println(expressionActionElement.getElementsByTagName("url").getLength());
-                                    assertionStack.add(expressionActionElement.getElementsByTagName("url").item(0).getTextContent());
+                                case "verifyURL":
+//                                    System.out.println(expressionActionElement.getElementsByTagName("url").getLength());
+                                    assertionStack.add(actionJSON.get("url").toString());
                                     String assertionExpression = String.join(" & ", assertionStack.stream().toList());
                                     System.out.println(assertionExpression);
                                     List<String> verifyList = new ArrayList<>();
-                                    verifyList.add(expressionActionElement.getElementsByTagName("url").item(0).getTextContent());
+                                    verifyList.add(actionJSON.get("url").toString());
                                     beforeAssertActions.add(verifyList);
                                     StringBuilder andActions = new StringBuilder();
                                     List<String> output = new ArrayList<>();
                                     addActionAndAssert(beforeAssertActions, output, 0, new StringBuilder());
                                     System.out.println(output);
-                                    for (String assertString: output) content.append(assertString).append("\n");
+                                    for (String assertString: output) content.append(assertString).append(getDataFromMap(assertString, variableData)).append("\n");
                             }
                         }
-                        if (!type.equals("and") && !type.equals("or") && !type.contains("Verify")) {
-                            NormalAction action = (NormalAction) LogicParser.createAction(expressionActionElement).getAllK().stream().toList().get(0);
+                        if (!type.equals("and") && !type.equals("or") && !type.contains("verify")) {
+                            NormalAction action = (NormalAction) LogicParser.createAction(actionJSON).getAllK().stream().toList().get(0);
                             String elementLocator = action.getElementLocator();
                             if (!locators.contains(elementLocator))
                                 locators.add(elementLocator);
                             String value = action.getValue();
                             if (value != null) {
                                 assertionStack.add(value);
-                                if (content.indexOf(value) == -1) content.append(value).append("\n");
+                                if (content.indexOf(value) == -1) content.append(value).append(getDataFromMap(value, variableData)).append("\n");
                                 List<String> curActionListString = new ArrayList<>();
                                 curActionListString.add(value);
                                 beforeAssertActions.add(curActionListString);
                             }
-                        } else if(!type.contains("Verify")) {
-                            List<List<Expression>> dnfList = LogicParser.createDNFList(LogicParser.createAction(expressionActionElement));
+                        } else if(!type.contains("verify")) {
+                            List<List<Expression>> dnfList = LogicParser.createDNFList(LogicParser.createAction(actionJSON));
                             List<List<String>> texts = new ArrayList<>();
                             for (List<Expression> actionList : dnfList) {
                                 List<String> textList = new ArrayList<>();
@@ -126,12 +370,12 @@ public class ScriptGen {
                                 assertionStack.add(satisfy.toString());
                                 curActionListString.add(satisfy.toString());
                                 if (content.indexOf(satisfy.toString()) == -1)
-                                    content.append(new StringBuilder(satisfy)).append("\n");
+                                    content.append(new StringBuilder(satisfy)).append(getDataFromMap(satisfy.toString(), variableData)).append("\n");
                             }
                             beforeAssertActions.add(curActionListString);
 
                             //This block of code is for invalid test gen
-                            String action = LogicParser.createTextExpression(expressionActionElement).toString();
+                            String action = LogicParser.createTextExpression(actionJSON).toString();
                             System.out.println(action);
                             if (action.charAt(0) == '(') {
                                 action = action.substring(1, action.length() - 1);
@@ -153,26 +397,29 @@ public class ScriptGen {
                                 }
                             }
                             for (int i = 0; i < variables.length; i++) {
-                                if (variables[i]) content.append(tb.get(0).get(i)).append("\n");
+                                if (variables[i]) content.append(tb.get(0).get(i)).append(getDataFromMap(tb.get(0).get(i), variableData)).append("\n");
                             }
 
                         }
 
                     }
                 } else {
-                    for (Element expressionActionElement: expressionActionElements2) {
-                        String type = expressionActionElement.getElementsByTagName("type").item(0).getTextContent();
+                    for (Object actionObj: actions) {
+                        JSONObject actionJSON = (JSONObject) actionObj;
+                        String type = actionJSON.get("type").toString();
                         if (!type.equals("and") && !type.equals("or")) {
-                            NormalAction action = (NormalAction) LogicParser.createAction(expressionActionElement).getAllK().stream().toList().get(0);
+                            NormalAction action = (NormalAction) LogicParser.createAction(actionJSON).getAllK().stream().toList().get(0);
                             String elementLocator = action.getElementLocator();
                             if (!locators.contains(elementLocator))
                                 locators.add(elementLocator);
                             String value = action.getValue();
                             if (value != null) {
-                                if (content.indexOf(value) == -1) content.append(value).append("\n");
+                                if (content.indexOf(value) == -1) {
+                                    content.append(value).append(getDataFromMap(value, variableData)).append("\n");
+                                }
                             }
                         } else {
-                            List<List<Expression>> dnfList = LogicParser.createDNFList(LogicParser.createAction(expressionActionElement));
+                            List<List<Expression>> dnfList = LogicParser.createDNFList(LogicParser.createAction(actionJSON));
                             List<List<String>> texts = new ArrayList<>();
                             for (List<Expression> actionList : dnfList) {
                                 List<String> textList = new ArrayList<>();
@@ -200,11 +447,11 @@ public class ScriptGen {
                                     }
                                 }
                                 if (content.indexOf(satisfy.toString()) == -1)
-                                    content.append(new StringBuilder(satisfy)).append("\n");
+                                    content.append(new StringBuilder(satisfy)).append(getDataFromMap(satisfy.toString(), variableData)).append("\n");
                             }
 
                             //This block of code is for invalid test gen
-                            String action = LogicParser.createTextExpression(expressionActionElement).toString();
+                            String action = LogicParser.createTextExpression(actionJSON).toString();
                             System.out.println(action);
                             if (action.charAt(0) == '(') {
                                 action = action.substring(1, action.length() - 1);
@@ -226,7 +473,7 @@ public class ScriptGen {
                                 }
                             }
                             for (int i = 0; i < variables.length; i++) {
-                                if (variables[i]) content.append(tb.get(0).get(i)).append("\n");
+                                if (variables[i]) content.append(tb.get(0).get(i)).append(getDataFromMap(tb.get(0).get(i), variableData)).append("\n");
                             }
 
                         }
@@ -245,7 +492,19 @@ public class ScriptGen {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public static String getDataFromMap(String exprVariable, Map<String, List<String>> variableDataMap) {
+        String[] singleVariable = exprVariable.split(" & ");
+        String[] singleData = new String[singleVariable.length];
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < variableDataMap.get(singleVariable[0]).size(); i++) {
+            for (int j = 0; j < singleData.length; j++) {
+                singleData[j] = variableDataMap.get(singleVariable[j]).get(i);
+            }
+            res.append(",").append(String.join(" & ", singleData));
+        }
+        return res.toString();
     }
 
     public static List<String> fakeLocatorDectector(List<String> elementDescription) {
@@ -391,45 +650,52 @@ public class ScriptGen {
         }
     }
 
+    public static String getTestCaseScript(Map<Integer, List<StringBuilder>> lines, String testName) {
+        StringBuilder script = new StringBuilder();
+        createTestCase(0, lines, new StringBuilder(), script, testName, new AtomicInteger(1));
+        return script.toString();
+    }
+
     public static void createScriptV2(String outlinePath, String dataPath, String outputScriptPath) {
         Map<String, List<String>> dataMap = createDataMap(dataPath);
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); 
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outputScriptPath));
-            DocumentBuilder bulider = factory.newDocumentBuilder();
-            Document document = bulider.parse(new File(outlinePath));
-            String url = document.getElementsByTagName("url").item(0).getTextContent();
-            NodeList testcases = document.getElementsByTagName("TestCase");
+            JSONObject outlineJSON = (JSONObject) new JSONParser().parse(new FileReader(outlinePath));
+
+            String url = outlineJSON.get("url").toString();
+            JSONArray testcases = (JSONArray) outlineJSON.get("testcases");
             StringBuilder content = new StringBuilder();
             content.append("*** Setting ***\nLibrary\tSeleniumLibrary\n\n*** Test Cases ***\n");
             StringBuilder header = new StringBuilder("*** Variables ***\n");
-            for (int i = 0; i < testcases.getLength(); i++) {
-                Node testcase = testcases.item(i);
+            for (int i = 0; i < testcases.size(); i++) {
+                JSONObject testcaseJSON = (JSONObject) testcases.get(i);
                 StringBuilder testScript = new StringBuilder();
                 testScript.append("\tOpen Browser\t").append(url).append("\tChrome\n");
                 testScript.append("\tMaximize Browser Window\n");
-                if (testcase.getNodeType() != Node.ELEMENT_NODE) continue;
-                Element testcaseElement = (Element) testcase;
-                String testName = testcaseElement.getElementsByTagName("Scenario").item(0).getTextContent();
+//                if (testcase.getNodeType() != Node.ELEMENT_NODE) continue;
+
+                String testName = testcaseJSON.get("scenario").toString();
                 StringBuilder validations = new StringBuilder();
-                boolean haveAssert = Boolean.parseBoolean(testcaseElement.getElementsByTagName("assert").item(0).getTextContent());
-//                for (int j = 0; j < )
+                boolean haveAssert = (boolean) testcaseJSON.get("haveAssert");
+//
                 //Giả sử luôn có assert URL
-                NodeList nodes = testcaseElement.getChildNodes();
-                List<Element> parentLogicOfActions = new ArrayList<>();
-                for (int j = 0; j < nodes.getLength(); j++) {
-                    if (nodes.item(j).getNodeType() == Node.ELEMENT_NODE && ((Element) nodes.item(j)).getTagName().equals("LogicExpressionOfActions"))
-                        parentLogicOfActions.add((Element) nodes.item(j));
-                }
+//                NodeList nodes = testcaseElement.getChildNodes();
+//                List<Element> parentLogicOfActions = new ArrayList<>();
+//                for (int j = 0; j < nodes.getLength(); j++) {
+//                    if (nodes.item(j).getNodeType() == Node.ELEMENT_NODE && ((Element) nodes.item(j)).getTagName().equals("LogicExpressionOfActions"))
+//                        parentLogicOfActions.add((Element) nodes.item(j));
+//                }
+                JSONArray actions = (JSONArray) testcaseJSON.get("actions");
                 Map<Integer, List<StringBuilder>> lines = new HashMap<>();
                 if (haveAssert) {
-                    createScriptListHaveAssert(parentLogicOfActions, dataMap, header, lines);
+                    createScriptListHaveAssert(actions, dataMap, header, lines);
                 } else {
-                    createScriptListNoAssert(parentLogicOfActions, dataMap, header, lines);
+                    createScriptListNoAssert(actions, dataMap, header, lines);
                 }
-
-                createTestCase(0, lines, testScript, content, testName, new AtomicInteger(1));
+//                createTestCase(0, lines, testScript, content, testName, new AtomicInteger(1));
+                content.append(getTestCaseScript(lines, testName));
             }
+
             content.insert(0, header.append("\n"));
             bufferedWriter.append(content);
             bufferedWriter.close();
@@ -439,12 +705,13 @@ public class ScriptGen {
         }
     }
 
-    private static void createScriptListNoAssert(List<Element> parentLogicOfActions, Map<String, List<String>> dataMap, StringBuilder header, Map<Integer, List<StringBuilder>> lines) {
-        for (Element cur: parentLogicOfActions) {
-            String type = cur.getElementsByTagName("type").item(0).getTextContent();
+    private static void createScriptListNoAssert(JSONArray actions, Map<String, List<String>> dataMap, StringBuilder header, Map<Integer, List<StringBuilder>> lines) {
+        for (Object actionObj: actions) {
+            JSONObject actionJSON = (JSONObject) actionObj;
+            String type = actionJSON.get("type").toString();
             if (!type.equals("or") && !type.equals("and")) {
                 List<StringBuilder> realTestScriptsList = new ArrayList<>();
-                NormalAction actionObject = (NormalAction) LogicParser.createAction(cur).getAllK().stream().toList().get(0);
+                NormalAction actionObject = (NormalAction) LogicParser.createAction(actionJSON).getAllK().stream().toList().get(0);
                 String elementLocator = actionObject.getElementLocator();
                 StringBuilder elementLocatorXpath = new StringBuilder("${").append(elementLocator).append("}").append("\t").append(dataMap.get(elementLocator).get(0)).append("\n");
                 if (header.indexOf(elementLocatorXpath.toString()) == -1) header.append(elementLocatorXpath);
@@ -452,17 +719,17 @@ public class ScriptGen {
                 String valueOfAction = actionObject.getValue();
                 if (valueOfAction != null) {
                     for (String realValue : dataMap.get(valueOfAction)) {
-                        StringBuilder realTestScript = new StringBuilder(testScriptWithVariable);
+                        StringBuilder realTestScript = new StringBuilder("\t").append(testScriptWithVariable).append("\n");
                         replace(valueOfAction, realValue, realTestScript);
                         realTestScriptsList.add(realTestScript);
                     }
                 } else {
-                    StringBuilder realTestScript = new StringBuilder(testScriptWithVariable);
+                    StringBuilder realTestScript = new StringBuilder("\t").append(testScriptWithVariable).append("\n");
                     realTestScriptsList.add(realTestScript);
                 }
                 lines.put(lines.size(), realTestScriptsList);
             } else {
-                List<List<Expression>> dnfList = LogicParser.createDNFList(LogicParser.createAction(cur));
+                List<List<Expression>> dnfList = LogicParser.createDNFList(LogicParser.createAction(actionJSON));
                 List<StringBuilder> realTestScriptList = new ArrayList<>();
                 for (List<Expression> andOfActions: dnfList) {
                     List<String> valueOfActionList = new ArrayList<>();
@@ -491,17 +758,19 @@ public class ScriptGen {
         }
     }
 
-    private static void createScriptListHaveAssert(List<Element> parentLogicOfActions, Map<String, List<String>> dataMap, StringBuilder header, Map<Integer, List<StringBuilder>> lines) {
+    private static void createScriptListHaveAssert(JSONArray actions, Map<String, List<String>> dataMap, StringBuilder header, Map<Integer, List<StringBuilder>> lines) {
         Stack<String> assertionStack = new Stack<>();
         List<List<String>> beforeAssertionStack = new ArrayList<>();
         List<List<String>> listOfBlockActions = new ArrayList<>();
-        for (int j = 0; j < parentLogicOfActions.size(); j++) {
+
+        for (int j = 0; j < actions.size(); j++) {
+
             List<StringBuilder> possibleAction = new ArrayList<>();
-            while (!parentLogicOfActions.get(j).getElementsByTagName("type").item(0).getTextContent().equals("Verify URL")) {
-                Element cur = parentLogicOfActions.get(j);
-                String type = cur.getElementsByTagName("type").item(0).getTextContent();
+            while (!((JSONObject) actions.get(j)).get("type").toString().contains("verify")) {
+                JSONObject actionJSON = (JSONObject) actions.get(j);
+                String type = actionJSON.get("type").toString();
                 if (!type.equals("or") && !type.equals("and")) {
-                    NormalAction action = (NormalAction) LogicParser.createAction(cur).getAllK().stream().toList().get(0);
+                    NormalAction action = (NormalAction) LogicParser.createAction(actionJSON).getAllK().stream().toList().get(0);
                     List<StringBuilder> list = new ArrayList<>();
                     StringBuilder actionString = new StringBuilder();
                     String elementLocator = action.getElementLocator();
@@ -522,7 +791,7 @@ public class ScriptGen {
                     if (header.indexOf(locatorAndXpath.toString()) == -1)
                         header.append(locatorAndXpath);
                 } else {
-                    List<List<Expression>> dnfList = LogicParser.createDNFList(LogicParser.createAction(cur));
+                    List<List<Expression>> dnfList = LogicParser.createDNFList(LogicParser.createAction(actionJSON));
                     Map<String, String> valueToAction = new HashMap<>();
                     List<List<String>> texts = new ArrayList<>();
                     for (List<Expression> actionList : dnfList) {
@@ -572,13 +841,13 @@ public class ScriptGen {
                 j++;
             }
             List<StringBuilder> realBlockOfCode = new ArrayList<>();
-            Element cur = parentLogicOfActions.get(j);
-            String type = cur.getElementsByTagName("type").item(0).getTextContent();
+            JSONObject actionJSON = (JSONObject) actions.get(j);
+            String type = actionJSON.get("type").toString();
             switch (type) {
-                case "Verify URL":
-                    String expectedUrl = cur.getElementsByTagName("url").item(0).getTextContent();
+                case "verifyURL":
+                    String expectedUrl = actionJSON.get("url").toString();
                     assertionStack.push(expectedUrl);
-                    LocationAssertion verifyActionObject = (LocationAssertion) LogicParser.createAction(cur).getAllK().stream().toList().get(0);
+                    LocationAssertion verifyActionObject = (LocationAssertion) LogicParser.createAction(actionJSON).getAllK().stream().toList().get(0);
                     List<String> verifyList = new ArrayList<>();
                     StringBuilder verifyAction = new StringBuilder();
                     verifyAction.append("\tLocation should be\t").append(expectedUrl).append("\n");
@@ -611,7 +880,7 @@ public class ScriptGen {
                     }
                     break;
                 case "Page Element Assertion":
-                    String assertElementLocator = cur.getElementsByTagName("url").item(0).getTextContent();
+                    String assertElementLocator = actionJSON.get("url").toString();
 //                                PageElementAssertion verifyElementObject = (PageElementAssertion) LogicParser.createAction(cur).getAllK().stream().toList().get(0);
                     StringBuilder verifyScript = new StringBuilder();
                     break;
@@ -620,9 +889,12 @@ public class ScriptGen {
         }
     }
 
-    public static void main(String[] args) {
-//        createDataSheetV2("src/main/resources/template/outline.xml", "src/main/resources/data/data_sheet.csv");
-        createScriptV2("src/main/resources/template/outline.xml", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
+    public static void main(String[] args) throws IOException, ParseException {
+//        sendRequestToLocatorDetector();
+        createScriptV3("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
+//        createDataSheetV3("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
+//        createDataSheetV2("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
+//        createScriptV2("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
 //
 //        createDataSheetV2("outline_demoqa.xml", "data_demoqa.csv");
 //        createScriptV2("outline_demoqa.xml", "data_demoqa.csv", "test_demoqa.robot");

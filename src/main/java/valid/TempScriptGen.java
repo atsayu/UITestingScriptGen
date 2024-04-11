@@ -22,6 +22,7 @@ import mockpage.Pair;
 import objects.normalAction.NormalAction;
 import objects2.Expression;
 import objects2.InputText;
+import org.json.simple.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -130,7 +131,7 @@ public class TempScriptGen {
 
 
           } else {
-            List<List<objects.Expression>> dnfList = LogicParser.createDNFList(LogicParser.createAction(expressionActionElement));
+            List<List<objects.Expression>> dnfList = LogicParser.createDNFList(LogicParser.createAction(new JSONObject()));
             List<List<String>> texts = new ArrayList<>();
             for (List<objects.Expression> actionList : dnfList) {
               List<String> textList = new ArrayList<>();
@@ -162,7 +163,7 @@ public class TempScriptGen {
             }
 
             //This block of code is for invalid test gen
-            String action = LogicParser.createTextExpression(expressionActionElement).toString();
+            String action = LogicParser.createTextExpression(new JSONObject()).toString();
             if (action.charAt(0) == '(') {
               action = action.substring(1, action.length() - 1);
             }
