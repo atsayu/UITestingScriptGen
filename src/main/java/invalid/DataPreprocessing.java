@@ -23,12 +23,12 @@ import java.util.*;
 
 import static invalid.AssertTestGen.assertTestGenInit;
 import static invalid.FileWriteModule.writeStringsToFile;
-import static invalid.PythonTruthTableServer.dnfParse;
-import static invalid.PythonTruthTableServer.logicParse;
+import static invalid.PythonTruthTableServer.*;
 
 
 public class DataPreprocessing {
-    public static Dictionary<String, Vector<Vector<Vector<String>>>> lineDict = new Hashtable<>();
+    public static Dictionary<String, Vector<Vector<Vector<String>>>> dnfLineDict = new Hashtable<>();
+    public static Dictionary<String, Vector<Vector<Vector<String>>>> cnfLineDict = new Hashtable<>();
     static Vector<Vector<String>> invalidDict = new Vector<>();
     public static Vector<String> temp = new Vector<>();
 
@@ -40,7 +40,9 @@ public class DataPreprocessing {
     static Map<String, List<String>> dataMap = new HashMap<>();
 
     public static void main(String[] args) {
-        initInvalidDataParse("src/main/resources/data_test_invalid/saucedemo_login_xor.csv", "src/main/resources/data_test_invalid/saucedemo_login_xor.xml", "src/main/resources/robot_test_file/final_test.robot");
+        initInvalidDataParse("src/main/resources/data_test_invalid/saucedemo_login_xor.csv"
+                , "src/main/resources/data_test_invalid/saucedemo_login_andxor1.xml"
+                , "src/main/resources/robot_test_file/final_test.robot");
     }
 
     public static void initInvalidDataParse(String csvPath, String xmlPath, String robotPath) {
@@ -59,7 +61,8 @@ public class DataPreprocessing {
 
             if (doc.hasChildNodes()) {
                 parseTestSuite(doc.getChildNodes());
-                System.out.println(lineDict);
+                System.out.println(dnfLineDict);
+                System.out.println(cnfLineDict);
                 writeStringsToFile(assertTestGenInit(), robotPath);
 //                Vector<String> finalTest = invalidTestCaseGen();
 //                writeStringsToFile(finalTest, robotPath);
@@ -71,6 +74,7 @@ public class DataPreprocessing {
 
     }
 
+    //TODO: refactor to JSON
     public static void parseTestSuite(NodeList nodeList) {
         for (int count = 0; count < nodeList.getLength(); count++) {
             Node tempNode = nodeList.item(count);
@@ -82,6 +86,7 @@ public class DataPreprocessing {
         }
     }
 
+    //TODO: refactor to JSON
     public static void parseUrl(NodeList nodeList) {
         for (int count = 0; count < nodeList.getLength(); count++) {
             Node tempNode = nodeList.item(count);
@@ -96,6 +101,7 @@ public class DataPreprocessing {
         }
     }
 
+    //TODO: refactor to JSON
     public static void parseTest(NodeList nodeList) {
         int line = 1;
         for (int count = 0; count < nodeList.getLength(); count++) {
@@ -106,7 +112,8 @@ public class DataPreprocessing {
                     case "LogicExpressionOfActions" -> {
                         exprToMap(logicExpr(tempNode.getChildNodes(), false));
                         String encodedExpr = exprEncode(logicExpr(tempNode.getChildNodes(), false));
-                        lineDict.put("LINE" + line, dnfParse(encodedExpr));
+                        dnfLineDict.put("LINE" + line, dnfParse(encodedExpr));
+                        cnfLineDict.put("LINE" + line, cnfParse(encodedExpr));
                         line++;
                     }
                 }
@@ -117,11 +124,11 @@ public class DataPreprocessing {
 
     public static void templateGen() {
         int i = 1;
-        while (lineDict.get("LINE" + i) != null) {
+        while (dnfLineDict.get("LINE" + i) != null) {
             Vector<String> headerVec = new Vector<>();
-            for (int j = 0; j < lineDict.get("LINE" + i).size(); j++) {
-                for (int k = 0; k < lineDict.get("LINE" + i).get(j).get(0).size(); k++) {
-                    String header = lineDict.get("LINE" + i).get(j).get(0).get(k);
+            for (int j = 0; j < dnfLineDict.get("LINE" + i).size(); j++) {
+                for (int k = 0; k < dnfLineDict.get("LINE" + i).get(j).get(0).size(); k++) {
+                    String header = dnfLineDict.get("LINE" + i).get(j).get(0).get(k);
                     if (!headerVec.contains(header)) {
                         headerVec.add(header);
                     }
@@ -156,7 +163,7 @@ public class DataPreprocessing {
         }
     }
 
-    //TODO refactor
+    //TODO: refactor to JSON
     public static String logicExpr(NodeList nodeList, boolean isChild) {
         String type = null;
         StringBuilder temp = new StringBuilder();
@@ -255,7 +262,7 @@ public class DataPreprocessing {
 
     public static void initInvalidDict() {
         StringBuilder expr = new StringBuilder();
-        Enumeration<String> enumeration = lineDict.keys();
+        Enumeration<String> enumeration = dnfLineDict.keys();
         while (enumeration.hasMoreElements()) {
             expr.append(enumeration.nextElement()).append("%26");
         }
