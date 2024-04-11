@@ -40,12 +40,12 @@ public class AssertTestGen {
                 }
             }
             assertTemp.removeIf(String::isBlank);
-            assertStaticFill(assertTemp, assertStructureMap.get(key));
             Vector<String> finalTest = new Vector<>();
             if (!assertStructureMap.get(key).get(0).isEmpty()) {
                 finalTest = assertValidTestTrace(assertTemp, assertStructureMap.get(key).get(0));
             }
-            assertInvalidDataFill(finalTest, assertStructureMap.get(key).get(1));
+            finalTest = assertInvalidDataFill(finalTest, assertStructureMap.get(key).get(1));
+            assertStaticFill(finalTest, assertStructureMap.get(key));
             finalScript.addAll(finalTest);
         }
         return finalScript;
@@ -95,7 +95,9 @@ public class AssertTestGen {
         String actionVal = searchValidValueContext.searchValidValue(lineVal.get(1));
         int actionValIndex = headerKeyVec.indexOf(actionVal);
         if(actionValIndex == -1) {
-            scriptTemp.set(i, "");
+            if (isDynamic(lineVal.get(1))) {
+                scriptTemp.set(i, "");
+            }
         } else {
             if(lineVal.get(1).contains("it")) {
                 InputText validAction = new InputText(inputTextMap.get(lineVal.get(1)));
@@ -126,21 +128,6 @@ public class AssertTestGen {
         return scriptTemp;
     }
 
-    private static Vector<String> assertInvalidValidDataFill(Vector<String> validTemp, String validVal, Vector<String> validActionVec, Vector<String> dataMapKeyVec) {
-        Vector<String> validValVec = arrToVec(validVal.split(" & "));
-        validValVec.replaceAll(String::trim);
-        for (int i = 0; i < validTemp.size(); i++) {
-            if (validTemp.get(i).contains("LINE")) {
-                Vector<String> lineVal = arrToVec(validTemp.get(i).split("\t"));
-                lineVal.replaceAll(String::trim);
-                if (validActionVec.contains(lineVal.get(1))) {
-                    scriptDataFill(validTemp, i, lineVal, dataMapKeyVec, validValVec);
-                }
-            }
-        }
-        return validTemp;
-    }
-
     private static Vector<String> findHeaderKey(Vector<String> header) {
         Vector<String> headerKey = new Vector<>();
         for (String key : dataMap.keySet()) {
@@ -169,7 +156,7 @@ public class AssertTestGen {
             for (Vector<String> header : headers) {
                 prevHeaders.add(new Vector<>(header));
             }
-            for (Vector<Vector<String>> lineVec : lineDict.get(validLine)) {
+            for (Vector<Vector<String>> lineVec : dnfLineDict.get(validLine)) {
                 headersValidLineValueFill(headers, prevHeaders, firstCheck, lineVec);
                 if (firstCheck) {
                     firstCheck = false;
@@ -204,22 +191,54 @@ public class AssertTestGen {
         }
     }
 
-    private static void assertInvalidDataFill(Vector<String> finalTemp, Vector<String> invalidLineVec) {
-        for (int i = 0; i < finalTemp.size(); i++) {
-            for (String invalidLine : invalidLineVec) {
-                if (finalTemp.get(i).contains(invalidLine)) {
-                    Vector<String> lineVal = arrToVec(finalTemp.get(i).split("\t"));
-                    invalidDataFill(lineVal, finalTemp, i);
+    private static Vector<String> assertInvalidDataFill(Vector<String> finalTemp, Vector<String> invalidLineVec) {
+        Vector<String> finalTest = new Vector<>();
+        for (String line : invalidLineVec) {
+            for (Vector<Vector<String>> lineVec : cnfLineDict.get(line)) {
+                Vector<String> assertTemp = new Vector<>(finalTemp);
+                for (int i = 0; i < assertTemp.size(); i++) {
+                    if (assertTemp.get(i).contains("LINE")) {
+                        Vector<String> lineVal = arrToVec(assertTemp.get(i).split("\t"));
+                        if (lineVal.get(0).equals(line)) {
+                            if (lineVec.get(0).contains(lineVal.get(1))) {
+                                invalidDataFill(lineVal, assertTemp, i);
+                            } else {
+                                assertTemp.set(i, "");
+                            }
+                        } else if (invalidLineVec.contains(lineVal.get(0))) {
+                            invalidValidDataFill(lineVal, assertTemp, i);
+                        }
+                    }
                 }
+                assertTemp.removeIf(String::isBlank);
+                finalTest.addAll(assertTemp);
             }
         }
+        return finalTest;
     }
 
     private static void invalidDataFill(Vector<String> lineVal, Vector<String> scriptTemp, int i) {
         if(lineVal.get(1).contains("it")) {
+            InputText invalidAction = new InputText(inputTextMap.get(lineVal.get(1)));
+            invalidAction.setElementLocator(dataMap.get(invalidAction.getElementLocator()).get(0));
+            invalidAction.setValue("NOT_" + getValidValue(searchValidValueContext.searchValidValue(lineVal.get(1))));
+            scriptTemp.set(i, "\t" + invalidAction.exprToString());
+        } else if (lineVal.get(1).contains("ce")) {
+            ClickElement validAction = new ClickElement(clickElementMap.get(lineVal.get(1)));
+            validAction.setElementLocator(dataMap.get(validAction.getElementLocator()).get(0));
+            scriptTemp.set(i, "#\t" + validAction.exprToString());
+        }
+    }
+
+    private static void invalidValidDataFill(Vector<String> lineVal, Vector<String> scriptTemp, int i) {
+        if(lineVal.get(1).contains("it")) {
             InputText validAction = new InputText(inputTextMap.get(lineVal.get(1)));
             validAction.setElementLocator(dataMap.get(validAction.getElementLocator()).get(0));
-            validAction.setValue("INVALID_DATA");
+            validAction.setValue(getValidValue(searchValidValueContext.searchValidValue(lineVal.get(1))));
+            scriptTemp.set(i, "\t" + validAction.exprToString());
+        } else if (lineVal.get(1).contains("ce")) {
+            ClickElement validAction = new ClickElement(clickElementMap.get(lineVal.get(1)));
+            validAction.setElementLocator(dataMap.get(validAction.getElementLocator()).get(0));
             scriptTemp.set(i, "\t" + validAction.exprToString());
         }
     }
@@ -228,8 +247,8 @@ public class AssertTestGen {
         int i = 1;
         Vector<String> assertValidHeap = new Vector<>();
         Vector<String> assertInvalidHeap = new Vector<>();
-        while (lineDict.get("LINE" + i) != null) {
-            Vector<Vector<Vector<String>>> lineVal = lineDict.get("LINE" + i);
+        while (dnfLineDict.get("LINE" + i) != null) {
+            Vector<Vector<Vector<String>>> lineVal = dnfLineDict.get("LINE" + i);
             if (isAssertion(lineVal.get(0).get(0).get(0))) {
                 assertValidHeap.add("LINE" + i);
                 Vector<Vector<String>> assertMap = new Vector<>();
@@ -282,5 +301,20 @@ public class AssertTestGen {
         tbVec.add(new Vector<>(headerVec));
         tbVec.add(new Vector<>(invalidVec));
         return tbVec;
+    }
+
+    public static String getValidValue(String value) {
+        String valueKey = null;
+        int index = 0;
+        for (String key : dataMap.keySet()) {
+            Vector<String> keyVec = arrToVec(key.split(" & "));
+            if (keyVec.contains(value)) {
+                valueKey = key;
+                index = keyVec.indexOf(value);
+                break;
+            }
+        }
+        Vector<String> valueVec = arrToVec(dataMap.get(valueKey).get(0).split(" & "));
+        return valueVec.get(index);
     }
 }

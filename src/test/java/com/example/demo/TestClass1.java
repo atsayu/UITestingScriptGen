@@ -24,12 +24,12 @@ public class TestClass1 {
 
     @Test(timeOut = 500, groups = {"group1"})
     public void test1() {
-        DataPreprocessing.lineDict = new Hashtable<>();
-        DataPreprocessing.lineDict.put("LINE1", new Vector<>());
-        DataPreprocessing.lineDict.put("LINE2", new Vector<>());
-        DataPreprocessing.lineDict.put("LINE3", new Vector<>());
+        DataPreprocessing.dnfLineDict = new Hashtable<>();
+        DataPreprocessing.dnfLineDict.put("LINE1", new Vector<>());
+        DataPreprocessing.dnfLineDict.put("LINE2", new Vector<>());
+        DataPreprocessing.dnfLineDict.put("LINE3", new Vector<>());
         DataPreprocessing.initInvalidDict();
-        assert (DataPreprocessing.lineDict != null);
+        assert (DataPreprocessing.dnfLineDict != null);
         logger.info("Thread ID Is : " + Thread.currentThread().getId());
     }
 
