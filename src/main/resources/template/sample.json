@@ -1,0 +1,36 @@
+{
+  "url": "https://www.saucedemo.com/",
+  "testcases": [
+    {
+      "actions": [
+        {
+          "type": "and",
+          "actions": [
+            {
+              "describedLocator": "username",
+              "type": "input",
+              "value": "valid_username"
+            },
+            {
+              "describedLocator": "password",
+              "type": "input",
+              "value": "valid_password"
+            }
+          ]
+        },
+        {
+          "describedLocator": "login_button",
+          "type": "click"
+        },
+        {
+          "type": "verifyURL",
+          "url": "newUrl"
+        }
+      ],
+      "scenario": "login",
+      "haveAssert": true
+    }
+  ],
+  "variables": [],
+  "data": []
+}
