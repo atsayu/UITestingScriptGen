@@ -1,320 +1,615 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 6.1.1 (Python 3.10.10 on win32)" generated="20240115 17:03:05.181" rpa="false" schemaversion="4">
-<suite id="s1" name="Final Test" source="C:\Users\quyenhoang\IdeaProjects\SpringbootUITestingForm\src\main\resources\robot_test_file\final_test.robot">
-<test id="s1-t1" name="Test Login 1" line="10">
+<robot generator="Robot 6.1.1 (Python 3.10.10 on win32)" generated="20240118 23:39:08.678" rpa="false" schemaversion="4">
+<suite id="s1" name="Final Test" source="C:\Users\quyenhoang\IdeaProjects\demoNoAssertInvalid\src\main\resources\robot_test_file\final_test.robot">
+<test id="s1-t1" name="Valid-Test-jotform-1" line="14">
 <kw name="Open Browser" library="SeleniumLibrary">
-<arg>https://www.saucedemo.com/</arg>
+<arg>https://form.jotform.com/240141541020435</arg>
 <arg>Chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20240115 17:03:05.607" level="INFO">Opening browser 'Chrome' to base url 'https://www.saucedemo.com/'.</msg>
-<status status="PASS" starttime="20240115 17:03:05.605" endtime="20240115 17:03:09.366"/>
+<msg timestamp="20240118 23:39:08.916" level="INFO">Opening browser 'Chrome' to base url 'https://form.jotform.com/240141541020435'.</msg>
+<msg timestamp="20240118 23:39:09.638" level="WARN">The chromedriver version (119.0.6045.105) detected in PATH at C:\Users\quyenhoang\Downloads\driver\chromedriver.exe might not be compatible with the detected chrome version (120.0.6099.224); currently, chromedriver 120.0.6099.109 is recommended for chrome 120.*, so it is advised to delete the driver in PATH and retry</msg>
+<status status="PASS" starttime="20240118 23:39:08.916" endtime="20240118 23:39:11.815"/>
 </kw>
 <kw name="Maximize Browser Window" library="SeleniumLibrary">
 <doc>Maximizes current browser window.</doc>
-<status status="PASS" starttime="20240115 17:03:09.366" endtime="20240115 17:03:09.489"/>
+<status status="PASS" starttime="20240118 23:39:11.816" endtime="20240118 23:39:11.937"/>
 </kw>
 <kw name="Input Text" library="SeleniumLibrary">
-<arg>${password}</arg>
-<arg>p2</arg>
+<arg>${first name}</arg>
+<arg>firstname1</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20240115 17:03:09.490" level="INFO">Typing text 'p2' into text field 'xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']'.</msg>
-<status status="PASS" starttime="20240115 17:03:09.489" endtime="20240115 17:03:09.641"/>
+<msg timestamp="20240118 23:39:11.938" level="INFO">Typing text 'firstname1' into text field '//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:11.937" endtime="20240118 23:39:12.008"/>
 </kw>
 <kw name="Input Text" library="SeleniumLibrary">
-<arg>${username}</arg>
-<arg>u2</arg>
+<arg>${last name}</arg>
+<arg>lastname1</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20240115 17:03:09.642" level="INFO">Typing text 'u2' into text field 'xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']'.</msg>
-<status status="PASS" starttime="20240115 17:03:09.641" endtime="20240115 17:03:09.759"/>
+<msg timestamp="20240118 23:39:12.009" level="INFO">Typing text 'lastname1' into text field '//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:12.008" endtime="20240118 23:39:12.061"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${mobile number}</arg>
+<arg>(123) 456-7890</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:12.061" level="INFO">Typing text '(123) 456-7890' into text field '//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']'.</msg>
+<status status="PASS" starttime="20240118 23:39:12.061" endtime="20240118 23:39:12.133"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${work number}</arg>
+<arg>(098) 765-4321</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:12.134" level="INFO">Typing text '(098) 765-4321' into text field '//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']'.</msg>
+<status status="PASS" starttime="20240118 23:39:12.134" endtime="20240118 23:39:12.197"/>
 </kw>
 <kw name="Click Element" library="SeleniumLibrary">
-<arg>${login_button}</arg>
+<arg>${reading}</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20240115 17:03:09.761" level="INFO">Clicking element 'xpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']'.</msg>
-<status status="PASS" starttime="20240115 17:03:09.760" endtime="20240115 17:03:09.848"/>
+<msg timestamp="20240118 23:39:12.198" level="INFO">Clicking element '//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']'.</msg>
+<msg timestamp="20240118 23:39:13.393" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-325.png"&gt;&lt;img src="selenium-screenshot-325.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20240118 23:39:13.393" level="FAIL">ElementClickInterceptedException: Message: element click intercepted: Element &lt;label id="label_input_53_1" for="input_53_1"&gt;...&lt;/label&gt; is not clickable at point (481, 693). Other element would receive the click: &lt;div&gt;&lt;/div&gt;
+  (Session info: chrome=120.0.6099.224)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6E66D82B2+55298]
+	(No symbol) [0x00007FF6E6645E02]
+	(No symbol) [0x00007FF6E65005AB]
+	(No symbol) [0x00007FF6E6547A77]
+	(No symbol) [0x00007FF6E6545E39]
+	(No symbol) [0x00007FF6E6543C08]
+	(No symbol) [0x00007FF6E6542C8A]
+	(No symbol) [0x00007FF6E65387BF]
+	(No symbol) [0x00007FF6E65620AA]
+	(No symbol) [0x00007FF6E65380CF]
+	(No symbol) [0x00007FF6E65622C0]
+	(No symbol) [0x00007FF6E657AAA4]
+	(No symbol) [0x00007FF6E6561E83]
+	(No symbol) [0x00007FF6E653670A]
+	(No symbol) [0x00007FF6E6537964]
+	GetHandleVerifier [0x00007FF6E6A50AAB+3694587]
+	GetHandleVerifier [0x00007FF6E6AA728E+4048862]
+	GetHandleVerifier [0x00007FF6E6A9F173+4015811]
+	GetHandleVerifier [0x00007FF6E67747D6+695590]
+	(No symbol) [0x00007FF6E6650CE8]
+	(No symbol) [0x00007FF6E664CF34]
+	(No symbol) [0x00007FF6E664D062]
+	(No symbol) [0x00007FF6E663D3A3]
+	BaseThreadInitThunk [0x00007FFA2F557344+20]
+	RtlUserThreadStart [0x00007FFA30E626B1+33]
+</msg>
+<status status="FAIL" starttime="20240118 23:39:12.198" endtime="20240118 23:39:13.441"/>
 </kw>
-<status status="PASS" starttime="20240115 17:03:05.602" endtime="20240115 17:03:09.849"/>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>${additional Comments}</arg>
+<arg>comment1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:13.441" endtime="20240118 23:39:13.441"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>${submit}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:13.441" endtime="20240118 23:39:13.441"/>
+</kw>
+<kw name="Location Should Be" library="SeleniumLibrary">
+<arg>https://submit.jotform.com/240141541020435</arg>
+<doc>Verifies that the current URL is exactly ``url``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:13.441" endtime="20240118 23:39:13.441"/>
+</kw>
+<status status="FAIL" starttime="20240118 23:39:08.915" endtime="20240118 23:39:13.441">ElementClickInterceptedException: Message: element click intercepted: Element &lt;label id="label_input_53_1" for="input_53_1"&gt;...&lt;/label&gt; is not clickable at point (481, 693). Other element would receive the click: &lt;div&gt;&lt;/div&gt;
+  (Session info: chrome=120.0.6099.224)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6E66D82B2+55298]
+	(No symbol) [0x00007FF6E6645E02]
+	(No symbol) [0x00007FF6E65005AB]
+	(No symbol) [0x00007FF6E6547A77]
+	(No symbol) [0x00007FF6E6545E39]
+	(No symbol) [0x00007FF6E6543C08]
+	(No symbol) [0x00007FF6E6542C8A]
+	(No symbol) [0x00007FF6E65387BF]
+	(No symbol) [0x00007FF6E65620AA]
+	(No symbol) [0x00007FF6E65380CF]
+	(No symbol) [0x00007FF6E65622C0]
+	(No symbol) [0x00007FF6E657AAA4]
+	(No symbol) [0x00007FF6E6561E83]
+	(No symbol) [0x00007FF6E653670A]
+	(No symbol) [0x00007FF6E6537964]
+	GetHandleVerifier [0x00007FF6E6A50AAB+3694587]
+	GetHandleVerifier [0x00007FF6E6AA728E+4048862]
+	GetHandleVerifier [0x00007FF6E6A9F173+4015811]
+	GetHandleVerifier [0x00007FF6E67747D6+695590]
+	(No symbol) [0x00007FF6E6650CE8]
+	(No symbol) [0x00007FF6E664CF34]
+	(No symbol) [0x00007FF6E664D062]
+	(No symbol) [0x00007FF6E663D3A3]
+	BaseThreadInitThunk [0x00007FFA2F557344+20]
+	RtlUserThreadStart [0x00007FFA30E626B1+33]
+</status>
 </test>
-<test id="s1-t2" name="Test-Login-1" line="16">
+<test id="s1-t2" name="Invalid-Test-jotform-1" line="25">
 <kw name="Open Browser" library="SeleniumLibrary">
-<arg>https://www.saucedemo.com/</arg>
-<arg>Edge</arg>
+<arg>https://form.jotform.com/240141541020435</arg>
+<arg>Chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20240115 17:03:09.851" level="INFO">Opening browser 'Edge' to base url 'https://www.saucedemo.com/'.</msg>
-<status status="PASS" starttime="20240115 17:03:09.850" endtime="20240115 17:03:12.160"/>
+<msg timestamp="20240118 23:39:13.443" level="INFO">Opening browser 'Chrome' to base url 'https://form.jotform.com/240141541020435'.</msg>
+<msg timestamp="20240118 23:39:13.708" level="WARN">The chromedriver version (119.0.6045.105) detected in PATH at C:\Users\quyenhoang\Downloads\driver\chromedriver.exe might not be compatible with the detected chrome version (120.0.6099.224); currently, chromedriver 120.0.6099.109 is recommended for chrome 120.*, so it is advised to delete the driver in PATH and retry</msg>
+<status status="PASS" starttime="20240118 23:39:13.442" endtime="20240118 23:39:15.741"/>
 </kw>
 <kw name="Input Text" library="SeleniumLibrary">
-<arg>xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']</arg>
-<arg>NOTu1</arg>
+<arg>//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']</arg>
+<arg>NOTfirstname1</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20240115 17:03:12.162" level="INFO">Typing text 'NOTu1' into text field 'xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']'.</msg>
-<status status="PASS" starttime="20240115 17:03:12.161" endtime="20240115 17:03:12.333"/>
+<msg timestamp="20240118 23:39:15.741" level="INFO">Typing text 'NOTfirstname1' into text field '//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:15.741" endtime="20240118 23:39:15.808"/>
 </kw>
 <kw name="Input Text" library="SeleniumLibrary">
-<arg>xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']</arg>
-<arg>NOTp1</arg>
+<arg>//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @required='' and @value='']</arg>
+<arg>NOTlastname1</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20240115 17:03:12.334" level="INFO">Typing text 'NOTp1' into text field 'xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']'.</msg>
-<status status="PASS" starttime="20240115 17:03:12.333" endtime="20240115 17:03:12.468"/>
+<msg timestamp="20240118 23:39:15.809" level="INFO">Typing text 'NOTlastname1' into text field '//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:15.808" endtime="20240118 23:39:15.861"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']</arg>
+<arg>NOT(123) 456-7890</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:15.862" level="INFO">Typing text 'NOT(123) 456-7890' into text field '//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']'.</msg>
+<status status="PASS" starttime="20240118 23:39:15.861" endtime="20240118 23:39:15.936"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']</arg>
+<arg>NOT(098) 765-4321</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:15.937" level="INFO">Typing text 'NOT(098) 765-4321' into text field '//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']'.</msg>
+<status status="PASS" starttime="20240118 23:39:15.937" endtime="20240118 23:39:16.005"/>
 </kw>
 <kw name="Click Element" library="SeleniumLibrary">
-<arg>NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']</arg>
+<arg>NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20240115 17:03:12.469" level="INFO">Clicking element 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']'.</msg>
-<msg timestamp="20240115 17:03:12.723" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-110.png"&gt;&lt;img src="selenium-screenshot-110.png" width="800px"&gt;&lt;/a&gt;</msg>
-<msg timestamp="20240115 17:03:12.724" level="FAIL">Element with locator 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']' not found.</msg>
-<status status="FAIL" starttime="20240115 17:03:12.468" endtime="20240115 17:03:12.810"/>
+<msg timestamp="20240118 23:39:16.005" level="INFO">Clicking element 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']'.</msg>
+<msg timestamp="20240118 23:39:16.097" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-326.png"&gt;&lt;img src="selenium-screenshot-326.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20240118 23:39:16.097" level="FAIL">Element with locator 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']' not found.</msg>
+<status status="FAIL" starttime="20240118 23:39:16.005" endtime="20240118 23:39:16.117"/>
 </kw>
-<status status="FAIL" starttime="20240115 17:03:09.849" endtime="20240115 17:03:12.810">Element with locator 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']' not found.</status>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//textarea[@id='input_45' and @class='form-textarea' and @name='q45_clickTo45' and @style='width:648px;height:163px' and @data-component='textarea' and @aria-labelledby='label_45']</arg>
+<arg>NOTcomment1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:16.118" endtime="20240118 23:39:16.118"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>NOT//button[@id='input_52' and @type='submit' and @class='form-submit-button form-submit-button-navy-700 submit-button jf-form-buttons jsTest-submitField' and @data-component='button' and @data-content='' and @aria-live='polite' and normalize-space()='Submit']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:16.118" endtime="20240118 23:39:16.118"/>
+</kw>
+<status status="FAIL" starttime="20240118 23:39:13.442" endtime="20240118 23:39:16.118">Element with locator 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']' not found.</status>
 </test>
-<test id="s1-t3" name="Test Login 1" line="21">
+<test id="s1-t3" name="Invalid-Test-jotform-2" line="34">
 <kw name="Open Browser" library="SeleniumLibrary">
-<arg>https://www.saucedemo.com/</arg>
+<arg>https://form.jotform.com/240141541020435</arg>
 <arg>Chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20240115 17:03:12.813" level="INFO">Opening browser 'Chrome' to base url 'https://www.saucedemo.com/'.</msg>
-<status status="PASS" starttime="20240115 17:03:12.812" endtime="20240115 17:03:14.898"/>
-</kw>
-<kw name="Maximize Browser Window" library="SeleniumLibrary">
-<doc>Maximizes current browser window.</doc>
-<status status="PASS" starttime="20240115 17:03:14.898" endtime="20240115 17:03:15.023"/>
+<msg timestamp="20240118 23:39:16.119" level="INFO">Opening browser 'Chrome' to base url 'https://form.jotform.com/240141541020435'.</msg>
+<msg timestamp="20240118 23:39:16.363" level="WARN">The chromedriver version (119.0.6045.105) detected in PATH at C:\Users\quyenhoang\Downloads\driver\chromedriver.exe might not be compatible with the detected chrome version (120.0.6099.224); currently, chromedriver 120.0.6099.109 is recommended for chrome 120.*, so it is advised to delete the driver in PATH and retry</msg>
+<status status="PASS" starttime="20240118 23:39:16.118" endtime="20240118 23:39:18.475"/>
 </kw>
 <kw name="Input Text" library="SeleniumLibrary">
-<arg>${password}</arg>
-<arg>p2</arg>
+<arg>//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']</arg>
+<arg>NOTfirstname1</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20240115 17:03:15.024" level="INFO">Typing text 'p2' into text field 'xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']'.</msg>
-<status status="PASS" starttime="20240115 17:03:15.023" endtime="20240115 17:03:15.206"/>
+<msg timestamp="20240118 23:39:18.476" level="INFO">Typing text 'NOTfirstname1' into text field '//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:18.475" endtime="20240118 23:39:18.549"/>
 </kw>
 <kw name="Input Text" library="SeleniumLibrary">
-<arg>${username}</arg>
-<arg>u2</arg>
+<arg>//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @required='' and @value='']</arg>
+<arg>lastname1</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20240115 17:03:15.207" level="INFO">Typing text 'u2' into text field 'xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']'.</msg>
-<status status="PASS" starttime="20240115 17:03:15.206" endtime="20240115 17:03:15.318"/>
+<msg timestamp="20240118 23:39:18.550" level="INFO">Typing text 'lastname1' into text field '//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:18.549" endtime="20240118 23:39:18.605"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']</arg>
+<arg>NOT(123) 456-7890</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:18.606" level="INFO">Typing text 'NOT(123) 456-7890' into text field '//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']'.</msg>
+<status status="PASS" starttime="20240118 23:39:18.605" endtime="20240118 23:39:18.684"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']</arg>
+<arg>NOT(098) 765-4321</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:18.684" level="INFO">Typing text 'NOT(098) 765-4321' into text field '//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']'.</msg>
+<status status="PASS" starttime="20240118 23:39:18.684" endtime="20240118 23:39:18.755"/>
 </kw>
 <kw name="Click Element" library="SeleniumLibrary">
-<arg>${login_button}</arg>
+<arg>NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20240115 17:03:15.319" level="INFO">Clicking element 'xpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']'.</msg>
-<status status="PASS" starttime="20240115 17:03:15.319" endtime="20240115 17:03:15.407"/>
+<msg timestamp="20240118 23:39:18.756" level="INFO">Clicking element 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']'.</msg>
+<msg timestamp="20240118 23:39:18.849" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-327.png"&gt;&lt;img src="selenium-screenshot-327.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20240118 23:39:18.849" level="FAIL">Element with locator 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']' not found.</msg>
+<status status="FAIL" starttime="20240118 23:39:18.756" endtime="20240118 23:39:18.850"/>
 </kw>
-<status status="PASS" starttime="20240115 17:03:12.811" endtime="20240115 17:03:15.407"/>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//textarea[@id='input_45' and @class='form-textarea' and @name='q45_clickTo45' and @style='width:648px;height:163px' and @data-component='textarea' and @aria-labelledby='label_45']</arg>
+<arg>NOTcomment1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:18.850" endtime="20240118 23:39:18.850"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>NOT//button[@id='input_52' and @type='submit' and @class='form-submit-button form-submit-button-navy-700 submit-button jf-form-buttons jsTest-submitField' and @data-component='button' and @data-content='' and @aria-live='polite' and normalize-space()='Submit']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:18.850" endtime="20240118 23:39:18.850"/>
+</kw>
+<status status="FAIL" starttime="20240118 23:39:16.118" endtime="20240118 23:39:18.850">Element with locator 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']' not found.</status>
 </test>
-<test id="s1-t4" name="Test-Login-1" line="27">
+<test id="s1-t4" name="Invalid-Test-jotform-3" line="43">
 <kw name="Open Browser" library="SeleniumLibrary">
-<arg>https://www.saucedemo.com/</arg>
-<arg>Edge</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<msg timestamp="20240115 17:03:15.410" level="INFO">Opening browser 'Edge' to base url 'https://www.saucedemo.com/'.</msg>
-<status status="PASS" starttime="20240115 17:03:15.409" endtime="20240115 17:03:19.544"/>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<arg>xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']</arg>
-<arg>NOTu1</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20240115 17:03:19.545" level="INFO">Typing text 'NOTu1' into text field 'xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']'.</msg>
-<status status="PASS" starttime="20240115 17:03:19.544" endtime="20240115 17:03:19.731"/>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<arg>xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']</arg>
-<arg>NOTp1</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<msg timestamp="20240115 17:03:19.732" level="INFO">Typing text 'NOTp1' into text field 'xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']'.</msg>
-<status status="PASS" starttime="20240115 17:03:19.731" endtime="20240115 17:03:19.860"/>
-</kw>
-<kw name="Click Element" library="SeleniumLibrary">
-<arg>NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<msg timestamp="20240115 17:03:19.862" level="INFO">Clicking element 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']'.</msg>
-<msg timestamp="20240115 17:03:20.107" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-111.png"&gt;&lt;img src="selenium-screenshot-111.png" width="800px"&gt;&lt;/a&gt;</msg>
-<msg timestamp="20240115 17:03:20.108" level="FAIL">Element with locator 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']' not found.</msg>
-<status status="FAIL" starttime="20240115 17:03:19.861" endtime="20240115 17:03:20.109"/>
-</kw>
-<kw name="Test Login 1">
-<status status="NOT RUN" starttime="20240115 17:03:20.113" endtime="20240115 17:03:20.114"/>
-</kw>
-<kw name="Open Browser" library="SeleniumLibrary">
-<arg>https://www.saucedemo.com/</arg>
+<arg>https://form.jotform.com/240141541020435</arg>
 <arg>Chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.114" endtime="20240115 17:03:20.114"/>
-</kw>
-<kw name="Maximize Browser Window" library="SeleniumLibrary">
-<doc>Maximizes current browser window.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.114" endtime="20240115 17:03:20.114"/>
+<msg timestamp="20240118 23:39:18.852" level="INFO">Opening browser 'Chrome' to base url 'https://form.jotform.com/240141541020435'.</msg>
+<msg timestamp="20240118 23:39:19.117" level="WARN">The chromedriver version (119.0.6045.105) detected in PATH at C:\Users\quyenhoang\Downloads\driver\chromedriver.exe might not be compatible with the detected chrome version (120.0.6099.224); currently, chromedriver 120.0.6099.109 is recommended for chrome 120.*, so it is advised to delete the driver in PATH and retry</msg>
+<status status="PASS" starttime="20240118 23:39:18.851" endtime="20240118 23:39:21.279"/>
 </kw>
 <kw name="Input Text" library="SeleniumLibrary">
-<arg>${password}</arg>
-<arg>p2</arg>
+<arg>//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']</arg>
+<arg>firstname1</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.114" endtime="20240115 17:03:20.114"/>
+<msg timestamp="20240118 23:39:21.280" level="INFO">Typing text 'firstname1' into text field '//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:21.279" endtime="20240118 23:39:21.342"/>
 </kw>
 <kw name="Input Text" library="SeleniumLibrary">
-<arg>${username}</arg>
-<arg>u2</arg>
+<arg>//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @required='' and @value='']</arg>
+<arg>NOTlastname1</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.114" endtime="20240115 17:03:20.114"/>
+<msg timestamp="20240118 23:39:21.343" level="INFO">Typing text 'NOTlastname1' into text field '//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:21.343" endtime="20240118 23:39:21.396"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']</arg>
+<arg>NOT(123) 456-7890</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:21.397" level="INFO">Typing text 'NOT(123) 456-7890' into text field '//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']'.</msg>
+<status status="PASS" starttime="20240118 23:39:21.397" endtime="20240118 23:39:21.472"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']</arg>
+<arg>NOT(098) 765-4321</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:21.473" level="INFO">Typing text 'NOT(098) 765-4321' into text field '//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']'.</msg>
+<status status="PASS" starttime="20240118 23:39:21.473" endtime="20240118 23:39:21.541"/>
 </kw>
 <kw name="Click Element" library="SeleniumLibrary">
-<arg>${login_button}</arg>
+<arg>NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.115" endtime="20240115 17:03:20.115"/>
-</kw>
-<kw name="Test-Login-1">
-<status status="NOT RUN" starttime="20240115 17:03:20.119" endtime="20240115 17:03:20.119"/>
-</kw>
-<kw name="Open Browser" library="SeleniumLibrary">
-<arg>https://www.saucedemo.com/</arg>
-<arg>Edge</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.119" endtime="20240115 17:03:20.119"/>
+<msg timestamp="20240118 23:39:21.541" level="INFO">Clicking element 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']'.</msg>
+<msg timestamp="20240118 23:39:21.626" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-328.png"&gt;&lt;img src="selenium-screenshot-328.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20240118 23:39:21.626" level="FAIL">Element with locator 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']' not found.</msg>
+<status status="FAIL" starttime="20240118 23:39:21.541" endtime="20240118 23:39:21.627"/>
 </kw>
 <kw name="Input Text" library="SeleniumLibrary">
-<arg>xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']</arg>
-<arg>NOTu1</arg>
+<arg>//textarea[@id='input_45' and @class='form-textarea' and @name='q45_clickTo45' and @style='width:648px;height:163px' and @data-component='textarea' and @aria-labelledby='label_45']</arg>
+<arg>NOTcomment1</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.119" endtime="20240115 17:03:20.120"/>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<arg>xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']</arg>
-<arg>NOTp1</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.120" endtime="20240115 17:03:20.120"/>
+<status status="NOT RUN" starttime="20240118 23:39:21.627" endtime="20240118 23:39:21.627"/>
 </kw>
 <kw name="Click Element" library="SeleniumLibrary">
-<arg>NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']</arg>
+<arg>NOT//button[@id='input_52' and @type='submit' and @class='form-submit-button form-submit-button-navy-700 submit-button jf-form-buttons jsTest-submitField' and @data-component='button' and @data-content='' and @aria-live='polite' and normalize-space()='Submit']</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.120" endtime="20240115 17:03:20.120"/>
+<status status="NOT RUN" starttime="20240118 23:39:21.627" endtime="20240118 23:39:21.627"/>
 </kw>
-<kw name="Test Login 1">
-<status status="NOT RUN" starttime="20240115 17:03:20.124" endtime="20240115 17:03:20.124"/>
-</kw>
-<kw name="Open Browser" library="SeleniumLibrary">
-<arg>https://www.saucedemo.com/</arg>
-<arg>Chrome</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.124" endtime="20240115 17:03:20.124"/>
-</kw>
-<kw name="Maximize Browser Window" library="SeleniumLibrary">
-<doc>Maximizes current browser window.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.125" endtime="20240115 17:03:20.125"/>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<arg>${password}</arg>
-<arg>p2</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.125" endtime="20240115 17:03:20.125"/>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<arg>${username}</arg>
-<arg>u2</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.125" endtime="20240115 17:03:20.125"/>
-</kw>
-<kw name="Click Element" library="SeleniumLibrary">
-<arg>${login_button}</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.125" endtime="20240115 17:03:20.125"/>
-</kw>
-<kw name="Test-Login-1">
-<status status="NOT RUN" starttime="20240115 17:03:20.130" endtime="20240115 17:03:20.130"/>
-</kw>
-<kw name="Open Browser" library="SeleniumLibrary">
-<arg>https://www.saucedemo.com/</arg>
-<arg>Edge</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.130" endtime="20240115 17:03:20.130"/>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<arg>xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']</arg>
-<arg>NOTu1</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.130" endtime="20240115 17:03:20.130"/>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<arg>xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']</arg>
-<arg>NOTp1</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.130" endtime="20240115 17:03:20.130"/>
-</kw>
-<kw name="Click Element" library="SeleniumLibrary">
-<arg>NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.130" endtime="20240115 17:03:20.130"/>
-</kw>
-<kw name="Test Login 1">
-<status status="NOT RUN" starttime="20240115 17:03:20.135" endtime="20240115 17:03:20.135"/>
-</kw>
-<kw name="Open Browser" library="SeleniumLibrary">
-<arg>https://www.saucedemo.com/</arg>
-<arg>Chrome</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.135" endtime="20240115 17:03:20.135"/>
-</kw>
-<kw name="Maximize Browser Window" library="SeleniumLibrary">
-<doc>Maximizes current browser window.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.135" endtime="20240115 17:03:20.135"/>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<arg>${password}</arg>
-<arg>p2</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.136" endtime="20240115 17:03:20.136"/>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<arg>${username}</arg>
-<arg>u2</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.136" endtime="20240115 17:03:20.136"/>
-</kw>
-<kw name="Click Element" library="SeleniumLibrary">
-<arg>${login_button}</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.136" endtime="20240115 17:03:20.136"/>
-</kw>
-<kw name="Test-Login-1">
-<status status="NOT RUN" starttime="20240115 17:03:20.140" endtime="20240115 17:03:20.140"/>
-</kw>
-<kw name="Open Browser" library="SeleniumLibrary">
-<arg>https://www.saucedemo.com/</arg>
-<arg>Edge</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.141" endtime="20240115 17:03:20.141"/>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<arg>xpath=//input[@placeholder='Username' and @data-test='username' and @id='user-name' and @name='user-name']</arg>
-<arg>NOTu1</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.141" endtime="20240115 17:03:20.141"/>
-</kw>
-<kw name="Input Text" library="SeleniumLibrary">
-<arg>xpath=//input[@placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password']</arg>
-<arg>NOTp1</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.141" endtime="20240115 17:03:20.141"/>
-</kw>
-<kw name="Click Element" library="SeleniumLibrary">
-<arg>NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" starttime="20240115 17:03:20.141" endtime="20240115 17:03:20.141"/>
-</kw>
-<status status="FAIL" starttime="20240115 17:03:15.408" endtime="20240115 17:03:20.141">Element with locator 'NOTxpath=//input[@class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']' not found.</status>
+<status status="FAIL" starttime="20240118 23:39:18.850" endtime="20240118 23:39:21.627">Element with locator 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']' not found.</status>
 </test>
-<status status="FAIL" starttime="20240115 17:03:05.184" endtime="20240115 17:03:20.142"/>
-</suite>
-<statistics>
-<total>
-<stat pass="2" fail="2" skip="0">All Tests</stat>
-</total>
-<tag>
-</tag>
-<suite>
-<stat pass="2" fail="2" skip="0" id="s1" name="Final Test">Final Test</stat>
-</suite>
-</statistics>
-<errors>
-<msg timestamp="20240115 17:03:12.811" level="WARN">Multiple tests with name 'Test Login 1' executed in suite 'Final Test'.</msg>
-<msg timestamp="20240115 17:03:15.408" level="WARN">Multiple tests with name 'Test-Login-1' executed in suite 'Final Test'.</msg>
-</errors>
-</robot>
+<test id="s1-t5" name="Invalid-Test-jotform-4" line="52">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://form.jotform.com/240141541020435</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20240118 23:39:21.629" level="INFO">Opening browser 'Chrome' to base url 'https://form.jotform.com/240141541020435'.</msg>
+<msg timestamp="20240118 23:39:21.883" level="WARN">The chromedriver version (119.0.6045.105) detected in PATH at C:\Users\quyenhoang\Downloads\driver\chromedriver.exe might not be compatible with the detected chrome version (120.0.6099.224); currently, chromedriver 120.0.6099.109 is recommended for chrome 120.*, so it is advised to delete the driver in PATH and retry</msg>
+<status status="PASS" starttime="20240118 23:39:21.628" endtime="20240118 23:39:23.902"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']</arg>
+<arg>NOTfirstname1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:23.903" level="INFO">Typing text 'NOTfirstname1' into text field '//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:23.902" endtime="20240118 23:39:23.978"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @required='' and @value='']</arg>
+<arg>NOTlastname1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:23.979" level="INFO">Typing text 'NOTlastname1' into text field '//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:23.978" endtime="20240118 23:39:24.046"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']</arg>
+<arg>NOT(123) 456-7890</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:24.047" level="INFO">Typing text 'NOT(123) 456-7890' into text field '//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']'.</msg>
+<status status="PASS" starttime="20240118 23:39:24.046" endtime="20240118 23:39:24.130"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']</arg>
+<arg>NOT(098) 765-4321</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:24.130" level="INFO">Typing text 'NOT(098) 765-4321' into text field '//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']'.</msg>
+<status status="PASS" starttime="20240118 23:39:24.130" endtime="20240118 23:39:24.206"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:24.207" level="INFO">Clicking element 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']'.</msg>
+<msg timestamp="20240118 23:39:24.302" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-329.png"&gt;&lt;img src="selenium-screenshot-329.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20240118 23:39:24.302" level="FAIL">Element with locator 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']' not found.</msg>
+<status status="FAIL" starttime="20240118 23:39:24.206" endtime="20240118 23:39:24.302"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//textarea[@id='input_45' and @class='form-textarea' and @name='q45_clickTo45' and @style='width:648px;height:163px' and @data-component='textarea' and @aria-labelledby='label_45']</arg>
+<arg>NOTcomment1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:24.302" endtime="20240118 23:39:24.303"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>//button[@id='input_52' and @type='submit' and @class='form-submit-button form-submit-button-navy-700 submit-button jf-form-buttons jsTest-submitField' and @data-component='button' and @data-content='' and @aria-live='polite' and normalize-space()='Submit']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:24.303" endtime="20240118 23:39:24.303"/>
+</kw>
+<status status="FAIL" starttime="20240118 23:39:21.628" endtime="20240118 23:39:24.303">Element with locator 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']' not found.</status>
+</test>
+<test id="s1-t6" name="Invalid-Test-jotform-5" line="61">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://form.jotform.com/240141541020435</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20240118 23:39:24.306" level="INFO">Opening browser 'Chrome' to base url 'https://form.jotform.com/240141541020435'.</msg>
+<msg timestamp="20240118 23:39:24.569" level="WARN">The chromedriver version (119.0.6045.105) detected in PATH at C:\Users\quyenhoang\Downloads\driver\chromedriver.exe might not be compatible with the detected chrome version (120.0.6099.224); currently, chromedriver 120.0.6099.109 is recommended for chrome 120.*, so it is advised to delete the driver in PATH and retry</msg>
+<status status="PASS" starttime="20240118 23:39:24.304" endtime="20240118 23:39:26.573"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']</arg>
+<arg>NOTfirstname1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:26.574" level="INFO">Typing text 'NOTfirstname1' into text field '//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:26.573" endtime="20240118 23:39:26.667"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @required='' and @value='']</arg>
+<arg>lastname1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:26.667" level="INFO">Typing text 'lastname1' into text field '//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:26.667" endtime="20240118 23:39:26.805"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']</arg>
+<arg>NOT(123) 456-7890</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:26.806" level="INFO">Typing text 'NOT(123) 456-7890' into text field '//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']'.</msg>
+<status status="PASS" starttime="20240118 23:39:26.805" endtime="20240118 23:39:27.019"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']</arg>
+<arg>NOT(098) 765-4321</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:27.019" level="INFO">Typing text 'NOT(098) 765-4321' into text field '//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']'.</msg>
+<status status="PASS" starttime="20240118 23:39:27.019" endtime="20240118 23:39:27.277"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:27.278" level="INFO">Clicking element 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']'.</msg>
+<msg timestamp="20240118 23:39:27.420" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-330.png"&gt;&lt;img src="selenium-screenshot-330.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20240118 23:39:27.420" level="FAIL">Element with locator 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']' not found.</msg>
+<status status="FAIL" starttime="20240118 23:39:27.277" endtime="20240118 23:39:27.420"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//textarea[@id='input_45' and @class='form-textarea' and @name='q45_clickTo45' and @style='width:648px;height:163px' and @data-component='textarea' and @aria-labelledby='label_45']</arg>
+<arg>NOTcomment1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:27.421" endtime="20240118 23:39:27.421"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>//button[@id='input_52' and @type='submit' and @class='form-submit-button form-submit-button-navy-700 submit-button jf-form-buttons jsTest-submitField' and @data-component='button' and @data-content='' and @aria-live='polite' and normalize-space()='Submit']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:27.421" endtime="20240118 23:39:27.421"/>
+</kw>
+<status status="FAIL" starttime="20240118 23:39:24.303" endtime="20240118 23:39:27.421">Element with locator 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']' not found.</status>
+</test>
+<test id="s1-t7" name="Invalid-Test-jotform-6" line="70">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://form.jotform.com/240141541020435</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20240118 23:39:27.422" level="INFO">Opening browser 'Chrome' to base url 'https://form.jotform.com/240141541020435'.</msg>
+<msg timestamp="20240118 23:39:27.839" level="WARN">The chromedriver version (119.0.6045.105) detected in PATH at C:\Users\quyenhoang\Downloads\driver\chromedriver.exe might not be compatible with the detected chrome version (120.0.6099.224); currently, chromedriver 120.0.6099.109 is recommended for chrome 120.*, so it is advised to delete the driver in PATH and retry</msg>
+<status status="PASS" starttime="20240118 23:39:27.422" endtime="20240118 23:39:31.901"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']</arg>
+<arg>firstname1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:31.902" level="INFO">Typing text 'firstname1' into text field '//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']'.</msg>
+<msg timestamp="20240118 23:39:31.919" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=120.0.6099.224)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6E66D82B2+55298]
+	(No symbol) [0x00007FF6E6645E02]
+	(No symbol) [0x00007FF6E65005AB]
+	(No symbol) [0x00007FF6E64E0038]
+	(No symbol) [0x00007FF6E6566BC7]
+	(No symbol) [0x00007FF6E657A15F]
+	(No symbol) [0x00007FF6E6561E83]
+	(No symbol) [0x00007FF6E653670A]
+	(No symbol) [0x00007FF6E6537964]
+	GetHandleVerifier [0x00007FF6E6A50AAB+3694587]
+	GetHandleVerifier [0x00007FF6E6AA728E+4048862]
+	GetHandleVerifier [0x00007FF6E6A9F173+4015811]
+	GetHandleVerifier [0x00007FF6E67747D6+695590]
+	(No symbol) [0x00007FF6E6650CE8]
+	(No symbol) [0x00007FF6E664CF34]
+	(No symbol) [0x00007FF6E664D062]
+	(No symbol) [0x00007FF6E663D3A3]
+	BaseThreadInitThunk [0x00007FFA2F557344+20]
+	RtlUserThreadStart [0x00007FFA30E626B1+33]
+</msg>
+<msg timestamp="20240118 23:39:31.920" level="FAIL">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=120.0.6099.224)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6E66D82B2+55298]
+	(No symbol) [0x00007FF6E6645E02]
+	(No symbol) [0x00007FF6E65005AB]
+	(No symbol) [0x00007FF6E64E0038]
+	(No symbol) [0x00007FF6E6566BC7]
+	(No symbol) [0x00007FF6E657A15F]
+	(No symbol) [0x00007FF6E6561E83]
+	(No symbol) [0x00007FF6E653670A]
+	(No symbol) [0x00007FF6E6537964]
+	GetHandleVerifier [0x00007FF6E6A50AAB+3694587]
+	GetHandleVerifier [0x00007FF6E6AA728E+4048862]
+	GetHandleVerifier [0x00007FF6E6A9F173+4015811]
+	GetHandleVerifier [0x00007FF6E67747D6+695590]
+	(No symbol) [0x00007FF6E6650CE8]
+	(No symbol) [0x00007FF6E664CF34]
+	(No symbol) [0x00007FF6E664D062]
+	(No symbol) [0x00007FF6E663D3A3]
+	BaseThreadInitThunk [0x00007FFA2F557344+20]
+	RtlUserThreadStart [0x00007FFA30E626B1+33]
+</msg>
+<status status="FAIL" starttime="20240118 23:39:31.902" endtime="20240118 23:39:31.933"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @required='' and @value='']</arg>
+<arg>NOTlastname1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:31.933" endtime="20240118 23:39:31.933"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']</arg>
+<arg>NOT(123) 456-7890</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:31.933" endtime="20240118 23:39:31.933"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']</arg>
+<arg>NOT(098) 765-4321</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:31.933" endtime="20240118 23:39:31.933"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:31.933" endtime="20240118 23:39:31.933"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//textarea[@id='input_45' and @class='form-textarea' and @name='q45_clickTo45' and @style='width:648px;height:163px' and @data-component='textarea' and @aria-labelledby='label_45']</arg>
+<arg>NOTcomment1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:31.933" endtime="20240118 23:39:31.933"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>//button[@id='input_52' and @type='submit' and @class='form-submit-button form-submit-button-navy-700 submit-button jf-form-buttons jsTest-submitField' and @data-component='button' and @data-content='' and @aria-live='polite' and normalize-space()='Submit']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:31.933" endtime="20240118 23:39:31.933"/>
+</kw>
+<status status="FAIL" starttime="20240118 23:39:27.421" endtime="20240118 23:39:31.934">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=120.0.6099.224)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6E66D82B2+55298]
+	(No symbol) [0x00007FF6E6645E02]
+	(No symbol) [0x00007FF6E65005AB]
+	(No symbol) [0x00007FF6E64E0038]
+	(No symbol) [0x00007FF6E6566BC7]
+	(No symbol) [0x00007FF6E657A15F]
+	(No symbol) [0x00007FF6E6561E83]
+	(No symbol) [0x00007FF6E653670A]
+	(No symbol) [0x00007FF6E6537964]
+	GetHandleVerifier [0x00007FF6E6A50AAB+3694587]
+	GetHandleVerifier [0x00007FF6E6AA728E+4048862]
+	GetHandleVerifier [0x00007FF6E6A9F173+4015811]
+	GetHandleVerifier [0x00007FF6E67747D6+695590]
+	(No symbol) [0x00007FF6E6650CE8]
+	(No symbol) [0x00007FF6E664CF34]
+	(No symbol) [0x00007FF6E664D062]
+	(No symbol) [0x00007FF6E663D3A3]
+	BaseThreadInitThunk [0x00007FFA2F557344+20]
+	RtlUserThreadStart [0x00007FFA30E626B1+33]
+</status>
+</test>
+<test id="s1-t8" name="Invalid-Test-jotform-7" line="79">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://form.jotform.com/240141541020435</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20240118 23:39:31.936" level="INFO">Opening browser 'Chrome' to base url 'https://form.jotform.com/240141541020435'.</msg>
+<msg timestamp="20240118 23:39:32.245" level="WARN">The chromedriver version (119.0.6045.105) detected in PATH at C:\Users\quyenhoang\Downloads\driver\chromedriver.exe might not be compatible with the detected chrome version (120.0.6099.224); currently, chromedriver 120.0.6099.109 is recommended for chrome 120.*, so it is advised to delete the driver in PATH and retry</msg>
+<status status="PASS" starttime="20240118 23:39:31.935" endtime="20240118 23:39:35.925"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']</arg>
+<arg>NOTfirstname1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:35.925" level="INFO">Typing text 'NOTfirstname1' into text field '//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:35.925" endtime="20240118 23:39:35.996"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @required='' and @value='']</arg>
+<arg>NOTlastname1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:35.997" level="INFO">Typing text 'NOTlastname1' into text field '//input[@type='text' and @id='last_4' and @name='q4_studentName[last]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 family-name' and @size='15' and @data-component='last' and @aria-labelledby='label_4 sublabel_4_last' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:35.997" endtime="20240118 23:39:36.063"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']</arg>
+<arg>(123) 456-7890</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:36.064" level="INFO">Typing text '(123) 456-7890' into text field '//input[@type='tel' and @id='input_27_full' and @name='q27_mobileNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_27 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_27' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']'.</msg>
+<status status="PASS" starttime="20240118 23:39:36.063" endtime="20240118 23:39:36.151"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']</arg>
+<arg>NOT(098) 765-4321</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:36.152" level="INFO">Typing text 'NOT(098) 765-4321' into text field '//input[@type='tel' and @id='input_26_full' and @name='q26_workNumber[full]' and @data-type='mask-number' and @class='mask-phone-number form-textbox validate[Fill Mask]' and @data-defaultvalue='' and @autocomplete='section-input_26 tel-national' and @style='width:310px' and @data-masked='true' and @placeholder='(000) 000-0000' and @data-component='phone' and @aria-labelledby='label_26' and @value='' and @inputmode='text' and @maskvalue='(###) ###-####']'.</msg>
+<status status="PASS" starttime="20240118 23:39:36.151" endtime="20240118 23:39:36.229"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:36.229" level="INFO">Clicking element 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']'.</msg>
+<msg timestamp="20240118 23:39:36.349" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-331.png"&gt;&lt;img src="selenium-screenshot-331.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg timestamp="20240118 23:39:36.349" level="FAIL">Element with locator 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']' not found.</msg>
+<status status="FAIL" starttime="20240118 23:39:36.229" endtime="20240118 23:39:36.349"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//textarea[@id='input_45' and @class='form-textarea' and @name='q45_clickTo45' and @style='width:648px;height:163px' and @data-component='textarea' and @aria-labelledby='label_45']</arg>
+<arg>NOTcomment1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:36.349" endtime="20240118 23:39:36.349"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>NOT//button[@id='input_52' and @type='submit' and @class='form-submit-button form-submit-button-navy-700 submit-button jf-form-buttons jsTest-submitField' and @data-component='button' and @data-content='' and @aria-live='polite' and normalize-space()='Submit']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20240118 23:39:36.350" endtime="20240118 23:39:36.350"/>
+</kw>
+<status status="FAIL" starttime="20240118 23:39:31.934" endtime="20240118 23:39:36.350">Element with locator 'NOT//label[@id='label_input_53_1' and @for='input_53_1' and normalize-space()='Reading']' not found.</status>
+</test>
+<test id="s1-t9" name="Invalid-Test-jotform-8" line="88">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://form.jotform.com/240141541020435</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20240118 23:39:36.352" level="INFO">Opening browser 'Chrome' to base url 'https://form.jotform.com/240141541020435'.</msg>
+<msg timestamp="20240118 23:39:36.635" level="WARN">The chromedriver version (119.0.6045.105) detected in PATH at C:\Users\quyenhoang\Downloads\driver\chromedriver.exe might not be compatible with the detected chrome version (120.0.6099.224); currently, chromedriver 120.0.6099.109 is recommended for chrome 120.*, so it is advised to delete the driver in PATH and retry</msg>
+<status status="PASS" starttime="20240118 23:39:36.351" endtime="20240118 23:39:38.757"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']</arg>
+<arg>NOTfirstname1</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20240118 23:39:38.758" level="INFO">Typing text 'NOTfirstname1' into text field '//input[@type='text' and @id='first_4' and @name='q4_studentName[first]' and @class='form-textbox validate[required]' and @data-defaultvalue='' and @autocomplete='section-input_4 given-name' and @size='10' and @data-component='first' and @aria-labelledby='label_4 sublabel_4_first' and @required='' and @value='']'.</msg>
+<status status="PASS" starttime="20240118 23:39:38.757" endtime="20240118 23:39:38.825"/>
+</kw>
+<kw name="Input Text" library="SeleniumLibrary">
+<arg>

@@ -1,0 +1,70 @@
+{
+    "url": "test url",
+    "testcases": [
+        {
+            "scenario": "login",
+            "haveAssert": true,
+            "actions": [
+                {
+                    "type": "and",
+                    "actions": [
+                        {
+                            "type": "input",
+                            "describedLocator": "username",
+                            "value": "valid_username"
+                        },
+                        {
+                            "type": "input",
+                            "describedLocator": "password",
+                            "value": "valid_password"
+                        }
+                    ]
+                },
+                {
+                    "type":"or",
+                    "actions": [
+                        {
+                            "type": "input",
+                            "describedLocator": "username",
+                            "value": "valid_username"
+                        },
+                        {
+                            "type": "input",
+                            "describedLocator": "password",
+                            "value": "valid_password"
+                        }
+                    ]
+                },
+                {
+                    "type": "click",
+                    "describedLocator": "login_button"
+                },
+                {
+                    "type": "select",
+                    "value": "select_value",
+                    "question": "question for select value"
+                },
+                {
+                    "type" : "verifyURl",
+                    "url": "expected_url"
+                },
+                {
+                    "type": "verifyElementPresent",
+                    "describedLocator": "element_locator" 
+                }
+            ]
+        }
+    ],
+    "variables": [
+        "valid_username",
+        "valid_password",
+        "select_value",
+        "checkbox_value"
+    ],
+    "data": [
+        "u1,u2",
+        "p1,p2",
+        "value1,value2",
+        "choice1,choice2"
+    ]
+}

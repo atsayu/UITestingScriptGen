@@ -340,9 +340,9 @@ function createFromValue(value) {
     let arr= value.split(' ');
     console.log(arr);
     if (arr[0].toLowerCase() === "click") {
-        return createFillClick(arr[arr.length - 1]);
+        return createClick(arr[arr.length - 1]);
     } else if (arr[0].toLowerCase() === "input") {
-        return createFillInput(arr[arr.length - 1], "valid_" + arr[arr.length -1]);
+        return createInputText(arr[arr.length - 1]);
     }else if (arr[0].toLowerCase() === "select") {
         if (arr[1].toLowerCase() === "list") {
             return createSelectList(arr[2]);

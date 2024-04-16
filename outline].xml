@@ -1,0 +1,32 @@
+<TestSuite>
+    <url>https://www.saucedemo.com/</url>
+    <TestCase>
+        <Scenario>login</Scenario>
+        <LogicExpressionOfActions>
+            <type>and</type>
+            <required>true</required>
+            <LogicExpressionOfActions>
+                <type>Input Text</type>
+                <required>true</required>
+                <locator>username</locator>
+                <text>valid_username</text>
+            </LogicExpressionOfActions>
+            <LogicExpressionOfActions>
+                <type>Input Text</type>
+                <required>true</required>
+                <locator>password</locator>
+                <text>valid_password</text>
+            </LogicExpressionOfActions>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Click Element</type>
+            <required>true</required>
+            <locator>login</locator>
+        </LogicExpressionOfActions>
+        <LogicExpressionOfActions>
+            <type>Verify URL</type>
+            <required>true</required>
+            <url>expected_url</url>
+        </LogicExpressionOfActions>
+    </TestCase>
+</TestSuite>

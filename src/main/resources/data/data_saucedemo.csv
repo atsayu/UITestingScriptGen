@@ -1,6 +1,7 @@
-password_saucedemo & username_saucedemo,user1 & pass1,user2 & pass2,user3 & pass3
-username_saucedemo,wrong_user
-password_saucedemo,wrong_pass
-passWord,xpath=//input[@placeholder='Password' and @type='password' and @data-demo='password' and @id='password' and @name='password']
-userName,xpath=//input[@placeholder='Username' and @data-demo='username' and @id='user-name' and @name='user-name']
-loginButton,xpath=//input[@class='submit-button btn_action' and @data-demo='login-button' and @id='login-button' and @name='login-button' and @value='Login']
+valid_username
+valid_password
+valid_password & valid_username
+valid_password & valid_username & expected_url
+password,//input[@class='input_error form_input' and @placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password' and @autocorrect='off' and @autocapitalize='none' and @value='']
+username,//input[@class='input_error form_input' and @placeholder='Username' and @type='text' and @data-test='username' and @id='user-name' and @name='user-name' and @autocorrect='off' and @autocapitalize='none' and @value='']
+login,//input[@type='submit' and @class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']

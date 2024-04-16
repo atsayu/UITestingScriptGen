@@ -6,6 +6,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Test Script</title>
     <style>
         html {
@@ -24,6 +27,10 @@
         .run-btn {
 
         }
+        body {
+            margin: 10px;
+        }
+
         .hidden {
             display: none;
         }
@@ -62,9 +69,21 @@
 </head>
 <body>
    <h1>Test Script created</h1>
-   <input class="run-btn" style="float: right;" type="button" id="run-btn" value="Run Script">
-   <input class="button" type="button" id="copy-btn" value="Copy Script">
-   <input class="button" type="button" id="download-btn" value="Download Script">
+<!--   <input class="run-btn" style="float: right;" type="button" id="run-btn" value="Run Script">-->
+<!--   <input class="button" type="button" id="copy-btn" value="Copy Script">-->
+   <button type="button" class="btn btn-sm btn-outline-success" id="run-btn">
+       Run
+       <i class="fa-solid fa-play"></i>
+   </button>
+   <button type="button" class="btn btn-sm btn-outline-primary" id="copy-btn">
+       Copy Script
+       <i class="fa-solid fa-copy"></i>
+   </button>
+   <button type="button" class="btn btn-sm btn-outline-primary" id="download-btn">
+       Download Script
+       <i class="fa-solid fa-download"></i>
+   </button>
+<!--   <input class="button" type="button" id="download-btn" value="Download Script">-->
 
    <blockquote>
        <pre  style="">
@@ -75,15 +94,18 @@
    </blockquote>
    <blockquote>
        <div class="fakeScreen hidden">
-           <p class="line">Initializing...</p>
+
        </div>
    </blockquote>
 
-   <input class="button hidden" type="button" id="download-report-btn" value="Download Report" disabled>
-   <input class="button hidden" type="button" id="download-log-btn" value="Download Log" disabled>
+<!--   <input class="button hidden" type="button" id="download-report-btn" value="Download Report" disabled>-->
+   <button type="button" class="btn btn-sm btn-outline-secondary hidden" id="download-report-btn" disabled>Download Report</button>
+   <button type="button" class="btn btn-sm btn-outline-secondary hidden" id="download-log-btn" disabled>Download Log</button>
+<!--   <input class="button hidden" type="button" id="download-log-btn" value="Download Log" disabled>-->
    <script>
        document.querySelector('#download-btn').addEventListener('click', function() {
-           let script = document.querySelector('pre').innerHTML;
+           let script = document.querySelector('pre > code').innerText;
+           console.log(script);
            let blob = new Blob([script], {type: 'text/plain'});
            let url =URL.createObjectURL(blob);
            let download = document.createElement('a');
@@ -102,7 +124,11 @@
            console.log('run button clicked');
            const evenSource = new EventSource('/run-script-robot');
            let fakeTerminal = document.querySelector('.fakeScreen');
-           fakeTerminal.childNodes.forEach(child => child.remove());
+           // fakeTerminal.childNodes.forEach(child => child.remove());
+           // fakeTerminal.chi
+           while (fakeTerminal.firstChild) {
+               fakeTerminal.removeChild(fakeTerminal.firstChild);
+           }
            fakeTerminal.classList.remove('hidden');
            evenSource.onmessage = function (event) {
                console.log(event.data);
@@ -149,6 +175,10 @@
    </script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+   <!-- Latest compiled and minified JavaScript -->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+           integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+           crossorigin="anonymous"></script>
    <script>hljs.highlightAll();</script>
 </body>
 </html>

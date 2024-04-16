@@ -1,0 +1,5 @@
+password,//input[@id='password']
+login_button,//input[@id='login-button']
+username,//input[@id='user-name']
+sauce labs backpack,//a[@id='item_4_title_link']
+valid_password & valid_username & homepage & backpack_url,secret_sauce & standard_user & homepage_1 & backpack_1,secret_sauce & visual_user & homepage_ 2 & backpack_2

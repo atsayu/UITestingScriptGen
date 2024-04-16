@@ -1,0 +1,7 @@
+
+password,//input[@class='input_error form_input' and @placeholder='Password' and @type='password' and @data-test='password' and @id='password' and @name='password' and @autocorrect='off' and @autocapitalize='none' and @value='']
+username,//input[@class='input_error form_input' and @placeholder='Username' and @type='text' and @data-test='username' and @id='user-name' and @name='user-name' and @autocorrect='off' and @autocapitalize='none' and @value='']
+Login,//input[@type='submit' and @class='submit-button btn_action' and @data-test='login-button' and @id='login-button' and @name='login-button' and @value='Login']
+add to cart Sauce Labs Backpack,//*[@id="add-to-cart-sauce-labs-backpack"]
+valid_password & valid_username & expected_url1,secret_sauce & standard_user & url1,secret_sauce & locked_out_user & url1,secret_sauce & problem_user & url1
+valid_password & valid_username & expected_url1 & expected_url2,secret_sauce & standard_user & url1 & url2,secret_sauce & locked_out_user & url1 & url2,secret_sauce & problem_user & url1 & url2

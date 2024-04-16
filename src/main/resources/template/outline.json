@@ -1,0 +1,64 @@
+{
+  "url": "https://www.saucedemo.com/",
+  "testcases": [
+    {
+      "actions": [
+        {
+          "type": "open",
+          "url": "https://www.saucedemo.com/"
+        },
+        {
+          "type": "and",
+          "actions": [
+            {
+              "describedLocator": "username",
+              "type": "input",
+              "value": "valid_username"
+            },
+            {
+              "describedLocator": "password",
+              "type": "input",
+              "value": "valid_password"
+            }
+          ]
+        },
+        {
+          "describedLocator": "login_button",
+          "type": "click"
+        },
+        {
+          "type": "verifyURL",
+          "url": "homepage"
+        },
+        {
+          "describedLocator": "sauce labs backpack",
+          "type": "click"
+        },
+        {
+          "type": "verifyURL",
+          "url": "backpack_url"
+        }
+      ],
+      "scenario": "login",
+      "haveAssert": true
+    }
+  ],
+  "variables": [
+    "valid_username & valid_password",
+    "homepage",
+    "backpack_url"
+  ],
+  "data": [],
+  "storedData": [
+    {
+      "valid_username & valid_password": "standard_user & secret_sauce",
+      "homepage": "https://www.saucedemo.com/inventory.html",
+      "backpack_url": "https://www.saucedemo.com/inventory-item.html?id=4"
+    },
+    {
+      "valid_username & valid_password": "visual_user & secret_sauce",
+      "homepage": "https://www.saucedemo.com/inventory.html",
+      "backpack_url": "https://www.saucedemo.com/inventory-item.html?id=4"
+    }
+  ]
+}
