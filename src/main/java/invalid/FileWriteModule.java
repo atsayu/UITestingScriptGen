@@ -9,6 +9,7 @@ import java.util.Vector;
 public class FileWriteModule {
 
     public static void writeStringsToFile(Vector<String> strings, String filePath) {
+        System.out.println("writing");
         try {
             // Create a File object
             File file = new File(filePath);

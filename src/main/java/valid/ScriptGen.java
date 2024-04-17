@@ -140,10 +140,10 @@ public class ScriptGen {
         }
         return s.toString();
     }
-    public static String convertJSONToTestScript(JSONArray testSuite, JSONObject locatorMap) {
+    public static String convertJSONToTestScript(JSONArray testSuite, JSONObject locatorMap, String testName) {
         StringBuilder script = new StringBuilder("*** Setting ***\nLibrary\tSeleniumLibrary\n\n*** Test Cases ***\n");
         for (int i = 0; i < testSuite.size(); i++) {
-            script.append("Test ").append(i + 1).append("\n");
+            script.append("Valid Test ").append(testName).append(" ").append(i + 1).append("\n");
             JSONObject jsonTestcase = (JSONObject) testSuite.get(i);
             JSONArray actions = (JSONArray) jsonTestcase.get("actions");
             for (Object action: actions) {
@@ -169,6 +169,7 @@ public class ScriptGen {
 
 //        String testUrl = outlineObject.get("url").toString();
         JSONArray actions = (JSONArray) testcase.get("actions");
+        String testName = testcase.get("scenario").toString();
         JSONArray testSuite = new JSONArray();
         for (int i = 0; i < storedData.size(); i++) {
             JSONObject dataSet = (JSONObject) storedData.get(i);
@@ -222,7 +223,7 @@ public class ScriptGen {
         BufferedWriter csvWriter = new BufferedWriter(new FileWriter(dataSheetPath));
         csvWriter.append(csvLocatr);
         csvWriter.close();
-        String robotScript = convertJSONToTestScript(testSuite, locatorMap);
+        String robotScript = convertJSONToTestScript(testSuite, locatorMap, testName);
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File(robotFilePath)));
         bufferedWriter.append(robotScript);
         bufferedWriter.close();
@@ -994,8 +995,8 @@ public class ScriptGen {
 
     public static void main(String[] args) throws IOException, ParseException {
 //        sendRequestToLocatorDetector();
-        createDataSheetForInvalid("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
-//        createScriptV3("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
+//        createDataSheetForInvalid("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
+        createScriptV3("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
 //        createDataSheetV3("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
 //        createDataSheetV2("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
 //        createScriptV2("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");

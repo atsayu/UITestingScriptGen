@@ -6,8 +6,10 @@ import org.apache.tomcat.util.json.JSONParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 //import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -28,6 +30,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import valid.ScriptGen;
+import valid.XMLConverter;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
@@ -40,6 +43,8 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 @Controller
@@ -87,6 +92,8 @@ public class HomeController {
                 "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
         ScriptGen.createDataSheetForInvalid("src/main/resources/template/outline.json",
                 "src/main/resources/data/data_sheet.csv");
+        XMLConverter.convertJSONToXML("src/main/resources/template/outline.json",
+                "src/main/resources/template/outline.xml");
         try {
             DataPreprocessing.initInvalidDataParse("src/main/resources/data/data_sheet.csv",
                     "src/main/resources/template/outline.xml", "test_saucedemo.robot");
@@ -105,6 +112,54 @@ public class HomeController {
 //    @CrossOrigin(origins = "http://localhost:5173/")
 //    @PostMapping("/v2/getScript")
 //    public ResponseEntity<Resource> runScript() {}
+
+    @CrossOrigin(origins = "http://localhost:5173/")
+    @GetMapping("/run/robot")
+    public ResponseEntity<ByteArrayResource> runRobotScript() throws IOException, InterruptedException {
+        ProcessBuilder processBuilder = new ProcessBuilder("robot", "test_saucedemo.robot");
+        Process scriptRunProcess = processBuilder.start();
+        int exitcode = scriptRunProcess.waitFor();
+        String outputFile = "output.xml";
+        String logFile = "log.html";
+        String reportFile = "report.html";
+
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            try (ZipOutputStream zos = new ZipOutputStream(baos)) {
+                addToZipFile(outputFile, zos);
+                addToZipFile(logFile, zos);
+                addToZipFile(reportFile, zos);
+            }
+
+            ByteArrayResource resource = new ByteArrayResource(baos.toByteArray());
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDispositionFormData("filename", "output.zip");
+
+            return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private static void addToZipFile(String filePath, ZipOutputStream zos) throws IOException {
+        File file = new File(filePath);
+        FileInputStream fis = new FileInputStream(file);
+        ZipEntry zipEntry = new ZipEntry(file.getName());
+        zos.putNextEntry(zipEntry);
+
+        byte[] bytes = new byte[1024];
+        int length;
+        while ((length = fis.read(bytes)) >= 0) {
+            zos.write(bytes, 0, length);
+        }
+
+        fis.close();
+        zos.closeEntry();
+    }
+
 
 
     @CrossOrigin(origins = "http://localhost:5173/")
