@@ -32,6 +32,73 @@ import static valid.LogicParser.createTextExpression;
 
 
 public class ScriptGen {
+
+    public static Map<String, JSONArray> createValidIndex(String outlinePath, int index) throws IOException, ParseException {
+        JSONObject outlineJSON = (JSONObject) new JSONParser().parse(new FileReader(outlinePath));
+        JSONArray testcases = (JSONArray) outlineJSON.get("testcases");
+        JSONObject testcase = (JSONObject) testcases.get(0);
+
+
+        JSONArray actions = (JSONArray) testcase.get("actions");
+
+        List<JSONObject> listForValid = new ArrayList<>();
+        List<JSONObject> listForInvalid = new ArrayList<>();
+
+        int currentNumberOfAssert = 1;
+        for (int i = 0; i < actions.size(); i++) {
+            Object action = actions.get(i);
+            JSONObject actionJSON = (JSONObject) action;
+
+            if (currentNumberOfAssert < index) {
+                listForValid.add(actionJSON);
+            } else {
+                listForInvalid.add(actionJSON);
+            }
+
+            String type = actionJSON.get("type").toString();
+            if (type.contains("verify")) {
+                currentNumberOfAssert++;
+            }
+        }
+
+        List<List<List<JSONObject>>> backtrackList = createBacktrackList(listForValid);
+        JSONArray validBlockSuite = new JSONArray();
+        backtrackV2(backtrackList, validBlockSuite, new JSONArray(), 0);
+        System.out.println(backtrackList);
+        System.out.println(listForValid);
+        System.out.println(listForInvalid);
+        JSONArray storedData = (JSONArray) outlineJSON.get("storedData");
+
+        Map<String, JSONArray> res = new HashMap<>();
+        res.put("validBlocks", validBlockSuite);
+        res.put("data", storedData);
+        return res;
+
+    }
+
+
+
+    public static List<List<List<JSONObject>>> createBacktrackList(List<JSONObject> actions) {
+        List<List<List<JSONObject>>> res = new ArrayList<>();
+        for (Object action: actions) {
+            JSONObject actionJSON = (JSONObject) action;
+            List<List<JSONObject>> listForCurAction = new ArrayList<>();
+            List<List<JSONObject>> DNFList = LogicParser.createDNFListV2(LogicParser.createActionV2(actionJSON));
+            List<JSONObject> allActionCombination = new ArrayList<>();
+            for (List<JSONObject> andOfSingleActions: DNFList) {
+                List<JSONObject> combination = new ArrayList<>();
+                for (JSONObject singleAction: andOfSingleActions) {
+                    combination.add(singleAction);
+                    allActionCombination.add(singleAction);
+                }
+                listForCurAction.add(combination);
+            }
+            String type = actionJSON.get("type").toString();
+            if (type.equals("and") || type.equals("or")) listForCurAction.add(allActionCombination);
+            res.add(listForCurAction);
+        }
+        return res;
+    }
     public static void createDataSheetForInvalid (String outlinePath, String datasheetPath) throws IOException, ParseException {
         JSONObject outlineJSON = (JSONObject) new JSONParser().parse(new FileReader(outlinePath));
         JSONArray testcases = (JSONArray) outlineJSON.get("testcases");
@@ -994,9 +1061,11 @@ public class ScriptGen {
 //    }
 
     public static void main(String[] args) throws IOException, ParseException {
+        Map res = createValidIndex("src/main/resources/template/outline.json", 2);
+        System.out.println(res);
 //        sendRequestToLocatorDetector();
 //        createDataSheetForInvalid("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
-        createScriptV3("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
+//        createScriptV3("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
 //        createDataSheetV3("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
 //        createDataSheetV2("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
 //        createScriptV2("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
