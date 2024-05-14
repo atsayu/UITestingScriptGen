@@ -268,14 +268,20 @@ public class ScriptGen {
                 JSONObject action = (JSONObject) actions.get(j);
                 List<List<JSONObject>> listForCurAction = new ArrayList<>();
                 List<List<JSONObject>> DNFList = LogicParser.createDNFListV2(LogicParser.createActionV2(action));
+                List<JSONObject> allActionCombination = new ArrayList<>();
                 for (List<JSONObject> andOfSingleActions: DNFList) {
                     List<JSONObject> combination = new ArrayList<>();
                     for (JSONObject singleAction: andOfSingleActions) {
-                        combination.add(createActionHaveData(singleAction, dataMap));
+                        JSONObject actionHaveData = createActionHaveData(singleAction, dataMap);
+                        combination.add(actionHaveData);
+                        allActionCombination.add(actionHaveData);
                     }
                     listForCurAction.add(combination);
                 }
+                String type = action.get("type").toString();
+                if (type.equals("or") || type.equals("and")) listForCurAction.add(allActionCombination);
                 backTrackList.add(listForCurAction);
+
             }
             backtrackV2(backTrackList, testSuite, new JSONArray(), 0);
         }
@@ -1061,11 +1067,11 @@ public class ScriptGen {
 //    }
 
     public static void main(String[] args) throws IOException, ParseException {
-        Map res = createValidIndex("src/main/resources/template/outline.json", 2);
-        System.out.println(res);
+//        Map res = createValidIndex("src/main/resources/template/outline.json", 2);
+//        System.out.println(res);
 //        sendRequestToLocatorDetector();
 //        createDataSheetForInvalid("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
-//        createScriptV3("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
+        createScriptV3("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
 //        createDataSheetV3("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
 //        createDataSheetV2("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv");
 //        createScriptV2("src/main/resources/template/outline.json", "src/main/resources/data/data_sheet.csv", "test_saucedemo.robot");
