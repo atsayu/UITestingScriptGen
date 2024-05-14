@@ -64,9 +64,6 @@ public class ScriptGen {
         List<List<List<JSONObject>>> backtrackList = createBacktrackList(listForValid);
         JSONArray validBlockSuite = new JSONArray();
         backtrackV2(backtrackList, validBlockSuite, new JSONArray(), 0);
-        System.out.println(backtrackList);
-        System.out.println(listForValid);
-        System.out.println(listForInvalid);
         JSONArray storedData = (JSONArray) outlineJSON.get("storedData");
 
         Map<String, JSONArray> res = new HashMap<>();
