@@ -42,7 +42,7 @@ public class ScriptGen {
         JSONArray actions = (JSONArray) testcase.get("actions");
 
         List<JSONObject> listForValid = new ArrayList<>();
-        List<JSONObject> listForInvalid = new ArrayList<>();
+        JSONArray listForInvalid = new JSONArray();
 
         int currentNumberOfAssert = 1;
         for (int i = 0; i < actions.size(); i++) {
@@ -72,6 +72,7 @@ public class ScriptGen {
         Map<String, JSONArray> res = new HashMap<>();
         res.put("validBlocks", validBlockSuite);
         res.put("data", storedData);
+        res.put("invalidBlock", listForInvalid);
         return res;
 
     }
