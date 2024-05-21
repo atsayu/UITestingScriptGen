@@ -13,6 +13,7 @@ public class NewInvalid {
     public static void main(String[] args) throws IOException, ParseException {
         Map<String, JSONArray> res = ScriptGen.createValidIndex("src/main/resources/template/outline.json", 2);
         JSONArray validBlock = res.get("validBlocks");
+
         JSONArray data = res.get("data");
         Iterator validBlockIterator = validBlock.iterator();
 
@@ -34,6 +35,13 @@ public class NewInvalid {
                 System.out.println("\n");
             }
             System.out.println(template);
+        }
+
+        JSONArray invalidBlock = res.get("invalidBlock");
+        Iterator invalidBlockIterator = invalidBlock.iterator();
+        while(invalidBlockIterator.hasNext()) {
+            Map<String, JSONArray> actionsMap = (Map<String, JSONArray>) invalidBlockIterator.next();
+            System.out.println(actionsMap);
         }
 
         Iterator dataIterator = data.iterator();
