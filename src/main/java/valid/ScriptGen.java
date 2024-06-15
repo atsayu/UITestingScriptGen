@@ -349,15 +349,24 @@ public class ScriptGen {
     public static JSONObject createActionHaveData(JSONObject action, Map<String, String> dataMap) {
         JSONObject actionHaveData = new JSONObject(action);
         String variable = "";
+        String question = "";
+        String answer = "";
         switch (action.get("type").toString()) {
             case "open":
-
                 return actionHaveData;
             case "click":
                 return actionHaveData;
             case "input":
                 variable = actionHaveData.get("value").toString();
                 actionHaveData.put("value", dataMap.get(variable));
+                return actionHaveData;
+            case "select":
+            case "checkbox":
+            case "radio":
+                answer = action.get("answer").toString();
+                question = action.get("question").toString();
+                actionHaveData.put("answer", dataMap.get(answer));
+                actionHaveData.put("question", dataMap.get(question));
                 return actionHaveData;
             case "verifyURL":
                 variable = actionHaveData.get("url").toString();

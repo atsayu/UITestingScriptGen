@@ -216,9 +216,7 @@ public class HomeController {
     public JSONArray convertExprListToJSON(List<Expression<String>> expressionList) {
         JSONArray jsonArray = new JSONArray();
         for (Expression<String> e: expressionList) {
-
                 jsonArray.add(convertExpressionToJSON(e));
-
         }
         System.out.println(jsonArray);
         return jsonArray;
@@ -246,6 +244,23 @@ public class HomeController {
                 case "click":
                     jsonAction.put("type", "click");
                     jsonAction.put("describedLocator", String.join(" ", Arrays.copyOfRange(words, 1, words.length)));
+                    break;
+                case "choose":
+                    jsonAction.put("type", words[1]);
+                    UUID uuid = UUID.randomUUID();
+                    String uuidString = uuid.toString();
+                    jsonAction.put("question", "question_" + uuidString);
+                    jsonAction.put("answer", "answer_" + uuidString);
+                    break;
+                case "select":
+                    jsonAction.put("type", "select");
+                    jsonAction.put("question", "question_" + words[1]);
+                    jsonAction.put("answer", "answer_" + words[1]);
+                    break;
+                case "checkbox":
+                    jsonAction.put("type", "checkbox");
+                    jsonAction.put("question", "question_" + words[1]);
+                    jsonAction.put("answer", "answer_" + words[1]);
                     break;
                 case "verify":
                     switch (words[1].toLowerCase()) {
