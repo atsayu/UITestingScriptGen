@@ -27,11 +27,11 @@ public class Context {
     }
 
     public void exprToMap(String expr) {
-        if (expr.contains("Input Text")) {
+        if (expr.contains("input")) {
             this.setStrategy(new InputTextStrategy());
-        } else if (expr.contains("Click Element")) {
+        } else if (expr.contains("click")) {
             this.setStrategy(new ClickElementStrategy());
-        } else if (expr.contains("Location Should Be")) {
+        } else if (expr.contains("verifyURL")) {
             this.setStrategy(new LocationAssertionStrategy());
         } else if (expr.contains("Element Should Contain")) {
             this.setStrategy(new PageElementAssertionStrategy());

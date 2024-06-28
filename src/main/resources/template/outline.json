@@ -22,6 +22,21 @@
           ]
         },
         {
+          "type": "or",
+          "actions": [
+            {
+              "describedLocator": "d",
+              "type": "input",
+              "value": "d1"
+            },
+            {
+              "describedLocator": "e",
+              "type": "input",
+              "value": "e1"
+            }
+          ]
+        },
+        {
           "describedLocator": "login_button",
           "type": "click"
         },
@@ -30,8 +45,33 @@
           "url": "homepage"
         },
         {
-          "describedLocator": "sauce labs backpack",
+          "describedLocator": "login_button",
           "type": "click"
+        },
+        {
+          "type": "and",
+          "actions": [
+            {
+              "describedLocator": "a",
+              "type": "input",
+              "value": "a1"
+            },
+            {
+              "type": "or",
+              "actions": [
+                {
+                  "describedLocator": "b",
+                  "type": "input",
+                  "value": "b1"
+                },
+                {
+                  "describedLocator": "c",
+                  "type": "input",
+                  "value": "c1"
+                }
+              ]
+            }
+          ]
         },
         {
           "type": "verifyURL",

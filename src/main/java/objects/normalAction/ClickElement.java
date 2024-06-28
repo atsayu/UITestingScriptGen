@@ -33,7 +33,7 @@ public class ClickElement extends NormalAction {
 
     @Override
     public String exprToString() {
-        return "Click Element\t" + this.getElementLocator();
+        return "click\t" + this.getElementLocator();
     }
 
     @Override
